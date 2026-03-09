@@ -183,11 +183,17 @@ ul {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + var(--spacing-xl)) var(--spacing-md) var(--spacing-xl);
+  padding: calc(var(--nav-height) + var(--spacing-xl)) 0 var(--spacing-xl);
+}
+
+.hero .container {
+  display: flex;
+  justify-content: center;
 }
 
 .hero__content {
   max-width: 640px;
+  margin: 0 auto;
 }
 
 .hero__label {
