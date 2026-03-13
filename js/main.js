@@ -61,6 +61,116 @@ const observerFade = new IntersectionObserver(
 
 fadeEls.forEach(el => observerFade.observe(el));
 
+// ===== Hero Artwork Reveal =====
+(() => {
+  const canvas = document.getElementById('heroRevealCanvas');
+  const hero = document.getElementById('hero');
+  if (!canvas || !hero) return;
+
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let isHovering = false;
+  let fadeTimer = null;
+  let animFrame = null;
+
+  // Brush settings
+  const BRUSH_RADIUS = 80;
+  const FADE_DELAY = 300;    // ms after mouse stops before fade begins
+  const FADE_SPEED = 0.02;   // alpha increment per frame (slower = gentler)
+
+  // Track revealed spots for fade-back
+  let revealAlpha = 0; // global canvas opacity for fade-back
+
+  function resize() {
+    const rect = hero.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    canvas.width = width;
+    canvas.height = height;
+    fillWhite();
+  }
+
+  function fillWhite() {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgba(250, 250, 250, 1)`;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  function reveal(x, y) {
+    ctx.globalCompositeOperation = 'destination-out';
+
+    // Soft circular brush with radial gradient
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, BRUSH_RADIUS);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+    gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.3)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, BRUSH_RADIUS, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function startFadeBack() {
+    if (animFrame) return;
+
+    function fade() {
+      // Gradually paint white back over the canvas
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = `rgba(250, 250, 250, ${FADE_SPEED})`;
+      ctx.fillRect(0, 0, width, height);
+
+      animFrame = requestAnimationFrame(fade);
+    }
+    animFrame = requestAnimationFrame(fade);
+  }
+
+  function stopFadeBack() {
+    if (animFrame) {
+      cancelAnimationFrame(animFrame);
+      animFrame = null;
+    }
+  }
+
+  // Mouse events
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    stopFadeBack();
+    clearTimeout(fadeTimer);
+    reveal(x, y);
+
+    fadeTimer = setTimeout(() => {
+      startFadeBack();
+    }, FADE_DELAY);
+  });
+
+  canvas.addEventListener('mouseenter', () => {
+    isHovering = true;
+    stopFadeBack();
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    isHovering = false;
+    clearTimeout(fadeTimer);
+    startFadeBack();
+  });
+
+  // Click to scroll to artwork
+  canvas.addEventListener('click', (e) => {
+    // Don't intercept clicks on hero content (buttons, links)
+    const artwork = document.getElementById('artwork');
+    if (artwork) {
+      artwork.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // Init
+  resize();
+  window.addEventListener('resize', resize);
+})();
+
 // ===== Lightbox =====
 const lightbox = document.getElementById('lightbox');
 const lightboxContent = document.getElementById('lightboxContent');
