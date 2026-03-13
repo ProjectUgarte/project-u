@@ -451,11 +451,11 @@ ul {
   border-radius: var(--radius-md);
 }
 
-/* Row 1: mastersword, miles, evox, mukluck, kidgoku — flex by aspect ratio */
-.masonry__row:nth-child(1) .masonry__item:nth-child(1) { flex: 0.6667 0 0; }
+/* Row 1: mukluck, miles, evox, mastersword, kidgoku — flex by aspect ratio */
+.masonry__row:nth-child(1) .masonry__item:nth-child(1) { flex: 1.0 0 0; }
 .masonry__row:nth-child(1) .masonry__item:nth-child(2) { flex: 1.3333 0 0; }
 .masonry__row:nth-child(1) .masonry__item:nth-child(3) { flex: 1.0 0 0; }
-.masonry__row:nth-child(1) .masonry__item:nth-child(4) { flex: 1.0 0 0; }
+.masonry__row:nth-child(1) .masonry__item:nth-child(4) { flex: 0.6667 0 0; }
 .masonry__row:nth-child(1) .masonry__item:nth-child(5) { flex: 0.6636 0 0; }
 
 /* Row 2: overworked, smallshirt, tobey, link */
