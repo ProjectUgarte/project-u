@@ -79,8 +79,8 @@ fadeEls.forEach(el => observerFade.observe(el));
   const BRISTLE_COUNT = 6;    // extra bristle dabs per stroke
   const BRISTLE_SPREAD = 0.7; // how far bristles spread (fraction of radius)
   const FADE_DELAY = 200;     // ms after mouse stops before fade begins
-  const FADE_SPEED = 0.035;   // alpha per frame for fade-back
-  const FADE_FULL_AFTER = 90; // frames before snapping to full white
+  const FADE_SPEED = 0.04;    // alpha per frame for fade-back
+  const FADE_FULL_AFTER = 120; // frames before snapping to full white
 
   // Mouse tracking for speed-based tapering
   let lastX = null;
@@ -177,11 +177,16 @@ fadeEls.forEach(el => observerFade.observe(el));
 
     function fade() {
       fadeFrameCount++;
+
+      // Accelerate fade over time — starts gentle, gets stronger
+      const progress = fadeFrameCount / FADE_FULL_AFTER;
+      const alpha = FADE_SPEED + progress * progress * 0.15;
+
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `rgba(250, 250, 250, ${FADE_SPEED})`;
+      ctx.fillStyle = `rgba(250, 250, 250, ${Math.min(alpha, 1)})`;
       ctx.fillRect(0, 0, width, height);
 
-      // After enough frames, snap to fully opaque white
+      // By this point the alpha is so high the snap is invisible
       if (fadeFrameCount >= FADE_FULL_AFTER) {
         fillWhite();
         cancelAnimationFrame(animFrame);
