@@ -404,23 +404,26 @@ ul {
   color: var(--color-text);
 }
 
-/* ===== Masonry Artwork Grid ===== */
+/* ===== Artwork Grid ===== */
 .artwork {
   background: var(--color-surface);
 }
 
 .masonry {
-  columns: 3;
-  column-gap: var(--spacing-sm);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
 }
 
 .masonry__item {
-  break-inside: avoid;
-  margin-bottom: var(--spacing-sm);
   border-radius: var(--radius-md);
   overflow: hidden;
   cursor: pointer;
   transition: all var(--transition);
+}
+
+.masonry__item--wide {
+  grid-column: span 2;
 }
 
 .masonry__item:hover {
@@ -430,6 +433,8 @@ ul {
 
 .masonry__item img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
   border-radius: var(--radius-md);
 }
@@ -599,7 +604,11 @@ ul {
   }
 
   .masonry {
-    columns: 2;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .masonry__item--wide {
+    grid-column: span 2;
   }
 }
 
@@ -609,7 +618,11 @@ ul {
   }
 
   .masonry {
-    columns: 1;
+    grid-template-columns: 1fr;
+  }
+
+  .masonry__item--wide {
+    grid-column: span 1;
   }
 
   .hero__cta {
