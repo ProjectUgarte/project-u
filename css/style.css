@@ -434,29 +434,6 @@ ul {
   border-radius: var(--radius-md);
 }
 
-.masonry__placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-xs);
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  border-radius: var(--radius-md);
-}
-
-.masonry__placeholder--tall {
-  height: 380px;
-}
-
-.masonry__placeholder--medium {
-  height: 280px;
-}
-
-.masonry__placeholder--short {
-  height: 200px;
-}
 
 /* ===== Lightbox ===== */
 .lightbox {
