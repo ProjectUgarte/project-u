@@ -69,24 +69,21 @@ fadeEls.forEach(el => observerFade.observe(el));
 
   const ctx = canvas.getContext('2d');
   let width, height;
-  let fadeTimer = null;
-  let animFrame = null;
-  let fadeFrameCount = 0;
 
-  // Brush settings
-  const BRUSH_MAX = 60;       // max brush radius
-  const BRUSH_MIN = 12;       // min brush radius (tapered tail)
-  const BRISTLE_COUNT = 6;    // extra bristle dabs per stroke
-  const BRISTLE_SPREAD = 0.7; // how far bristles spread (fraction of radius)
-  const FADE_DELAY = 200;     // ms after mouse stops before fade begins
-  const FADE_SPEED = 0.035;   // alpha per frame for fade-back
-  const FADE_FULL_AFTER = 90; // frames before snapping to full white
+  // Brush settings — tweak these to taste
+  const BRUSH_HEAD = 70;        // radius at the cursor (big)
+  const BRUSH_TAIL = 8;         // radius at the end of the trail (small)
+  const SPLATTER_COUNT = 5;     // random splatters per stroke
+  const SPLATTER_RANGE = 1.8;   // how far splatters fly (multiplier of brush radius)
+  const TRAIL_FADE = 0.045;     // how fast the trail fades back per frame (higher = faster)
+  const TRAIL_SNAP_AFTER = 80;  // frames of fade before snapping to full white
 
-  // Mouse tracking for speed-based tapering
+  // State
   let lastX = null;
   let lastY = null;
-  let lastTime = 0;
-  let velocity = 0;
+  let isMouseInHero = false;
+  let animFrame = null;
+  let fadeFrameCount = 0;
 
   function resize() {
     const rect = hero.getBoundingClientRect();
@@ -103,67 +100,59 @@ fadeEls.forEach(el => observerFade.observe(el));
     ctx.fillRect(0, 0, width, height);
   }
 
-  // Paint a single solid bristle dab (hard edge, no gradient)
+  // Solid dab — hard edge circle
   function dab(x, y, radius) {
     ctx.beginPath();
-    ctx.arc(x, y, Math.max(radius, 2), 0, Math.PI * 2);
+    ctx.arc(x, y, Math.max(radius, 1), 0, Math.PI * 2);
     ctx.fill();
   }
 
   function reveal(x, y) {
-    const now = performance.now();
-    const dt = lastTime ? now - lastTime : 16;
-    lastTime = now;
-
-    // Calculate velocity (pixels per frame)
-    if (lastX !== null) {
-      const dx = x - lastX;
-      const dy = y - lastY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      velocity = velocity * 0.5 + (dist / Math.max(dt, 1)) * 16 * 0.5; // smoothed
-    }
-
-    // Brush radius: faster = bigger, slower = smaller (taper)
-    const speed = Math.min(velocity, 40);
-    const t = speed / 40; // 0 to 1
-    const brushRadius = BRUSH_MIN + (BRUSH_MAX - BRUSH_MIN) * t;
-
     ctx.globalCompositeOperation = 'destination-out';
-    ctx.fillStyle = 'rgba(0, 0, 0, 1)'; // solid, hard edge
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
 
-    // Main dab
-    dab(x, y, brushRadius);
+    // Big dab at cursor position
+    dab(x, y, BRUSH_HEAD);
 
-    // Bristle dabs — scattered around main point for paintery feel
-    for (let i = 0; i < BRISTLE_COUNT; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const dist = Math.random() * brushRadius * BRISTLE_SPREAD;
-      const bx = x + Math.cos(angle) * dist;
-      const by = y + Math.sin(angle) * dist;
-      const bristleR = brushRadius * (0.2 + Math.random() * 0.4);
-      dab(bx, by, bristleR);
-    }
-
-    // Interpolate between last point and current to fill gaps
+    // Interpolate from cursor back to last point with tapering trail
     if (lastX !== null) {
       const dx = x - lastX;
       const dy = y - lastY;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      const step = Math.max(brushRadius * 0.3, 4);
-      const steps = Math.floor(dist / step);
-      for (let i = 1; i < steps; i++) {
-        const frac = i / steps;
-        const ix = lastX + dx * frac;
-        const iy = lastY + dy * frac;
-        // Taper along the interpolated stroke
-        const interpR = brushRadius * (1 - frac * 0.3);
-        dab(ix, iy, interpR);
-        // A couple bristles along the stroke
-        for (let b = 0; b < 2; b++) {
-          const angle = Math.random() * Math.PI * 2;
-          const bd = Math.random() * interpR * BRISTLE_SPREAD;
-          dab(ix + Math.cos(angle) * bd, iy + Math.sin(angle) * bd, interpR * 0.3);
-        }
+      const step = Math.max(BRUSH_TAIL, 4);
+      const steps = Math.ceil(dist / step);
+
+      for (let i = 1; i <= steps; i++) {
+        const frac = i / steps; // 0 = cursor, 1 = tail (last point)
+        const ix = x - dx * frac;
+        const iy = y - dy * frac;
+
+        // Taper: big at cursor, small at tail
+        const t = frac;
+        const r = BRUSH_HEAD * (1 - t) + BRUSH_TAIL * t;
+        dab(ix, iy, r);
+      }
+
+      // Splatters — flung out from the stroke direction
+      const strokeAngle = Math.atan2(dy, dx);
+      for (let i = 0; i < SPLATTER_COUNT; i++) {
+        // Splatters fly perpendicular-ish to the stroke
+        const spreadAngle = strokeAngle + (Math.PI / 2) * (Math.random() * 2 - 1);
+        const spreadDist = BRUSH_HEAD * (0.5 + Math.random() * SPLATTER_RANGE);
+        const sx = x + Math.cos(spreadAngle) * spreadDist;
+        const sy = y + Math.sin(spreadAngle) * spreadDist;
+        const sr = 2 + Math.random() * (BRUSH_HEAD * 0.2);
+        dab(sx, sy, sr);
+      }
+
+      // Extra drip splatters scattered along the stroke
+      for (let i = 0; i < 3; i++) {
+        const frac = Math.random();
+        const ix = x - dx * frac;
+        const iy = y - dy * frac;
+        const angle = Math.random() * Math.PI * 2;
+        const d = BRUSH_HEAD * (0.6 + Math.random() * 0.8);
+        dab(ix + Math.cos(angle) * d, iy + Math.sin(angle) * d, 1 + Math.random() * 4);
       }
     }
 
@@ -171,35 +160,32 @@ fadeEls.forEach(el => observerFade.observe(el));
     lastY = y;
   }
 
-  function startFadeBack() {
-    if (animFrame) return;
-    fadeFrameCount = 0;
+  // Continuous fade-back loop — always running, creates the "comet tail" effect
+  function fadeLoop() {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgba(250, 250, 250, ${TRAIL_FADE})`;
+    ctx.fillRect(0, 0, width, height);
 
-    function fade() {
+    // If mouse is gone, count frames and eventually snap to full white
+    if (!isMouseInHero) {
       fadeFrameCount++;
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `rgba(250, 250, 250, ${FADE_SPEED})`;
-      ctx.fillRect(0, 0, width, height);
-
-      // After enough frames, snap to fully opaque white
-      if (fadeFrameCount >= FADE_FULL_AFTER) {
+      if (fadeFrameCount >= TRAIL_SNAP_AFTER) {
         fillWhite();
-        cancelAnimationFrame(animFrame);
+        // Stop the loop when fully white and mouse is gone
         animFrame = null;
         return;
       }
-
-      animFrame = requestAnimationFrame(fade);
+    } else {
+      fadeFrameCount = 0;
     }
-    animFrame = requestAnimationFrame(fade);
+
+    animFrame = requestAnimationFrame(fadeLoop);
   }
 
-  function stopFadeBack() {
-    if (animFrame) {
-      cancelAnimationFrame(animFrame);
-      animFrame = null;
+  function ensureFadeLoop() {
+    if (!animFrame) {
+      animFrame = requestAnimationFrame(fadeLoop);
     }
-    fadeFrameCount = 0;
   }
 
   // Mouse events
@@ -207,29 +193,23 @@ fadeEls.forEach(el => observerFade.observe(el));
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
-    stopFadeBack();
-    clearTimeout(fadeTimer);
     reveal(x, y);
-
-    fadeTimer = setTimeout(() => {
-      startFadeBack();
-    }, FADE_DELAY);
+    ensureFadeLoop();
   });
 
   canvas.addEventListener('mouseenter', () => {
-    stopFadeBack();
+    isMouseInHero = true;
     lastX = null;
     lastY = null;
-    velocity = 0;
+    fadeFrameCount = 0;
+    ensureFadeLoop();
   });
 
   canvas.addEventListener('mouseleave', () => {
+    isMouseInHero = false;
     lastX = null;
     lastY = null;
-    velocity = 0;
-    clearTimeout(fadeTimer);
-    startFadeBack();
+    ensureFadeLoop();
   });
 
   // Click to scroll to artwork
