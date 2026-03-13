@@ -326,7 +326,7 @@ ul {
 }
 
 .app-card__image--og {
-  background: #000000;
+  background: #ffffff;
 }
 
 .app-card__image--logo img {
@@ -334,6 +334,12 @@ ul {
   height: 100%;
   object-fit: contain;
   padding: var(--spacing-md);
+  transition: transform var(--transition), filter var(--transition);
+}
+
+.app-card:hover .app-card__image--logo img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
 }
 
 .app-card__placeholder {
