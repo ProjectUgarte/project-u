@@ -407,13 +407,27 @@ ul {
 /* ===== Artwork Grid ===== */
 .artwork {
   background: var(--color-surface);
+  padding: var(--spacing-md) 0 var(--spacing-lg);
+}
+
+.artwork .section__header {
+  margin-bottom: var(--spacing-md);
+}
+
+.artwork .container {
+  max-width: none;
+  padding: 0 var(--spacing-sm);
 }
 
 .masonry {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-sm);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.masonry__row {
+  display: flex;
+  gap: 6px;
 }
 
 .masonry__item {
@@ -421,22 +435,34 @@ ul {
   overflow: hidden;
   cursor: pointer;
   transition: all var(--transition);
-}
-
-.masonry__item--wide {
-  grid-column: span 2;
+  min-width: 0;
 }
 
 .masonry__item:hover {
   transform: scale(1.02);
   box-shadow: var(--shadow-md);
+  z-index: 1;
 }
 
 .masonry__item img {
   width: 100%;
+  height: auto;
   display: block;
   border-radius: var(--radius-md);
 }
+
+/* Row 1: mastersword, miles, evox, mukluck, kidgoku — flex by aspect ratio */
+.masonry__row:nth-child(1) .masonry__item:nth-child(1) { flex: 0.6667 0 0; }
+.masonry__row:nth-child(1) .masonry__item:nth-child(2) { flex: 1.3333 0 0; }
+.masonry__row:nth-child(1) .masonry__item:nth-child(3) { flex: 1.0 0 0; }
+.masonry__row:nth-child(1) .masonry__item:nth-child(4) { flex: 1.0 0 0; }
+.masonry__row:nth-child(1) .masonry__item:nth-child(5) { flex: 0.6636 0 0; }
+
+/* Row 2: overworked, smallshirt, tobey, link */
+.masonry__row:nth-child(2) .masonry__item:nth-child(1) { flex: 0.8 0 0; }
+.masonry__row:nth-child(2) .masonry__item:nth-child(2) { flex: 0.7998 0 0; }
+.masonry__row:nth-child(2) .masonry__item:nth-child(3) { flex: 1.6387 0 0; }
+.masonry__row:nth-child(2) .masonry__item:nth-child(4) { flex: 0.7781 0 0; }
 
 
 /* ===== Lightbox ===== */
@@ -602,12 +628,12 @@ ul {
     grid-template-columns: 1fr;
   }
 
-  .masonry {
-    grid-template-columns: repeat(2, 1fr);
+  .masonry__row {
+    flex-wrap: wrap;
   }
 
-  .masonry__item--wide {
-    grid-column: span 2;
+  .masonry__row .masonry__item {
+    flex: 1 1 45% !important;
   }
 }
 
@@ -616,12 +642,8 @@ ul {
     --font-size-4xl: 2.25rem;
   }
 
-  .masonry {
-    grid-template-columns: 1fr;
-  }
-
-  .masonry__item--wide {
-    grid-column: span 1;
+  .masonry__row .masonry__item {
+    flex: 1 1 100% !important;
   }
 
   .hero__cta {
