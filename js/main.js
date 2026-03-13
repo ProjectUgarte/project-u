@@ -78,7 +78,7 @@ fadeEls.forEach(el => observerFade.observe(el));
   const BRUSH_MIN = 12;       // min brush radius (tapered tail)
   const BRISTLE_COUNT = 6;    // extra bristle dabs per stroke
   const BRISTLE_SPREAD = 0.7; // how far bristles spread (fraction of radius)
-  const FADE_DELAY = 200;     // ms after mouse stops before fade begins
+  const FADE_DELAY = 600;     // ms after mouse stops before fade begins
   const FADE_SPEED = 0.04;    // alpha per frame for fade-back
   const FADE_FULL_AFTER = 120; // frames before snapping to full white
 
