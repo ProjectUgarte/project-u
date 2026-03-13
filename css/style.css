@@ -325,6 +325,10 @@ ul {
   background: #1a253b;
 }
 
+.app-card__image--og {
+  background: #ffffff;
+}
+
 .app-card__image--logo img {
   width: 100%;
   height: 100%;
