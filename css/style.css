@@ -334,12 +334,12 @@ ul {
   height: 75%;
   object-fit: contain;
   border-radius: 22%;
-  transition: transform var(--transition), filter var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .app-card:hover .app-card__image--logo img {
   transform: scale(1.05);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .app-card__placeholder {
