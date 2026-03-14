@@ -254,15 +254,33 @@ fadeEls.forEach(el => observerFade.observe(el));
 const lightbox = document.getElementById('lightbox');
 const lightboxContent = document.getElementById('lightboxContent');
 const lightboxClose = document.getElementById('lightboxClose');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
 
-document.querySelectorAll('[data-lightbox]').forEach(item => {
+const lightboxItems = document.querySelectorAll('[data-lightbox]');
+let currentLightboxIndex = 0;
+
+function showLightboxImage(index) {
+  currentLightboxIndex = index;
+  const item = lightboxItems[index];
+  const img = item.querySelector('img');
+  if (img) {
+    lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
+    lightbox.classList.add('lightbox--open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function navigateLightbox(direction) {
+  let newIndex = currentLightboxIndex + direction;
+  if (newIndex < 0) newIndex = lightboxItems.length - 1;
+  if (newIndex >= lightboxItems.length) newIndex = 0;
+  showLightboxImage(newIndex);
+}
+
+lightboxItems.forEach((item, index) => {
   item.addEventListener('click', () => {
-    const img = item.querySelector('img');
-    if (img) {
-      lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
-      lightbox.classList.add('lightbox--open');
-      document.body.style.overflow = 'hidden';
-    }
+    showLightboxImage(index);
   });
 });
 
@@ -272,9 +290,20 @@ function closeLightbox() {
 }
 
 lightboxClose.addEventListener('click', closeLightbox);
+lightboxPrev.addEventListener('click', (e) => {
+  e.stopPropagation();
+  navigateLightbox(-1);
+});
+lightboxNext.addEventListener('click', (e) => {
+  e.stopPropagation();
+  navigateLightbox(1);
+});
 lightbox.addEventListener('click', (e) => {
   if (e.target === lightbox) closeLightbox();
 });
 document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('lightbox--open')) return;
   if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navigateLightbox(-1);
+  if (e.key === 'ArrowRight') navigateLightbox(1);
 });
