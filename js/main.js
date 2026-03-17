@@ -234,7 +234,9 @@ fadeEls.forEach(el => observerFade.observe(el));
     lastY = null;
     velocity = 0;
     clearTimeout(fadeTimer);
-    startFadeBack();
+    fadeTimer = setTimeout(() => {
+      startFadeBack();
+    }, FADE_DELAY);
   });
 
   // Click to scroll to artwork
