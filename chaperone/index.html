@@ -84,33 +84,26 @@
     .app-page__screenshots {
       display: flex;
       gap: var(--spacing-md);
-      overflow-x: auto;
-      padding-bottom: var(--spacing-sm);
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+      flex-wrap: wrap;
+      justify-content: center;
       margin-bottom: var(--spacing-xl);
     }
 
-    .app-page__screenshots::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .app-page__screenshots::-webkit-scrollbar-track {
-      background: var(--color-border);
-      border-radius: 3px;
-    }
-
-    .app-page__screenshots::-webkit-scrollbar-thumb {
-      background: var(--color-text-muted);
-      border-radius: 3px;
-    }
-
-    .app-page__screenshot {
+    .app-page__screenshot-item {
       flex: 0 0 auto;
-      width: 220px;
+      width: 180px;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .app-page__screenshot-item:hover {
+      transform: scale(1.03);
+    }
+
+    .app-page__screenshot-item img {
+      width: 100%;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
-      scroll-snap-align: start;
     }
 
     .app-page__section-title {
@@ -158,8 +151,32 @@
         font-size: var(--font-size-2xl);
       }
 
-      .app-page__screenshot {
-        width: 180px;
+      .app-page__screenshots {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: var(--spacing-sm);
+      }
+
+      .app-page__screenshots::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .app-page__screenshots::-webkit-scrollbar-track {
+        background: var(--color-border);
+        border-radius: 2px;
+      }
+
+      .app-page__screenshots::-webkit-scrollbar-thumb {
+        background: var(--color-text-muted);
+        border-radius: 2px;
+      }
+
+      .app-page__screenshot-item {
+        width: 160px;
+        scroll-snap-align: start;
       }
     }
   </style>
@@ -189,11 +206,21 @@
 
     <h2 class="app-page__section-title">Screenshots</h2>
     <div class="app-page__screenshots">
-      <img src="../assets/images/IMG_3874.PNG" alt="Chaperone login screen" class="app-page__screenshot">
-      <img src="../assets/images/IMG_3876.PNG" alt="Events list" class="app-page__screenshot">
-      <img src="../assets/images/IMG_3877.PNG" alt="Event invite details" class="app-page__screenshot">
-      <img src="../assets/images/IMG_3880.PNG" alt="Restaurant shortlist and voting" class="app-page__screenshot">
-      <img src="../assets/images/IMG_3882.PNG" alt="Smart restaurant recommendations" class="app-page__screenshot">
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_3874.PNG" alt="Chaperone login screen">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_3876.PNG" alt="Events list">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_3877.PNG" alt="Event invite details">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_3880.PNG" alt="Restaurant shortlist and voting">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_3882.PNG" alt="Smart restaurant recommendations">
+      </div>
     </div>
 
     <h2 class="app-page__section-title">About</h2>
@@ -204,6 +231,63 @@
       <a href="/privacy/" class="app-page__link">Privacy Policy &rarr;</a>
     </div>
   </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
+    <div class="lightbox__content" id="lightboxContent"></div>
+    <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Next">&#8250;</button>
+  </div>
+
+  <script>
+    // Lightbox for screenshots
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+
+    const items = document.querySelectorAll('[data-lightbox-app]');
+    let currentIndex = 0;
+
+    function showImage(index) {
+      currentIndex = index;
+      const img = items[index].querySelector('img');
+      if (img) {
+        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
+        lightbox.classList.add('lightbox--open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function navigate(direction) {
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = items.length - 1;
+      if (newIndex >= items.length) newIndex = 0;
+      showImage(newIndex);
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('lightbox--open');
+      document.body.style.overflow = '';
+    }
+
+    items.forEach((item, index) => {
+      item.addEventListener('click', () => showImage(index));
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('lightbox--open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+  </script>
 
 </body>
 </html>
