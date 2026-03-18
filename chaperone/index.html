@@ -21,22 +21,7 @@
     .app-page {
       max-width: 900px;
       margin: 0 auto;
-      padding: calc(var(--nav-height) + var(--spacing-xl)) var(--spacing-md) var(--spacing-2xl);
-    }
-
-    .app-page__back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: var(--font-size-sm);
-      font-weight: 500;
-      color: var(--color-accent);
-      text-decoration: none;
-      margin-bottom: var(--spacing-lg);
-    }
-
-    .app-page__back:hover {
-      color: var(--color-text);
+      padding: calc(var(--nav-height) + var(--spacing-xl)) var(--spacing-md) var(--spacing-lg);
     }
 
     .app-page__hero {
@@ -81,27 +66,33 @@
       width: auto;
     }
 
-    .app-page__screenshots {
-      display: flex;
-      gap: var(--spacing-md);
-      flex-wrap: wrap;
-      justify-content: center;
+    .app-page__screenshots-wrapper {
+      max-width: none;
+      padding: 0 var(--spacing-sm);
       margin-bottom: var(--spacing-xl);
     }
 
+    .app-page__screenshots {
+      display: flex;
+      gap: var(--spacing-sm);
+      justify-content: center;
+    }
+
     .app-page__screenshot-item {
-      flex: 0 0 auto;
-      width: 180px;
+      flex: 1 1 0;
+      min-width: 0;
       cursor: pointer;
       transition: transform var(--transition), box-shadow var(--transition);
     }
 
     .app-page__screenshot-item:hover {
       transform: scale(1.03);
+      z-index: 1;
     }
 
     .app-page__screenshot-item img {
       width: 100%;
+      height: auto;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
     }
@@ -175,6 +166,7 @@
       }
 
       .app-page__screenshot-item {
+        flex: 0 0 auto;
         width: 160px;
         scroll-snap-align: start;
       }
@@ -191,8 +183,6 @@
   </nav>
 
   <main class="app-page">
-    <a href="/" class="app-page__back">&larr; Back to Home</a>
-
     <div class="app-page__hero">
       <img src="../assets/images/1024.png" alt="Chaperone app icon" class="app-page__icon">
       <div class="app-page__info">
@@ -205,6 +195,9 @@
     </div>
 
     <h2 class="app-page__section-title">Screenshots</h2>
+  </main>
+
+  <div class="app-page__screenshots-wrapper">
     <div class="app-page__screenshots">
       <div class="app-page__screenshot-item" data-lightbox-app>
         <img src="../assets/images/IMG_3874.PNG" alt="Chaperone login screen">
@@ -222,6 +215,10 @@
         <img src="../assets/images/IMG_3882.PNG" alt="Smart restaurant recommendations">
       </div>
     </div>
+  </div>
+
+  <div class="app-page" style="padding-top: var(--spacing-lg);">
+
 
     <h2 class="app-page__section-title">About</h2>
     <p class="app-page__description">An iOS app that makes planning get-togethers effortless. Send event invites, get personalized venue recommendations based on your group's preferences, vote on places, chat in-app, get directions, and sync straight to your calendar.</p>
@@ -230,7 +227,16 @@
       <a href="https://apps.apple.com/us/app/chaperone-dining-planner/id6759976419" class="app-page__link" target="_blank" rel="noopener noreferrer">App Store &rarr;</a>
       <a href="/privacy/" class="app-page__link">Privacy Policy &rarr;</a>
     </div>
-  </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <p>&copy; 2026 project(u) — Alex Ugarte</p>
+      </div>
+    </div>
+  </footer>
 
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
