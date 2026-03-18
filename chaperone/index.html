@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMG6N3FB27"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HMG6N3FB27');
+  </script>
+  <title>Chaperone — project(u)</title>
+  <meta name="description" content="Chaperone — An iOS app that makes planning get-togethers effortless. Download on the App Store.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .app-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: calc(var(--nav-height) + var(--spacing-xl)) var(--spacing-md) var(--spacing-2xl);
+    }
+
+    .app-page__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .app-page__back:hover {
+      color: var(--color-text);
+    }
+
+    .app-page__hero {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .app-page__icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 22%;
+      box-shadow: var(--shadow-md);
+      flex-shrink: 0;
+    }
+
+    .app-page__info {
+      flex: 1;
+    }
+
+    .app-page__title {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .app-page__tagline {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .app-page__store-link {
+      display: inline-block;
+    }
+
+    .app-page__store-link img {
+      height: 44px;
+      width: auto;
+    }
+
+    .app-page__screenshots {
+      display: flex;
+      gap: var(--spacing-md);
+      overflow-x: auto;
+      padding-bottom: var(--spacing-sm);
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .app-page__screenshots::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .app-page__screenshots::-webkit-scrollbar-track {
+      background: var(--color-border);
+      border-radius: 3px;
+    }
+
+    .app-page__screenshots::-webkit-scrollbar-thumb {
+      background: var(--color-text-muted);
+      border-radius: 3px;
+    }
+
+    .app-page__screenshot {
+      flex: 0 0 auto;
+      width: 220px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      scroll-snap-align: start;
+    }
+
+    .app-page__section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .app-page__description {
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .app-page__links {
+      display: flex;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+
+    .app-page__link {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    .app-page__link:hover {
+      color: var(--color-text);
+    }
+
+    @media (max-width: 600px) {
+      .app-page__hero {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+      }
+
+      .app-page__icon {
+        width: 100px;
+        height: 100px;
+      }
+
+      .app-page__title {
+        font-size: var(--font-size-2xl);
+      }
+
+      .app-page__screenshot {
+        width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">project<span class="nav__logo-paren">(</span>u<span class="nav__logo-paren">)</span></a>
+    </div>
+  </nav>
+
+  <main class="app-page">
+    <a href="/" class="app-page__back">&larr; Back to Home</a>
+
+    <div class="app-page__hero">
+      <img src="../assets/images/1024.png" alt="Chaperone app icon" class="app-page__icon">
+      <div class="app-page__info">
+        <h1 class="app-page__title">Chaperone</h1>
+        <p class="app-page__tagline">Helping you plan events, based on your group's shared interests.</p>
+        <a href="https://apps.apple.com/us/app/chaperone-dining-planner/id6759976419" class="app-page__store-link" target="_blank" rel="noopener noreferrer">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+        </a>
+      </div>
+    </div>
+
+    <h2 class="app-page__section-title">Screenshots</h2>
+    <div class="app-page__screenshots">
+      <img src="../assets/images/IMG_3874.PNG" alt="Chaperone login screen" class="app-page__screenshot">
+      <img src="../assets/images/IMG_3876.PNG" alt="Events list" class="app-page__screenshot">
+      <img src="../assets/images/IMG_3877.PNG" alt="Event invite details" class="app-page__screenshot">
+      <img src="../assets/images/IMG_3880.PNG" alt="Restaurant shortlist and voting" class="app-page__screenshot">
+      <img src="../assets/images/IMG_3882.PNG" alt="Smart restaurant recommendations" class="app-page__screenshot">
+    </div>
+
+    <h2 class="app-page__section-title">About</h2>
+    <p class="app-page__description">An iOS app that makes planning get-togethers effortless. Send event invites, get personalized venue recommendations based on your group's preferences, vote on places, chat in-app, get directions, and sync straight to your calendar.</p>
+
+    <div class="app-page__links">
+      <a href="https://apps.apple.com/us/app/chaperone-dining-planner/id6759976419" class="app-page__link" target="_blank" rel="noopener noreferrer">App Store &rarr;</a>
+      <a href="/privacy/" class="app-page__link">Privacy Policy &rarr;</a>
+    </div>
+  </main>
+
+</body>
+</html>

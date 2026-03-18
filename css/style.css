@@ -456,6 +456,12 @@ ul {
   color: var(--color-text);
 }
 
+.app-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 /* ===== Artwork Grid ===== */
 .artwork {
   background: var(--color-surface);
