@@ -57,6 +57,13 @@
       margin-bottom: var(--spacing-md);
     }
 
+    .app-page__store-badges {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+    }
+
     .app-page__store-link {
       display: inline-block;
     }
@@ -64,6 +71,19 @@
     .app-page__store-link img {
       height: 44px;
       width: auto;
+    }
+
+    .app-page__store-coming-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-text-muted);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      line-height: 1;
     }
 
     .app-page__screenshots-wrapper {
@@ -188,9 +208,15 @@
       <div class="app-page__info">
         <h1 class="app-page__title">Chaperone</h1>
         <p class="app-page__tagline">Helping you plan events, based on your group's shared interests.</p>
-        <a href="https://apps.apple.com/us/app/chaperone-dining-planner/id6759976419" class="app-page__store-link" target="_blank" rel="noopener noreferrer">
-          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
-        </a>
+        <div class="app-page__store-badges">
+          <a href="https://apps.apple.com/us/app/chaperone-dining-planner/id6759976419" class="app-page__store-link" target="_blank" rel="noopener noreferrer">
+            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+          </a>
+          <span class="app-page__store-coming-soon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5h11c.83 0 1.5.67 1.5 1.5v1.5h-1V3.5c0-.28-.22-.5-.5-.5h-11c-.28 0-.5.22-.5.5v17c0 .28.22.5.5.5h11c.28 0 .5-.22.5-.5V20h1v.5c0 .83-.67 1.5-1.5 1.5h-11c-.83 0-1.5-.67-1.5-1.5zM21 6l-3.86 4.5L21 15l-1 .85L16 11l-2.5 2.85L12.5 13l3-3.5-3-3.5 1-.85L16 8.5l4-3.35L21 6z"/></svg>
+            Coming Soon on Google Play
+          </span>
+        </div>
       </div>
     </div>
 
