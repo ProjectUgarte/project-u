@@ -1,15 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <style>
-    .bg { fill: #1a1a2e; }
-    .letter { fill: #fafafa; }
+    .letter { fill: #1a1a2e; }
     .paren { fill: #4a90a4; }
-    @media (prefers-color-scheme: light) {
-      .bg { fill: #fafafa; }
-      .letter { fill: #1a1a2e; }
+    @media (prefers-color-scheme: dark) {
+      .letter { fill: #fafafa; }
     }
   </style>
-  <rect width="32" height="32" rx="6" class="bg"/>
-  <text x="16" y="26" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="28">
+  <text x="16" y="24.5" text-anchor="middle" dominant-baseline="central" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="32" letter-spacing="-1">
     <tspan class="paren">(</tspan><tspan class="letter">u</tspan><tspan class="paren">)</tspan>
   </text>
 </svg>
