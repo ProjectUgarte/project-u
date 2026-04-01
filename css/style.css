@@ -381,6 +381,10 @@ ul {
   background: #ffffff;
 }
 
+.app-card__image--wallball {
+  background: #1a2234;
+}
+
 .app-card__image--logo img {
   width: auto;
   height: 75%;
