@@ -382,7 +382,12 @@ ul {
 }
 
 .app-card__image--wallball {
-  background: #2b5c8a;
+  background: #1e508c;
+}
+
+.app-card__image--wallball img {
+  height: 100%;
+  border-radius: 0;
 }
 
 .app-card__image--logo img {
