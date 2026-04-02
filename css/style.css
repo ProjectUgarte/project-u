@@ -390,6 +390,7 @@ ul {
   height: 75%;
   object-fit: contain;
   border-radius: 22%;
+  image-rendering: pixelated;
 }
 
 .app-card__image--logo img {
