@@ -558,21 +558,37 @@ ul {
 
 .music__actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
 }
 
+.music__apple-link {
+  display: inline-block;
+  transition: opacity var(--transition);
+}
+
+.music__apple-link:hover {
+  opacity: 0.85;
+}
+
+.music__apple-link img {
+  display: block;
+  height: 44px;
+  width: auto;
+}
+
 .music__artist-link {
-  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-accent);
   text-decoration: none;
-  font-size: 0.95rem;
   transition: color var(--transition);
 }
 
 .music__artist-link:hover {
-  color: var(--color-accent);
+  color: var(--color-text);
 }
 
 /* ===== Lightbox ===== */
