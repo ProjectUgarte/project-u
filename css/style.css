@@ -558,7 +558,7 @@ ul {
 
 .music__actions {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
@@ -579,16 +579,31 @@ ul {
   width: auto;
 }
 
-.music__artist-link {
+.music__spotify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 22px;
+  background: #1ED760;
+  color: #ffffff;
   font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-accent);
+  font-weight: 700;
+  letter-spacing: 0.25px;
   text-decoration: none;
-  transition: color var(--transition);
+  border-radius: 500px;
+  transition: background var(--transition), transform 0.15s ease;
 }
 
-.music__artist-link:hover {
-  color: var(--color-text);
+.music__spotify-btn:hover {
+  background: #1FDF64;
+  transform: scale(1.02);
+}
+
+.music__spotify-btn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* ===== Lightbox ===== */
