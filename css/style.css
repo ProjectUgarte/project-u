@@ -540,6 +540,41 @@ ul {
 .masonry__row:nth-child(2) .masonry__item:nth-child(4) { flex: 0.7781 0 0; }
 
 
+/* ===== Music ===== */
+.music__wrap {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.music__player {
+  margin-bottom: var(--spacing-lg);
+}
+
+.music__player iframe {
+  display: block;
+  width: 100%;
+  border: none;
+}
+
+.music__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.music__artist-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color var(--transition);
+}
+
+.music__artist-link:hover {
+  color: var(--color-accent);
+}
+
 /* ===== Lightbox ===== */
 .lightbox {
   position: fixed;
