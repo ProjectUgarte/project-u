@@ -564,19 +564,31 @@ ul {
   gap: var(--spacing-md);
 }
 
-.music__apple-link {
-  display: inline-block;
-  transition: opacity var(--transition);
-}
-
-.music__apple-link:hover {
-  opacity: 0.85;
-}
-
-.music__apple-link img {
-  display: block;
+.music__apple-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   height: 44px;
-  width: auto;
+  padding: 0 22px;
+  background: linear-gradient(135deg, #FA243C 0%, #FB5C74 100%);
+  color: #ffffff;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.25px;
+  text-decoration: none;
+  border-radius: 500px;
+  transition: opacity var(--transition), transform 0.15s ease;
+}
+
+.music__apple-btn:hover {
+  opacity: 0.92;
+  transform: scale(1.02);
+}
+
+.music__apple-btn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .music__spotify-btn {
