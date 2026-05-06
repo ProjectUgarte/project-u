@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMG6N3FB27"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HMG6N3FB27');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>WallBall — project(u)</title>
+  <meta name="description" content="WallBall — A retro-inspired puzzle game. Trap the balls by building walls. Coming soon to iOS, playable now in your browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .app-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: calc(var(--nav-height) + var(--spacing-xl)) var(--spacing-md) var(--spacing-lg);
+    }
+
+    .app-page__hero {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .app-page__icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 22%;
+      box-shadow: var(--shadow-md);
+      flex-shrink: 0;
+    }
+
+    .app-page__info {
+      flex: 1;
+    }
+
+    .app-page__title {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .app-page__tagline {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .app-page__store-badges {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+    }
+
+    .app-page__store-coming-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-text-muted);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      line-height: 1;
+    }
+
+    .app-page__try-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: #ffffff;
+      background: var(--color-accent);
+      border-radius: var(--radius-sm);
+      padding: 11px 18px;
+      line-height: 1;
+      text-decoration: none;
+      transition: background var(--transition), transform 0.15s ease;
+    }
+
+    .app-page__try-link:hover {
+      background: var(--color-text);
+      transform: scale(1.02);
+    }
+
+    .app-page__screenshots-wrapper {
+      max-width: none;
+      padding: 0 var(--spacing-sm);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .app-page__screenshots {
+      display: flex;
+      gap: var(--spacing-sm);
+      justify-content: center;
+    }
+
+    .app-page__screenshot-item {
+      flex: 1 1 0;
+      min-width: 0;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .app-page__screenshot-item:hover {
+      transform: scale(1.03);
+      z-index: 1;
+    }
+
+    .app-page__screenshot-item img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .app-page__section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .app-page__description {
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .app-page__links {
+      display: flex;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+
+    .app-page__link {
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    .app-page__link:hover {
+      color: var(--color-text);
+    }
+
+    @media (max-width: 600px) {
+      .app-page__hero {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+      }
+
+      .app-page__icon {
+        width: 100px;
+        height: 100px;
+      }
+
+      .app-page__title {
+        font-size: var(--font-size-2xl);
+      }
+
+      .app-page__store-badges {
+        justify-content: center;
+      }
+
+      .app-page__screenshots {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: var(--spacing-sm);
+      }
+
+      .app-page__screenshots::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .app-page__screenshots::-webkit-scrollbar-track {
+        background: var(--color-border);
+        border-radius: 2px;
+      }
+
+      .app-page__screenshots::-webkit-scrollbar-thumb {
+        background: var(--color-text-muted);
+        border-radius: 2px;
+      }
+
+      .app-page__screenshot-item {
+        flex: 0 0 auto;
+        width: 160px;
+        scroll-snap-align: start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">project<span class="nav__logo-paren">(</span>u<span class="nav__logo-paren">)</span></a>
+    </div>
+  </nav>
+
+  <main class="app-page">
+    <div class="app-page__hero">
+      <img src="../assets/images/wallball-icon-1024.png" alt="WallBall app icon" class="app-page__icon">
+      <div class="app-page__info">
+        <h1 class="app-page__title">WallBall</h1>
+        <p class="app-page__tagline">Trap the balls by building walls.</p>
+        <div class="app-page__store-badges">
+          <span class="app-page__store-coming-soon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.04c-.03-3.05 2.49-4.51 2.6-4.58-1.42-2.07-3.62-2.36-4.4-2.39-1.87-.19-3.66 1.11-4.61 1.11-.96 0-2.42-1.08-3.99-1.05-2.05.03-3.95 1.21-5.01 3.05-2.14 3.71-.55 9.18 1.53 12.18 1.02 1.47 2.23 3.13 3.79 3.07 1.53-.06 2.1-.99 3.95-.99 1.84 0 2.36.99 3.97.96 1.64-.03 2.68-1.5 3.68-2.99 1.16-1.71 1.64-3.37 1.66-3.46-.04-.02-3.18-1.22-3.21-4.81m-2.85-8.85c.85-1.03 1.42-2.46 1.27-3.89-1.22.05-2.7.81-3.58 1.84-.79.91-1.48 2.37-1.29 3.77 1.36.1 2.75-.69 3.6-1.72"/></svg>
+            Coming Soon on the App Store
+          </span>
+          <a href="https://projectugarte.github.io/wallball/" target="_blank" rel="noopener noreferrer" class="app-page__try-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Try in Browser
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="app-page__section-title">Screenshots</h2>
+  </main>
+
+  <div class="app-page__screenshots-wrapper">
+    <div class="app-page__screenshots">
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_4254.PNG" alt="WallBall title screen with start button">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_4256.PNG" alt="Mid-gameplay on Level 2 with walls built around bouncing balls">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_4257.PNG" alt="Level 3 with an active wall extending across the field">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_4255.PNG" alt="Level Clear screen with bonus and score">
+      </div>
+      <div class="app-page__screenshot-item" data-lightbox-app>
+        <img src="../assets/images/IMG_4259.PNG" alt="Game Over screen with high-score leaderboard">
+      </div>
+    </div>
+  </div>
+
+  <div class="app-page" style="padding-top: var(--spacing-lg);">
+
+    <h2 class="app-page__section-title">About</h2>
+    <p class="app-page__description">A retro-inspired puzzle game based on the 1992 classic JezzBall. Build walls to trap bouncing balls and fill 75% of the field to advance — but don't let them hit your walls as they generate. Quick reflexes and smart positioning are key. Originally a browser game, now ported as a native iOS app with a local leaderboard, multiple lives, and a clock-based bonus on every level.</p>
+
+    <div class="app-page__links">
+      <a href="https://projectugarte.github.io/wallball/" class="app-page__link" target="_blank" rel="noopener noreferrer">Play in Browser &rarr;</a>
+      <a href="/wallball/privacy/" class="app-page__link">Privacy Policy &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <p>&copy; 2026 project(u) — Alex Ugarte</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
+    <div class="lightbox__content" id="lightboxContent"></div>
+    <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Next">&#8250;</button>
+  </div>
+
+  <script>
+    // Lightbox for screenshots
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+
+    const items = document.querySelectorAll('[data-lightbox-app]');
+    let currentIndex = 0;
+
+    function showImage(index) {
+      currentIndex = index;
+      const img = items[index].querySelector('img');
+      if (img) {
+        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
+        lightbox.classList.add('lightbox--open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function navigate(direction) {
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = items.length - 1;
+      if (newIndex >= items.length) newIndex = 0;
+      showImage(newIndex);
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('lightbox--open');
+      document.body.style.overflow = '';
+    }
+
+    items.forEach((item, index) => {
+      item.addEventListener('click', () => showImage(index));
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('lightbox--open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+  </script>
+
+</body>
+</html>
