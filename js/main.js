@@ -94,8 +94,12 @@ fadeEls.forEach(el => observerFade.observe(el));
     const rect = hero.getBoundingClientRect();
     width = rect.width;
     height = rect.height;
-    canvas.width = width;
-    canvas.height = height;
+    // Render at device resolution so brush edges stay crisp on Retina;
+    // all drawing code keeps working in CSS pixels via the transform
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     fillWhite();
   }
 
@@ -241,6 +245,39 @@ fadeEls.forEach(el => observerFade.observe(el));
     }, FADE_DELAY);
   });
 
+  // Touch events — finger-painting on mobile. Listeners stay passive so
+  // painting never hijacks page scrolling; you paint while you swipe.
+  canvas.addEventListener('touchstart', (e) => {
+    stopFadeBack();
+    lastX = null;
+    lastY = null;
+    velocity = 0;
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    reveal(t.clientX - rect.left, t.clientY - rect.top);
+  }, { passive: true });
+
+  canvas.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    stopFadeBack();
+    clearTimeout(fadeTimer);
+    reveal(t.clientX - rect.left, t.clientY - rect.top);
+    fadeTimer = setTimeout(() => {
+      startFadeBack();
+    }, FADE_DELAY);
+  }, { passive: true });
+
+  canvas.addEventListener('touchend', () => {
+    lastX = null;
+    lastY = null;
+    velocity = 0;
+    clearTimeout(fadeTimer);
+    fadeTimer = setTimeout(() => {
+      startFadeBack();
+    }, FADE_DELAY);
+  }, { passive: true });
+
   // Click to scroll to artwork (instant when reduced motion is preferred)
   canvas.addEventListener('click', () => {
     const artwork = document.getElementById('artwork');
@@ -255,81 +292,4 @@ fadeEls.forEach(el => observerFade.observe(el));
   window.addEventListener('resize', resize);
 })();
 
-// ===== Lightbox =====
-const lightbox = document.getElementById('lightbox');
-const lightboxContent = document.getElementById('lightboxContent');
-const lightboxClose = document.getElementById('lightboxClose');
-const lightboxPrev = document.getElementById('lightboxPrev');
-const lightboxNext = document.getElementById('lightboxNext');
-
-const lightboxItems = document.querySelectorAll('[data-lightbox]');
-let currentLightboxIndex = 0;
-let lightboxOpener = null; // element to restore focus to on close
-
-function showLightboxImage(index) {
-  currentLightboxIndex = index;
-  const item = lightboxItems[index];
-  const img = item.querySelector('img');
-  if (img) {
-    lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
-    lightbox.classList.add('lightbox--open');
-    document.body.style.overflow = 'hidden';
-    lightboxClose.focus();
-  }
-}
-
-function navigateLightbox(direction) {
-  let newIndex = currentLightboxIndex + direction;
-  if (newIndex < 0) newIndex = lightboxItems.length - 1;
-  if (newIndex >= lightboxItems.length) newIndex = 0;
-  showLightboxImage(newIndex);
-}
-
-lightboxItems.forEach((item, index) => {
-  // Keyboard semantics are added here (not in HTML) so role="button" only
-  // exists when the lightbox actually works (i.e. JS is running)
-  const alt = item.querySelector('img')?.alt || 'image';
-  item.setAttribute('tabindex', '0');
-  item.setAttribute('role', 'button');
-  item.setAttribute('aria-label', `View ${alt} fullscreen`);
-
-  item.addEventListener('click', () => {
-    lightboxOpener = item;
-    showLightboxImage(index);
-  });
-  item.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      lightboxOpener = item;
-      showLightboxImage(index);
-    }
-  });
-});
-
-function closeLightbox() {
-  lightbox.classList.remove('lightbox--open');
-  document.body.style.overflow = '';
-  if (lightboxOpener) {
-    lightboxOpener.focus();
-    lightboxOpener = null;
-  }
-}
-
-lightboxClose.addEventListener('click', closeLightbox);
-lightboxPrev.addEventListener('click', (e) => {
-  e.stopPropagation();
-  navigateLightbox(-1);
-});
-lightboxNext.addEventListener('click', (e) => {
-  e.stopPropagation();
-  navigateLightbox(1);
-});
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) closeLightbox();
-});
-document.addEventListener('keydown', (e) => {
-  if (!lightbox.classList.contains('lightbox--open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') navigateLightbox(-1);
-  if (e.key === 'ArrowRight') navigateLightbox(1);
-});
+// Lightbox lives in js/lightbox.js (shared with the app pages)

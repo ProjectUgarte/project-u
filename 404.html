@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMG6N3FB27"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HMG6N3FB27');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#fafafa">
+  <title>Page Not Found — project(u)</title>
+  <meta name="description" content="That page doesn't exist. Head back to projectugarte.com.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .not-found {
+      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--spacing-xl) var(--spacing-md);
+    }
+    .not-found__code {
+      font-size: clamp(5rem, 18vw, 9rem);
+      font-weight: 700;
+      letter-spacing: -4px;
+      line-height: 1;
+      color: var(--color-text);
+    }
+    .not-found__code .accent {
+      color: var(--color-accent);
+    }
+    .not-found__message {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-muted);
+      margin: var(--spacing-sm) 0 var(--spacing-lg);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">project<span class="nav__logo-paren">(</span>u<span class="nav__logo-paren">)</span></a>
+    </div>
+  </nav>
+
+  <main class="not-found">
+    <p class="not-found__code">4<span class="accent">(</span>0<span class="accent">)</span>4</p>
+    <p class="not-found__message">This page wandered off — maybe a ball trapped it behind a wall.</p>
+    <a href="/" class="btn btn--primary">Back to Home</a>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <p>&copy; 2026 project(u) — Alex Ugarte</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

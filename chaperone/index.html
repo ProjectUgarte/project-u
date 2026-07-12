@@ -12,11 +12,15 @@
     gtag('config', 'G-HMG6N3FB27');
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#fafafa">
   <title>Chaperone — project(u)</title>
   <meta name="description" content="Chaperone — An iOS app that makes planning get-togethers effortless. Download on the App Store.">
 
   <!-- Social preview (Open Graph + Twitter) -->
   <meta property="og:type" content="website">
+  <link rel="canonical" href="https://projectugarte.com/chaperone/">
   <meta property="og:url" content="https://projectugarte.com/chaperone/">
   <meta property="og:title" content="Chaperone — Dining Planner for Groups">
   <meta property="og:description" content="An iOS app that makes planning get-togethers effortless. Invites, venue voting, group chat, and smart recommendations. Download on the App Store.">
@@ -288,77 +292,7 @@
     <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Next">&#8250;</button>
   </div>
 
-  <script>
-    // Lightbox for screenshots
-    const lightbox = document.getElementById('lightbox');
-    const lightboxContent = document.getElementById('lightboxContent');
-    const lightboxClose = document.getElementById('lightboxClose');
-    const lightboxPrev = document.getElementById('lightboxPrev');
-    const lightboxNext = document.getElementById('lightboxNext');
-
-    const items = document.querySelectorAll('[data-lightbox-app]');
-    let currentIndex = 0;
-    let lightboxOpener = null; // element to restore focus to on close
-
-    function showImage(index) {
-      currentIndex = index;
-      const img = items[index].querySelector('img');
-      if (img) {
-        lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
-        lightbox.classList.add('lightbox--open');
-        document.body.style.overflow = 'hidden';
-        lightboxClose.focus();
-      }
-    }
-
-    function navigate(direction) {
-      let newIndex = currentIndex + direction;
-      if (newIndex < 0) newIndex = items.length - 1;
-      if (newIndex >= items.length) newIndex = 0;
-      showImage(newIndex);
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove('lightbox--open');
-      document.body.style.overflow = '';
-      if (lightboxOpener) {
-        lightboxOpener.focus();
-        lightboxOpener = null;
-      }
-    }
-
-    items.forEach((item, index) => {
-      // Keyboard semantics added via JS so role="button" only exists when
-      // the lightbox actually works
-      const alt = item.querySelector('img')?.alt || 'screenshot';
-      item.setAttribute('tabindex', '0');
-      item.setAttribute('role', 'button');
-      item.setAttribute('aria-label', `View ${alt} fullscreen`);
-
-      item.addEventListener('click', () => {
-        lightboxOpener = item;
-        showImage(index);
-      });
-      item.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          lightboxOpener = item;
-          showImage(index);
-        }
-      });
-    });
-
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
-    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
-    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('lightbox--open')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') navigate(-1);
-      if (e.key === 'ArrowRight') navigate(1);
-    });
-  </script>
+  <script src="/js/lightbox.js"></script>
 
 </body>
 </html>
