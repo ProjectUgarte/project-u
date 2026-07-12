@@ -14,6 +14,17 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>WallBall — project(u)</title>
   <meta name="description" content="WallBall — A retro-inspired puzzle game. Trap the balls by building walls. Download on the App Store or play in your browser.">
+
+  <!-- Social preview (Open Graph + Twitter) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projectugarte.com/wallball/">
+  <meta property="og:title" content="WallBall — Retro Puzzle Game">
+  <meta property="og:description" content="Trap the balls by building walls. A retro-inspired puzzle game based on the 1992 classic JezzBall. On the App Store, or play free in your browser.">
+  <meta property="og:image" content="https://projectugarte.com/assets/images/wallball-icon-1024.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="WallBall — Retro Puzzle Game">
+  <meta name="twitter:description" content="Trap the balls by building walls. On the App Store, or play free in your browser.">
+  <meta name="twitter:image" content="https://projectugarte.com/assets/images/wallball-icon-1024.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -294,7 +305,7 @@
   </footer>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
     <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
     <div class="lightbox__content" id="lightboxContent"></div>
@@ -311,6 +322,7 @@
 
     const items = document.querySelectorAll('[data-lightbox-app]');
     let currentIndex = 0;
+    let lightboxOpener = null; // element to restore focus to on close
 
     function showImage(index) {
       currentIndex = index;
@@ -319,6 +331,7 @@
         lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
         lightbox.classList.add('lightbox--open');
         document.body.style.overflow = 'hidden';
+        lightboxClose.focus();
       }
     }
 
@@ -332,10 +345,31 @@
     function closeLightbox() {
       lightbox.classList.remove('lightbox--open');
       document.body.style.overflow = '';
+      if (lightboxOpener) {
+        lightboxOpener.focus();
+        lightboxOpener = null;
+      }
     }
 
     items.forEach((item, index) => {
-      item.addEventListener('click', () => showImage(index));
+      // Keyboard semantics added via JS so role="button" only exists when
+      // the lightbox actually works
+      const alt = item.querySelector('img')?.alt || 'screenshot';
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-label', `View ${alt} fullscreen`);
+
+      item.addEventListener('click', () => {
+        lightboxOpener = item;
+        showImage(index);
+      });
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          lightboxOpener = item;
+          showImage(index);
+        }
+      });
     });
 
     lightboxClose.addEventListener('click', closeLightbox);

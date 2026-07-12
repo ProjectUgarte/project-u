@@ -10,7 +10,8 @@ window.addEventListener('scroll', () => {
 // ===== Mobile Menu Toggle =====
 navToggle.addEventListener('click', () => {
   navToggle.classList.toggle('nav__toggle--active');
-  navLinks.classList.toggle('nav__links--open');
+  const open = navLinks.classList.toggle('nav__links--open');
+  navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
 });
 
 // Close mobile menu on link click
@@ -18,6 +19,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   link.addEventListener('click', () => {
     navToggle.classList.remove('nav__toggle--active');
     navLinks.classList.remove('nav__links--open');
+    navToggle.setAttribute('aria-expanded', 'false');
   });
 });
 
@@ -239,11 +241,12 @@ fadeEls.forEach(el => observerFade.observe(el));
     }, FADE_DELAY);
   });
 
-  // Click to scroll to artwork
+  // Click to scroll to artwork (instant when reduced motion is preferred)
   canvas.addEventListener('click', () => {
     const artwork = document.getElementById('artwork');
     if (artwork) {
-      artwork.scrollIntoView({ behavior: 'smooth' });
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      artwork.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
     }
   });
 
@@ -261,6 +264,7 @@ const lightboxNext = document.getElementById('lightboxNext');
 
 const lightboxItems = document.querySelectorAll('[data-lightbox]');
 let currentLightboxIndex = 0;
+let lightboxOpener = null; // element to restore focus to on close
 
 function showLightboxImage(index) {
   currentLightboxIndex = index;
@@ -270,6 +274,7 @@ function showLightboxImage(index) {
     lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
     lightbox.classList.add('lightbox--open');
     document.body.style.overflow = 'hidden';
+    lightboxClose.focus();
   }
 }
 
@@ -281,14 +286,33 @@ function navigateLightbox(direction) {
 }
 
 lightboxItems.forEach((item, index) => {
+  // Keyboard semantics are added here (not in HTML) so role="button" only
+  // exists when the lightbox actually works (i.e. JS is running)
+  const alt = item.querySelector('img')?.alt || 'image';
+  item.setAttribute('tabindex', '0');
+  item.setAttribute('role', 'button');
+  item.setAttribute('aria-label', `View ${alt} fullscreen`);
+
   item.addEventListener('click', () => {
+    lightboxOpener = item;
     showLightboxImage(index);
+  });
+  item.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      lightboxOpener = item;
+      showLightboxImage(index);
+    }
   });
 });
 
 function closeLightbox() {
   lightbox.classList.remove('lightbox--open');
   document.body.style.overflow = '';
+  if (lightboxOpener) {
+    lightboxOpener.focus();
+    lightboxOpener = null;
+  }
 }
 
 lightboxClose.addEventListener('click', closeLightbox);

@@ -14,6 +14,17 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Chaperone — project(u)</title>
   <meta name="description" content="Chaperone — An iOS app that makes planning get-togethers effortless. Download on the App Store.">
+
+  <!-- Social preview (Open Graph + Twitter) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projectugarte.com/chaperone/">
+  <meta property="og:title" content="Chaperone — Dining Planner for Groups">
+  <meta property="og:description" content="An iOS app that makes planning get-togethers effortless. Invites, venue voting, group chat, and smart recommendations. Download on the App Store.">
+  <meta property="og:image" content="https://projectugarte.com/assets/images/1024.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Chaperone — Dining Planner for Groups">
+  <meta name="twitter:description" content="An iOS app that makes planning get-togethers effortless. Download on the App Store.">
+  <meta name="twitter:image" content="https://projectugarte.com/assets/images/1024.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -270,7 +281,7 @@
   </footer>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
     <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
     <div class="lightbox__content" id="lightboxContent"></div>
@@ -287,6 +298,7 @@
 
     const items = document.querySelectorAll('[data-lightbox-app]');
     let currentIndex = 0;
+    let lightboxOpener = null; // element to restore focus to on close
 
     function showImage(index) {
       currentIndex = index;
@@ -295,6 +307,7 @@
         lightboxContent.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
         lightbox.classList.add('lightbox--open');
         document.body.style.overflow = 'hidden';
+        lightboxClose.focus();
       }
     }
 
@@ -308,10 +321,31 @@
     function closeLightbox() {
       lightbox.classList.remove('lightbox--open');
       document.body.style.overflow = '';
+      if (lightboxOpener) {
+        lightboxOpener.focus();
+        lightboxOpener = null;
+      }
     }
 
     items.forEach((item, index) => {
-      item.addEventListener('click', () => showImage(index));
+      // Keyboard semantics added via JS so role="button" only exists when
+      // the lightbox actually works
+      const alt = item.querySelector('img')?.alt || 'screenshot';
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-label', `View ${alt} fullscreen`);
+
+      item.addEventListener('click', () => {
+        lightboxOpener = item;
+        showImage(index);
+      });
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          lightboxOpener = item;
+          showImage(index);
+        }
+      });
     });
 
     lightboxClose.addEventListener('click', closeLightbox);

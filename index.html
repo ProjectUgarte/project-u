@@ -14,6 +14,19 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>project(u) — Alex Ugarte</title>
   <meta name="description" content="project(u) — Apps, artwork, and creative work by Alex Ugarte.">
+
+  <!-- Social preview (Open Graph + Twitter) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projectugarte.com/">
+  <meta property="og:title" content="project(u) — Alex Ugarte">
+  <meta property="og:description" content="Building apps, creating art, making music — one pixel at a time.">
+  <meta property="og:image" content="https://projectugarte.com/assets/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="project(u) — Alex Ugarte">
+  <meta name="twitter:description" content="Building apps, creating art, making music — one pixel at a time.">
+  <meta name="twitter:image" content="https://projectugarte.com/assets/images/og-card.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,7 +38,7 @@
   <nav class="nav" id="nav">
     <div class="nav__inner">
       <a href="#hero" class="nav__logo">project<span class="nav__logo-paren">(</span>u<span class="nav__logo-paren">)</span></a>
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
         <span></span>
         <span></span>
         <span></span>
@@ -59,8 +72,8 @@
         </div>
       </div>
     </div>
-    <!-- Canvas overlay for reveal effect -->
-    <canvas class="hero__reveal-canvas" id="heroRevealCanvas"></canvas>
+    <!-- Canvas overlay for reveal effect (decorative; equivalent navigation exists in the nav) -->
+    <canvas class="hero__reveal-canvas" id="heroRevealCanvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="hero__content fade-in">
         <p class="hero__label">Creative Developer</p>
@@ -234,7 +247,7 @@
   </footer>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
     <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
     <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
     <div class="lightbox__content" id="lightboxContent"></div>

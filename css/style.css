@@ -758,6 +758,45 @@ ul {
   transform: translateY(0);
 }
 
+/* ===== Accessibility ===== */
+
+/* Visible keyboard focus — :focus-visible keeps mouse clicks ring-free */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.lightbox__close:focus-visible,
+.lightbox__arrow:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  opacity: 1;
+}
+
+/* Respect reduced-motion preferences: no fades, slides, or smooth scroll */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   :root {
