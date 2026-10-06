@@ -94,10 +94,6 @@ body.sb-page .sb-btn:focus-visible {
   border-radius: 10px;
 }
 
-body.sb-page .sb-dl:focus-visible {
-  border-radius: var(--radius-md);
-}
-
 body.sb-page .sb-tile:focus-visible {
   border-radius: var(--radius-sm);
 }
@@ -742,7 +738,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
   text-wrap: balance;
 }
 
-/* SteamOS line + the two downloads, one raised panel under the tiles */
+/* SteamOS line: one raised panel under the tiles */
 .sb-steamos {
   margin-top: var(--spacing-sm);
   padding: var(--spacing-md);
@@ -784,66 +780,9 @@ body.sb-page .sb-hero__toggle:focus-visible {
   height: 22px;
 }
 
-.sb-downloads {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: var(--spacing-md);
-}
-
-/* Each one is a plain button: the whole tile is the direct download.
-   Icon and label start at the left in both, so a label that wraps (it then
-   fills the row) lines up with one that doesn't. */
-.sb-dl {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 14px;
-  min-height: 76px;
-  padding: 14px 18px;
-  border-radius: var(--radius-md);
-  background:
-    linear-gradient(180deg, rgba(255, 168, 31, 0.08), rgba(255, 168, 31, 0.02)),
-    var(--sb-ink-deep);
-  border: 1px solid var(--sb-amber-edge);
-  color: var(--sb-on-ink);
-  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-}
-
-.sb-dl:hover {
-  border-color: var(--sb-amber);
-  box-shadow: var(--sb-amber-glow);
-  transform: translateY(-2px);
-}
-
-.sb-dl__icon {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--sb-amber);
-  color: #16120a;
-  box-shadow: 0 8px 22px -8px rgba(255, 168, 31, 0.6);
-}
-
-.sb-dl__icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.sb-dl__for {
-  min-width: 0;
-  font-weight: 600;
-  line-height: 1.35;
-  text-wrap: balance;
-}
-
-/* one small muted link under the two buttons */
+/* one small muted link under the Pick your device cards */
 .sb-dl-all {
-  margin-top: 14px;
+  margin-top: var(--spacing-md);
   text-align: center;
   font-size: var(--font-size-sm);
 }
@@ -1465,10 +1404,6 @@ body.sb-page .sb-platform__card:focus-visible {
     font-size: var(--font-size-sm);
   }
 
-  .sb-downloads {
-    grid-template-columns: 1fr;
-  }
-
   .sb-steps {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
@@ -1663,10 +1598,6 @@ body.sb-page .sb-platform__card:focus-visible {
     padding: var(--spacing-sm);
   }
 
-  .sb-dl {
-    padding: 14px;
-  }
-
   .sb-perks {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -1802,7 +1733,6 @@ body.sb-page .sb-platform__card:focus-visible {
    also keep the hover lifts still. The hero video never plays here (the
    script leaves the still), and nothing fades if it ever shows. */
 @media (prefers-reduced-motion: reduce) {
-  .sb-dl:hover,
   .sb-platform__card:hover,
   .sb-platform__card:focus-visible,
   .sb-platform__card:hover .sb-chip svg,
