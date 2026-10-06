@@ -1324,32 +1324,28 @@ body.sb-page .sb-platform__card:focus-visible {
   display: none;
 }
 
-/* the second declaration gives the glyph empty alt text (screen readers
-   skip it); browsers without that syntax keep the first */
+/* The +/- is drawn with two centred bars, not a text glyph: a font's "+"
+   and "\2212" sit on its own baseline and side bearings, so they never land
+   exactly in the middle of the circle. Even sizes keep both bars on whole
+   pixels. */
 .sb-details > summary::after {
-  content: '+';
-  content: '+' / '';
+  content: '';
   flex-shrink: 0;
   width: 28px;
   height: 28px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
-  background: var(--sb-ink-deep);
   border: 1px solid var(--sb-ink-line);
-  color: var(--sb-on-ink-muted);
-  font-weight: 500;
-  font-size: 1.1rem;
-  line-height: 1;
+  background:
+    linear-gradient(var(--sb-on-ink-muted), var(--sb-on-ink-muted)) center / 12px 2px no-repeat,
+    linear-gradient(var(--sb-on-ink-muted), var(--sb-on-ink-muted)) center / 2px 12px no-repeat,
+    var(--sb-ink-deep);
 }
 
 .sb-details[open] > summary::after {
-  content: '\2212';
-  content: '\2212' / '';
-  background: var(--sb-amber-wash);
   border-color: var(--sb-amber-edge);
-  color: var(--sb-amber);
+  background:
+    linear-gradient(var(--sb-amber), var(--sb-amber)) center / 12px 2px no-repeat,
+    var(--sb-amber-wash);
 }
 
 .sb-details__body {
