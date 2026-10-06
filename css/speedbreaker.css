@@ -1,0 +1,2075 @@
+/* ==========================================================================
+   SpeedBreaker page (speedbreaker/index.html), v3: dark throughout
+   Page-specific styles only. Shared nav, buttons, lightbox, focus rings,
+   reduced motion and the footer come from style.css; everything that has to
+   look different here is overridden through body.sb-page, never by editing
+   style.css.
+   The whole page lives in the hero's world: ink grounds, light text, the
+   app's own amber (#ffa81f, from its icon and settings menu) for accents,
+   and soft amber (now and then red) glows. Sections alternate --sb-ink and
+   --sb-ink-deep, split by faint hairlines.
+   No EA / Need for Speed logos are used anywhere here. The one piece of
+   EA artwork, the Carbon teaser's key art, is credited in the footer's short
+   notice and on the Legal & credits page (speedbreaker/legal/, which took
+   over the long Legal section on 2026-10-05).
+   Valve's Steam Deck / Machine / Frame icons (2026-10-05, the operator's
+   request) sit only beside those device names, in Valve's own colours, and
+   the footer's notice and the Legal & credits page name them as Valve's
+   marks. The Linux (Tux),
+   Apple, iOS, Windows and Android logos (also the operator's request) sit
+   only in the Platforms cards beside their names, single-colour; the Legal
+   & credits page credits Tux and the Android robot.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --sb-ink: #121317;
+  --sb-ink-deep: #0b0c0f;
+  --sb-ink-raised: #1c1d22;
+  --sb-ink-line: #2c2e35;
+  --sb-on-ink: #f4f4f5;
+  --sb-on-ink-muted: #b4b4bd;   /* 8.2:1 on raised, 9.0:1 on ink, 9.5:1 on deep */
+  --sb-amber: #ffa81f;          /* 8.7:1 on raised, 9.6:1 on ink */
+  --sb-amber-hover: #ffbb4d;
+  --sb-red: #e84028;
+
+  --sb-hairline: rgba(255, 255, 255, 0.08);
+  --sb-amber-wash: rgba(255, 168, 31, 0.12);
+  --sb-amber-edge: rgba(255, 168, 31, 0.38);
+  --sb-amber-glow: 0 0 0 1px rgba(255, 168, 31, 0.14), 0 18px 48px -22px rgba(255, 168, 31, 0.5);
+
+  /* chips: tinted dark variants (text contrast measured over --sb-ink-raised) */
+  --sb-ok-text: #6ee7b7;        /* 8.8:1 */
+  --sb-ok-tint: rgba(16, 185, 129, 0.14);
+  --sb-diy-text: #ffc163;       /* 8.0:1 */
+  --sb-diy-tint: rgba(255, 168, 31, 0.14);
+  --sb-soon-text: #c9cad2;      /* 8.2:1 */
+  --sb-soon-tint: rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Page-wide dark overrides of the shared styles ===== */
+body.sb-page {
+  /* re-point style.css's light tokens for anything shared that reads them */
+  --color-bg: var(--sb-ink-deep);
+  --color-surface: var(--sb-ink-raised);
+  --color-text: var(--sb-on-ink);
+  --color-text-muted: var(--sb-on-ink-muted);
+  --color-border: var(--sb-ink-line);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 40px rgba(0, 0, 0, 0.55);
+
+  background: var(--sb-ink-deep);
+  color: var(--sb-on-ink);
+}
+
+body.sb-page ::selection {
+  background: var(--sb-amber);
+  color: #16120a;
+}
+
+/* Nav: a dark translucent bar with the light logo (the brackets keep the
+   site's own accent, 5.4:1 on this bar) */
+body.sb-page .nav {
+  background: rgba(11, 12, 15, 0.78);
+  box-shadow: inset 0 -1px 0 var(--sb-hairline);
+}
+
+body.sb-page .nav__logo {
+  color: var(--sb-on-ink);
+}
+
+/* Focus rings that read on the dark grounds */
+body.sb-page a:focus-visible,
+body.sb-page button:focus-visible,
+body.sb-page summary:focus-visible,
+body.sb-page [tabindex]:focus-visible {
+  outline: 2px solid var(--sb-amber);
+  outline-offset: 3px;
+}
+
+/* style.css squares every focused link to 4px; keep these shapes intact */
+body.sb-page .sb-btn:focus-visible {
+  border-radius: 10px;
+}
+
+body.sb-page .sb-dl:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+body.sb-page .sb-tile:focus-visible {
+  border-radius: var(--radius-sm);
+}
+
+body.sb-page .sb-tile--feature:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+body.sb-page .sb-skip:focus-visible {
+  border-radius: var(--radius-sm);
+}
+
+/* The shared lightbox hides itself with opacity alone, which leaves its
+   Close / Previous / Next buttons in the Tab order (and the dialog in the
+   accessibility tree) while it is closed. On this page, also hide it with
+   visibility, delayed until the fade-out ends. lightbox.js focuses Close
+   right after adding --open; that call resolves the new style first. */
+body.sb-page .lightbox {
+  visibility: hidden;
+  transition: opacity var(--transition), visibility 0s linear 0.3s;
+}
+
+body.sb-page .lightbox--open {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Footer */
+body.sb-page .sb-footer {
+  padding-top: 0;
+  background: var(--sb-ink-deep);
+}
+
+body.sb-page .sb-footer .footer__bottom {
+  margin-top: 0;
+  padding: var(--spacing-md) 0 0;
+  border-top: 1px solid var(--sb-hairline);
+  color: var(--sb-on-ink-muted);
+}
+
+/* ===== Shared bits ===== */
+.sb-skip {
+  position: absolute;
+  left: var(--spacing-sm);
+  top: -60px;
+  z-index: 1100;
+  background: var(--sb-amber);
+  color: #16120a;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.sb-skip:focus {
+  top: var(--spacing-xs);
+}
+
+.sb-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sb-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--sb-amber);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.sb-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  color: var(--sb-on-ink);
+  text-wrap: balance;
+}
+
+.sb-lead {
+  font-size: var(--font-size-lg);
+  color: var(--sb-on-ink-muted);
+  line-height: 1.6;
+  max-width: 640px;
+  margin: var(--spacing-xs) auto 0;
+  text-wrap: balance;
+}
+
+/* Sections alternate ink and deep ink. Each carries a soft glow near its top
+   (placed per section below) and a faint hairline where it meets the last. */
+.sb-section {
+  position: relative;
+  padding: var(--spacing-2xl) 0;
+  background:
+    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.07), transparent 70%),
+    var(--sb-ink);
+}
+
+.sb-section--alt {
+  background:
+    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.06), transparent 70%),
+    var(--sb-ink-deep);
+}
+
+.sb-section + .sb-section {
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--sb-hairline) 20%, var(--sb-hairline) 80%, transparent) 1;
+}
+
+.sb-section__header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.sb-text-link {
+  color: var(--sb-amber);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 168, 31, 0.45);
+  text-underline-offset: 3px;
+}
+
+.sb-text-link:hover {
+  color: var(--sb-amber-hover);
+  text-decoration-color: currentColor;
+}
+
+.sb-more {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+}
+
+/* The hero's slanted speed lines, reused (sparingly) behind a section */
+.sb-speedlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(105deg, transparent 0 46px, rgba(255, 255, 255, 0.03) 46px 47px);
+  -webkit-mask-image: radial-gradient(60% 70% at 50% 45%, #000, transparent 75%);
+  mask-image: radial-gradient(60% 70% at 50% 45%, #000, transparent 75%);
+  pointer-events: none;
+}
+
+.sb-speedlines > .container {
+  position: relative;
+}
+
+/* ===== Hero: the gameplay loop behind the title (2026-10-05) =====
+   One screen tall: the fixed nav, then the footage filling the rest of the
+   screen (--sb-hero-h: the screen less the nav, kept between 540px and
+   1080px), with the text centred on it (at its top on portrait screens
+   and phones held sideways). Text taller than that (short or narrow
+   screens) makes the hero taller, and the footage grows with it.
+   svh (the screen with a phone's browser bars showing) where supported, so
+   the bars never hide the bottom of the hero. */
+:root {
+  --sb-hero-h: clamp(540px, calc(100vh - var(--nav-height)), 1080px);
+  --sb-hero-pad-top: 96px;      /* under the nav, above the text */
+  --sb-hero-pad-bottom: 96px;   /* under the text: the credit line and pause button live here */
+}
+
+@supports (height: 100svh) {
+  :root {
+    --sb-hero-h: clamp(540px, calc(100svh - var(--nav-height)), 1080px);
+  }
+}
+
+.sb-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(var(--nav-height) + var(--sb-hero-h));
+  padding: calc(var(--nav-height) + var(--sb-hero-pad-top)) 0 var(--sb-hero-pad-bottom);
+  overflow: hidden;
+  text-align: center;
+  color: var(--sb-on-ink);
+  /* behind the nav, and what shows before the still arrives */
+  background: linear-gradient(var(--sb-ink), var(--sb-ink-deep));
+  background-color: var(--sb-ink-deep);
+  /* The hero's grey words (pill, pitch, device line, note, credit) are a
+     lighter grey than the rest of the page's #b4b4bd: over footage it holds
+     4.5:1 under a lighter tint, so more of the video shows (12.1:1 on ink). */
+  --sb-on-ink-muted: #d0d0d6;
+}
+
+/* The footage box: everything under the nav, behind the text. Three layers:
+   the still (<picture>, underneath), the video (invisible until
+   js/speedbreaker.js sees it playing, then it fades in over the still), and
+   the scrim (::after, on top). Both still and video cover the box. */
+.sb-hero__media {
+  position: absolute;
+  inset: var(--nav-height) 0 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--sb-ink-deep);
+}
+
+.sb-hero__still,
+.sb-hero__still img,
+.sb-hero__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sb-hero__still img,
+.sb-hero__video {
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.sb-hero__video {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.sb-hero__media.is-video .sb-hero__video {
+  opacity: 1;
+}
+
+/* The scrim: the page's ink over the footage, so every line of hero text
+   keeps its contrast on the brightest frames (the tunnel exit's daylight,
+   clip 1's white sky, the newspaper box, the white flash, the sparks). The
+   values come from video/edl.md ("Background hero: text legibility over
+   the video"). Measured in Chrome (2026-10-06: text hidden, each line
+   against the brightest 5% of the footage behind it, no text shadow, 317
+   frames each at 1024x768, 1280x600, 1366x657, 1366x860, 1440x900 and
+   1920x1080): the grey words (#d0d0d6, set on .sb-hero) at least 4.7:1,
+   the white words 6.6:1, and the large text 3.6:1 (the amber tagline) and
+   4.0:1 (the title's lower colour), where 3:1 is needed. With the page's
+   #b4b4bd grey the pitch dipped to 3.4:1 on brief frames (the newspaper
+   box, the sparks), and edl.md's 8.6:1 white figure is about 6.7:1 in the
+   browser. Don't lighten it without re-running that check.
+   Wide screens: a plateau of 0.67 behind the text, 0.335 in the corners.
+   Both: the bottom fades into the next section's ink, so there's no edge. */
+.sb-hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(11, 12, 15, 0) 66%, var(--sb-ink-deep) 100%),
+    radial-gradient(61% 56% at 50% 52.5%, rgba(11, 12, 15, 0.67) 70%, rgba(11, 12, 15, 0.335) 100%);
+}
+
+/* Portrait or narrow screens (the portrait still and video; the first query
+   is the same as the <picture>'s <source>, the preload and the script's),
+   and phones held sideways (the last query; they keep the 21:9 files).
+   Only the text needs darkening here, so the scrim itself is a light 0.45,
+   and a full-width band that follows the text block
+   (.sb-hero__head::before, below) darkens the text's rows to 0.72 (0.45
+   then 0.49: 1 - 0.55 x 0.51). The text sits at the top of the box, so the
+   car, in the lower half of the portrait footage, shows under the light
+   scrim, not the band. Sideways phones' text fills their short box and the
+   21:9 crop puts brighter footage behind it, so their band is 0.59 (0.775;
+   0.72 measured 4.2:1 on the device line there).
+   Chrome blends the tint in sRGB, so contrast falls fast as the tint
+   lightens: 0.62 put the tagline at 2.85:1 over clip 1's white sky.
+   Measured the same way as the wide screens' (above), on all 952 frames at
+   360x640, 375x812, 390x664, 430x932, 768x1024, 667x375, 844x390 and
+   932x430: the grey words at least 5.0:1 (the credit line at 932x430; 5.2:1
+   above it), the white words 7.3:1, the tagline 4.1:1, the title 4.9:1. */
+@media (orientation: portrait), (max-width: 600px), (orientation: landscape) and (max-height: 520px) {
+  .sb-hero {
+    justify-content: flex-start;
+  }
+
+  .sb-hero__media::after {
+    background:
+      linear-gradient(to bottom, rgba(11, 12, 15, 0) 80%, var(--sb-ink-deep) 100%),
+      linear-gradient(rgba(11, 12, 15, 0.45), rgba(11, 12, 15, 0.45));
+  }
+
+  /* The band: the hero's full width, the text block's height plus a 64px
+     feather above and below, so every line sits on its full strength. Under
+     the text (z-index -1 in the hero's stacking context), over the footage. */
+  .sb-hero__head::before {
+    --sb-hero-band: 0.49;
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -64px;
+    bottom: -64px;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+      rgba(11, 12, 15, 0),
+      rgba(11, 12, 15, var(--sb-hero-band)) 64px,
+      rgba(11, 12, 15, var(--sb-hero-band)) calc(100% - 64px),
+      rgba(11, 12, 15, 0));
+  }
+}
+
+.sb-hero__head {
+  position: relative;
+  animation: sb-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* A soft dark shadow under the hero's words: a little extra margin on the
+   brightest frames (the scrim alone meets the targets above). */
+.sb-hero__eyebrow,
+.sb-hero__tagline,
+.sb-hero__pitch,
+.sb-hero__alt,
+.sb-hero__note,
+.sb-hero__credit {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 0, 0, 0.5);
+}
+
+.sb-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  padding: 5px 14px 5px 5px;
+  margin-bottom: var(--spacing-md);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 100px;
+  /* a dark pill over the footage (its text then measures at least 6.1:1) */
+  background: rgba(11, 12, 15, 0.5);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--sb-on-ink-muted);
+}
+
+.sb-hero__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 22%;
+  flex-shrink: 0;
+}
+
+/* The fill is background-clip: text, so a text-shadow would paint over the
+   gradient; the same shadow comes from drop-shadow filters instead. */
+.sb-hero__title {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: var(--spacing-sm);
+  background: linear-gradient(180deg, #ffffff 35%, #c9c9d1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 12px rgba(0, 0, 0, 0.5));
+}
+
+.sb-hero__tagline {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--sb-amber);
+  margin-bottom: var(--spacing-sm);
+}
+
+.sb-hero__pitch {
+  font-size: 1.25rem;
+  color: var(--sb-on-ink-muted);
+  line-height: 1.55;
+  max-width: 36em;
+  margin: 0 auto var(--spacing-md);
+  text-wrap: balance;
+}
+
+.sb-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.sb-btn {
+  gap: 10px;
+  justify-content: center;
+  padding: 14px 24px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.sb-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.sb-btn--amber {
+  background: var(--sb-amber);
+  border-color: var(--sb-amber);
+  color: #16120a;
+  box-shadow: 0 10px 30px -8px rgba(255, 168, 31, 0.55);
+}
+
+.sb-btn--amber:hover {
+  background: var(--sb-amber-hover);
+  border-color: var(--sb-amber-hover);
+  transform: translateY(-2px);
+}
+
+.sb-btn--light {
+  background: var(--sb-on-ink);
+  border-color: var(--sb-on-ink);
+  color: var(--sb-ink);
+}
+
+.sb-btn--light:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.sb-hero__alt {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.sb-hero__devices {
+  color: var(--sb-on-ink-muted);
+}
+
+.sb-hero__devices strong {
+  color: var(--sb-on-ink);
+  font-weight: 600;
+}
+
+.sb-hero__alt-sep {
+  color: var(--sb-on-ink-muted);
+}
+
+.sb-hero__alt a {
+  color: var(--sb-on-ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 4px;
+}
+
+.sb-hero__alt a:hover {
+  color: var(--sb-amber);
+  text-decoration-color: currentColor;
+}
+
+.sb-hero__note {
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  color: var(--sb-on-ink-muted);
+}
+
+.sb-hero__note a {
+  color: var(--sb-on-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sb-hero__note a:hover {
+  color: var(--sb-amber);
+}
+
+/* Along the bottom edge, inside the hero's bottom padding (so never over the
+   text): the capture facts at the left, the pause button at the right. The
+   scrim is near-solid ink this low, so the small muted line stays readable. */
+.sb-hero__foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-md);
+}
+
+.sb-hero__credit {
+  min-width: 0;
+  max-width: 36em;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--sb-on-ink-muted);
+  text-align: left;
+  text-wrap: balance;
+}
+
+/* Pause / play (WCAG 2.2.2). A 44x44 disc; its dark translucent fill keeps
+   the white glyph readable on any frame. Hidden (the hidden attribute)
+   whenever the video isn't in use. */
+.sb-hero__toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: rgba(11, 12, 15, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.sb-hero__toggle[hidden] {
+  display: none;
+}
+
+.sb-hero__toggle:hover {
+  background: rgba(11, 12, 15, 0.9);
+  border-color: var(--sb-amber-edge);
+}
+
+/* style.css squares focused buttons to 4px; keep the disc round. The dark
+   halo on both sides of the amber ring keeps it visible on bright footage. */
+body.sb-page .sb-hero__toggle:focus-visible {
+  border-radius: 50%;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.75), 0 0 0 6px rgba(0, 0, 0, 0.45);
+}
+
+.sb-hero__toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sb-hero__toggle .sb-hero__toggle-play,
+.sb-hero__toggle.is-paused .sb-hero__toggle-pause {
+  display: none;
+}
+
+.sb-hero__toggle.is-paused .sb-hero__toggle-play {
+  display: block;
+  margin-left: 2px; /* optical centring of the triangle */
+}
+
+@keyframes sb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== Steam hardware (right after the hero) ===== */
+.sb-section.sb-steam {
+  padding-top: var(--spacing-xl);
+  background:
+    radial-gradient(720px 380px at 50% 58%, rgba(255, 168, 31, 0.10), transparent 70%),
+    radial-gradient(520px 300px at 88% 100%, rgba(232, 64, 40, 0.07), transparent 70%),
+    var(--sb-ink-deep);
+}
+
+.sb-devices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.sb-device {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: var(--spacing-md) var(--spacing-md) 28px;
+  background:
+    radial-gradient(240px 140px at 50% 0, rgba(255, 168, 31, 0.10), transparent 70%),
+    var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-lg);
+}
+
+/* an amber hairline along the top edge */
+.sb-device::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 168, 31, 0.55), transparent);
+}
+
+.sb-device__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  /* a faint neutral pool, not amber: an amber halo tints the icons' white edges */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 70%);
+}
+
+/* Valve's own device icons (icons/steam-*.svg), at the operator's request.
+   Shown as-is: Valve's white and blue (and the Machine's black ring), never
+   recoloured, and each fills the same square so Valve's relative sizes hold.
+   They identify the device named beside them, nothing more (the Legal &
+   credits page credits Valve). */
+.sb-device__icon img {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
+.sb-device__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--sb-on-ink);
+  margin-bottom: 6px;
+}
+
+.sb-device__text {
+  font-size: var(--font-size-base);
+  color: var(--sb-on-ink-muted);
+  line-height: 1.55;
+  max-width: 260px;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+/* SteamOS line + the two downloads, one raised panel under the tiles */
+.sb-steamos {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-lg);
+}
+
+.sb-steamos__line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: left;
+  color: var(--sb-on-ink-muted);
+  line-height: 1.5;
+}
+
+.sb-steamos__line strong {
+  color: var(--sb-on-ink);
+  font-weight: 600;
+}
+
+.sb-steamos__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--sb-amber);
+  background: var(--sb-amber-wash);
+  border: 1px solid rgba(255, 168, 31, 0.25);
+}
+
+.sb-steamos__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sb-downloads {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: var(--spacing-md);
+}
+
+/* Each one is a plain button: the whole tile is the direct download.
+   Icon and label start at the left in both, so a label that wraps (it then
+   fills the row) lines up with one that doesn't. */
+.sb-dl {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  min-height: 76px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(180deg, rgba(255, 168, 31, 0.08), rgba(255, 168, 31, 0.02)),
+    var(--sb-ink-deep);
+  border: 1px solid var(--sb-amber-edge);
+  color: var(--sb-on-ink);
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.sb-dl:hover {
+  border-color: var(--sb-amber);
+  box-shadow: var(--sb-amber-glow);
+  transform: translateY(-2px);
+}
+
+.sb-dl__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--sb-amber);
+  color: #16120a;
+  box-shadow: 0 8px 22px -8px rgba(255, 168, 31, 0.6);
+}
+
+.sb-dl__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sb-dl__for {
+  min-width: 0;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+/* one small muted link under the two buttons */
+.sb-dl-all {
+  margin-top: 14px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.sb-dl-all a {
+  color: var(--sb-on-ink-muted);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+  text-underline-offset: 3px;
+}
+
+.sb-dl-all a:hover {
+  color: var(--sb-on-ink);
+  text-decoration-color: currentColor;
+}
+
+/* ===== Why SpeedBreaker ===== */
+#why {
+  background:
+    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.08), transparent 70%),
+    radial-gradient(600px 360px at 0% 100%, rgba(232, 64, 40, 0.05), transparent 70%),
+    var(--sb-ink);
+}
+
+.sb-perks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.sb-perk {
+  background: var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.sb-perk__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--sb-amber-wash);
+  border: 1px solid rgba(255, 168, 31, 0.25);
+  color: var(--sb-amber);
+  margin-bottom: var(--spacing-sm);
+}
+
+.sb-perk__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sb-perk__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--sb-on-ink);
+  margin-bottom: 4px;
+}
+
+.sb-perk__text {
+  font-size: var(--font-size-sm);
+  color: var(--sb-on-ink-muted);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* ===== 3 steps ===== */
+#how {
+  background:
+    radial-gradient(820px 340px at 50% 62%, rgba(255, 168, 31, 0.08), transparent 70%),
+    var(--sb-ink-deep);
+}
+
+.sb-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-md);
+}
+
+.sb-step {
+  position: relative;
+  text-align: center;
+  padding: var(--spacing-md);
+  background: var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-md);
+}
+
+/* dashed amber connector across the gap, level with the numbers */
+.sb-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--spacing-md) + 31px);
+  left: 100%;
+  width: calc(var(--spacing-md) + 2px);
+  border-top: 2px dashed rgba(255, 168, 31, 0.5);
+}
+
+.sb-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--sb-ink-deep);
+  border: 1px solid rgba(255, 168, 31, 0.35);
+  color: var(--sb-amber);
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: var(--spacing-sm);
+  box-shadow: 0 0 0 6px rgba(255, 168, 31, 0.07), 0 0 30px -6px rgba(255, 168, 31, 0.45);
+}
+
+.sb-step__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--sb-on-ink);
+  margin-bottom: 4px;
+}
+
+.sb-step__text {
+  font-size: var(--font-size-sm);
+  color: var(--sb-on-ink-muted);
+  line-height: 1.6;
+  max-width: 300px;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+/* ===== Screenshot gallery (opens the shared lightbox via data-lightbox-app) ===== */
+#screens {
+  background:
+    radial-gradient(700px 320px at 85% 0, rgba(232, 64, 40, 0.08), transparent 70%),
+    radial-gradient(700px 320px at 15% 0, rgba(255, 168, 31, 0.06), transparent 70%),
+    var(--sb-ink);
+}
+
+.sb-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sb-tile {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #0b0b0d;
+  cursor: zoom-in;
+  box-shadow: 0 0 0 1px var(--sb-ink-line);
+  transition: box-shadow var(--transition);
+}
+
+.sb-tile--feature {
+  grid-column: 1 / -1;
+  aspect-ratio: 2400 / 1005; /* the chase-cam shot's own shape */
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 1px var(--sb-ink-line), 0 30px 80px -40px rgba(255, 168, 31, 0.35);
+}
+
+.sb-tile:hover {
+  box-shadow: 0 0 0 1px var(--sb-amber-edge), 0 18px 44px -22px rgba(255, 168, 31, 0.55);
+}
+
+.sb-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sb-tile:hover img {
+  transform: scale(1.05);
+}
+
+.sb-tile__cap {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  max-width: calc(100% - 16px);
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: rgba(10, 10, 12, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.sb-tile--feature .sb-tile__cap {
+  left: 14px;
+  bottom: 14px;
+  font-size: var(--font-size-sm);
+  padding: 5px 12px;
+}
+
+body.sb-page .sb-tile:focus-visible {
+  outline: 3px solid var(--sb-amber);
+  outline-offset: 3px;
+}
+
+/* ===== Platforms ("Pick your device") ===== */
+#platforms {
+  background:
+    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.07), transparent 70%),
+    var(--sb-ink-deep);
+}
+
+/* One card per device: the Steam row (Deck, Machine, Frame), then Linux PC,
+   Mac and iPhone & iPad, then a slim coming-soon strip across the full
+   width. Grid rows stretch, so the cards in a row share one height. */
+.sb-platforms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.sb-platform {
+  display: flex;
+  min-width: 0;
+}
+
+/* The whole card is one link, with one pill and no second "Download" line.
+   Visually: logo slot top-left, pill top-right, then the name and the info.
+   The DOM keeps name, pill, info, so the link's accessible name reads
+   "Steam Deck Download Game Mode, ..." with each part once. */
+.sb-platform__card {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "logo pill"
+    "name name"
+    "text text";
+  align-items: start;
+  padding: 20px;
+  background: var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-md);
+  color: var(--sb-on-ink);
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+/* Steam hardware leads the list: a little more amber on those three */
+.sb-platform--steam .sb-platform__card {
+  background:
+    radial-gradient(260px 120px at 0 0, rgba(255, 168, 31, 0.09), transparent 70%),
+    var(--sb-ink-raised);
+}
+
+/* Hover and keyboard focus: the whole card lifts and glows (the lift stays
+   still under reduced motion, below). Focus also draws the page's amber ring
+   around the whole card. */
+.sb-platform__card:hover,
+.sb-platform__card:focus-visible {
+  border-color: var(--sb-amber-edge);
+  box-shadow: var(--sb-amber-glow);
+  transform: translateY(-2px);
+}
+
+/* style.css squares every focused link to 4px; keep the card's corners */
+body.sb-page .sb-platform__card:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+/* One fixed 48px logo slot on every card (and in the coming-soon strip),
+   so a swapped-in brand logo lands in the same place at the same size.
+   Whatever sits in it (an <img> or an inline <svg>) is drawn at 28px.
+   Valve's icons fill that square as-is, so their relative sizes hold (the
+   Deck mark is a little narrower than the Machine and Frame squares, and
+   centred in its own square). Never recoloured. The Linux, Apple, iOS,
+   Windows and Android marks are inline single-colour SVGs that take the
+   slot's text colour (light here, muted in the coming-soon strip). */
+.sb-platform__logo {
+  grid-area: logo;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--sb-ink-deep);
+  border: 1px solid var(--sb-ink-line);
+  color: var(--sb-on-ink);
+}
+
+.sb-platform--steam .sb-platform__logo {
+  border-color: rgba(255, 168, 31, 0.3);
+}
+
+.sb-platform__logo img,
+.sb-platform__logo svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.sb-platform__card > .sb-chip {
+  grid-area: pill;
+  justify-self: end;
+  align-self: center;
+  margin-left: 12px;
+}
+
+.sb-platform__name {
+  grid-area: name;
+  margin-top: 16px;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--sb-on-ink);
+}
+
+.sb-platform__text {
+  grid-area: text;
+  margin-top: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--sb-on-ink-muted);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Coming soon: one slim strip, not links; one pill for both */
+.sb-platform--soon {
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  padding: 12px 20px;
+  border: 1px dashed var(--sb-ink-line);
+  border-radius: var(--radius-md);
+}
+
+.sb-soon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sb-soon .sb-platform__logo {
+  color: var(--sb-on-ink-muted);
+}
+
+.sb-soon__name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--sb-on-ink);
+}
+
+.sb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 3px 9px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  transition: background-color var(--transition), box-shadow var(--transition);
+}
+
+.sb-chip svg {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  margin-left: -2px;
+  transition: transform var(--transition);
+}
+
+.sb-chip--go {
+  color: var(--sb-ok-text);
+  background: var(--sb-ok-tint);
+  box-shadow: inset 0 0 0 1px rgba(110, 231, 183, 0.2);
+}
+
+.sb-chip--diy {
+  color: var(--sb-diy-text);
+  background: var(--sb-diy-tint);
+  box-shadow: inset 0 0 0 1px rgba(255, 193, 99, 0.22);
+}
+
+.sb-chip--soon {
+  color: var(--sb-soon-text);
+  background: var(--sb-soon-tint);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* the card's pill brightens with it; its glyph nudges toward where it goes */
+.sb-platform__card:hover .sb-chip--go,
+.sb-platform__card:focus-visible .sb-chip--go {
+  background: rgba(16, 185, 129, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(110, 231, 183, 0.45);
+}
+
+.sb-platform__card:hover .sb-chip--diy,
+.sb-platform__card:focus-visible .sb-chip--diy {
+  background: rgba(255, 168, 31, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(255, 193, 99, 0.45);
+}
+
+.sb-platform__card:hover .sb-chip--go svg,
+.sb-platform__card:focus-visible .sb-chip--go svg {
+  transform: translateY(1.5px);
+}
+
+.sb-platform__card:hover .sb-chip--diy svg,
+.sb-platform__card:focus-visible .sb-chip--diy svg {
+  transform: translate(1px, -1px);
+}
+
+/* ===== FAQ (native <details>, no script) ===== */
+#faq {
+  background:
+    radial-gradient(640px 300px at 50% 0, rgba(255, 168, 31, 0.07), transparent 70%),
+    var(--sb-ink);
+}
+
+.sb-faq-wrap {
+  max-width: 800px;
+}
+
+.sb-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sb-details {
+  background: var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.sb-details:hover {
+  border-color: rgba(255, 168, 31, 0.28);
+}
+
+.sb-details[open] {
+  border-color: var(--sb-amber-edge);
+  box-shadow: var(--sb-amber-glow);
+}
+
+.sb-details > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: 16px 20px;
+  font-weight: 600;
+  color: var(--sb-on-ink);
+  border-radius: var(--radius-md);
+}
+
+.sb-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* the second declaration gives the glyph empty alt text (screen readers
+   skip it); browsers without that syntax keep the first */
+.sb-details > summary::after {
+  content: '+';
+  content: '+' / '';
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--sb-ink-deep);
+  border: 1px solid var(--sb-ink-line);
+  color: var(--sb-on-ink-muted);
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.sb-details[open] > summary::after {
+  content: '\2212';
+  content: '\2212' / '';
+  background: var(--sb-amber-wash);
+  border-color: var(--sb-amber-edge);
+  color: var(--sb-amber);
+}
+
+.sb-details__body {
+  padding: 0 20px 18px;
+  color: var(--sb-on-ink-muted);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+/* ===== Carbon teaser ===== */
+.sb-section.sb-section--teaser {
+  background:
+    radial-gradient(900px 420px at 50% 55%, rgba(232, 64, 40, 0.10), transparent 70%),
+    var(--sb-ink-deep);
+}
+
+.sb-teaser {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--sb-ink-deep);
+  color: var(--sb-on-ink);
+  aspect-ratio: 1480 / 832;
+  display: flex;
+  align-items: center;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 40px 90px -40px rgba(232, 64, 40, 0.45),
+    0 30px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+.sb-teaser__art,
+.sb-teaser__art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.sb-teaser__art img {
+  object-fit: cover;
+  object-position: 100% 50%;
+}
+
+/* shade the sky behind the text on the left; leave the car and the city clear */
+.sb-teaser::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(7, 9, 14, 0.6) 0%, rgba(7, 9, 14, 0.28) 40%, rgba(7, 9, 14, 0) 58%);
+  pointer-events: none;
+}
+
+.sb-teaser__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 52%;
+  padding: 0 var(--spacing-lg) 6%;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+.sb-teaser__label {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: #d5d8e0;
+  margin-bottom: 6px;
+}
+
+.sb-teaser__title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.sb-teaser__soon {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  color: var(--sb-amber);
+  margin-top: 8px;
+}
+
+/* ===== Responsive ===== */
+/* Platforms: three across from 1024px, two on tablets, one on phones */
+@media (max-width: 1023px) {
+  .sb-platforms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .sb-perks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sb-section {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .sb-section.sb-steam {
+    padding-top: var(--spacing-lg);
+  }
+
+  .sb-hero__pitch {
+    font-size: var(--font-size-lg);
+  }
+
+  .sb-device {
+    padding: var(--spacing-md) var(--spacing-sm) var(--spacing-sm);
+  }
+
+  .sb-device__text {
+    font-size: var(--font-size-sm);
+  }
+
+  .sb-downloads {
+    grid-template-columns: 1fr;
+  }
+
+  .sb-steps {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .sb-step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    column-gap: var(--spacing-sm);
+    text-align: left;
+    padding: var(--spacing-sm);
+  }
+
+  .sb-step__num {
+    grid-row: span 2;
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+    margin: 0;
+    box-shadow: 0 0 0 5px rgba(255, 168, 31, 0.07), 0 0 24px -6px rgba(255, 168, 31, 0.45);
+  }
+
+  .sb-step__text {
+    margin: 0;
+    max-width: none;
+  }
+
+  /* vertical connector across the gap on phones */
+  .sb-step:not(:last-child)::after {
+    top: 100%;
+    left: calc(var(--spacing-sm) + 25px);
+    width: 0;
+    height: calc(var(--spacing-md) + 2px);
+    border-top: 0;
+    border-left: 2px dashed rgba(255, 168, 31, 0.5);
+  }
+
+  .sb-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  /* text under the picture instead of over it */
+  .sb-teaser {
+    display: block;
+    aspect-ratio: auto;
+    min-height: 0;
+    background: var(--sb-ink-raised);
+  }
+
+  .sb-teaser::after {
+    display: none;
+  }
+
+  .sb-teaser__art,
+  .sb-teaser__art img {
+    position: static;
+    height: auto;
+  }
+
+  /* 601-768px: the wide art (up to 1480 px), which stays sharp at tablet width */
+  .sb-teaser__art img {
+    aspect-ratio: 1480 / 832;
+    object-position: 50% 50%;
+  }
+
+  .sb-teaser__body {
+    width: auto;
+    padding: var(--spacing-md);
+    text-shadow: none;
+  }
+
+  .sb-teaser__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .sb-teaser__soon {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* the device line and the iPhone link stack, one per line, without the dot */
+@media (max-width: 700px) {
+  .sb-hero__alt {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sb-hero__alt-sep {
+    display: none;
+  }
+
+  /* Steam tiles become rows: icon left, words right */
+  .sb-devices {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .sb-device {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    column-gap: 14px;
+    align-items: center;
+    text-align: left;
+    padding: 14px 16px;
+  }
+
+  .sb-device__icon {
+    grid-row: span 2;
+    width: 56px;
+    height: 56px;
+    margin: 0;
+  }
+
+  .sb-device__icon img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sb-device__name {
+    font-size: var(--font-size-lg);
+    margin-bottom: 0;
+    align-self: end;
+  }
+
+  .sb-device__text {
+    max-width: none;
+    margin: 0;
+    align-self: start;
+  }
+
+  .sb-steamos__line {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  /* phones: less air above and between the text, and the pitch's first
+     sentence only (the tagline already says "the way you remember it"), so
+     the whole block, the disclaimer note included, fits a phone screen with
+     the browser's bars showing (375x635), and more of the footage shows
+     under it. The bottom padding still holds the credit line and the pause
+     button. */
+  :root {
+    --sb-hero-pad-top: var(--spacing-sm);
+    --sb-hero-pad-bottom: 88px;
+  }
+
+  .sb-hero__eyebrow {
+    font-size: 0.8125rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .sb-hero__tagline {
+    font-size: 1.5rem;
+  }
+
+  .sb-hero__pitch {
+    margin-bottom: 20px;
+  }
+
+  .sb-hero__pitch-more {
+    display: none;
+  }
+
+  .sb-hero__actions {
+    gap: 10px;
+  }
+
+  .sb-hero__actions .btn {
+    flex: 1 1 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .sb-hero__alt {
+    margin-top: 14px;
+  }
+
+  .sb-hero__foot {
+    bottom: 16px;
+    padding: 0 var(--spacing-sm);
+  }
+
+  .sb-hero__credit {
+    font-size: 0.75rem;
+  }
+
+  .sb-steamos {
+    padding: var(--spacing-sm);
+  }
+
+  .sb-dl {
+    padding: 14px;
+  }
+
+  .sb-perks {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .sb-perk {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    column-gap: 14px;
+    padding: 16px;
+  }
+
+  .sb-perk__icon {
+    grid-row: span 2;
+    margin: 0;
+  }
+
+  .sb-platforms {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .sb-platform__card {
+    padding: 16px;
+  }
+
+  .sb-platform__name {
+    margin-top: 12px;
+  }
+
+  /* the pill on its own line, then Windows and Android side by side
+     (one under the other on the narrowest phones) */
+  .sb-platform--soon {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    gap: 10px 16px;
+    padding: 12px 16px 14px;
+  }
+
+  .sb-platform--soon > .sb-chip {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .sb-details > summary {
+    padding: 14px 16px;
+  }
+
+  .sb-details__body {
+    padding: 0 16px 16px;
+  }
+
+  /* phones: the squarer crop with the car in the middle (picture <source>) */
+  .sb-teaser__art img {
+    aspect-ratio: 850 / 740;
+  }
+}
+
+@media (max-width: 480px) {
+  .sb-btn {
+    font-size: 0.9375rem;
+    padding: 14px 12px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .sb-tile__cap {
+    font-size: 0.6875rem;
+    padding: 2px 7px;
+    left: 6px;
+    bottom: 6px;
+  }
+}
+
+/* Short landscape windows (a 1280x720 laptop's browser, about 1280x610):
+   less air above the text, so the buttons and the disclaimer note stay on
+   the first screen (1280x600: note at 580, was 612). 1366x657 and taller
+   keep the layout above. */
+@media (orientation: landscape) and (max-height: 640px) {
+  :root {
+    --sb-hero-pad-top: 64px;
+    --sb-hero-pad-bottom: 80px;
+  }
+}
+
+/* Phones held sideways (and other very short screens): the hero is one
+   screen tall (no 540px floor) and the text starts right under the nav. A
+   smaller title and tagline, and no pitch (the rest of the page explains
+   it), so the buttons and the disclaimer note fit (844x390: note at 343;
+   667x375: 372). The credit line and pause button sit just under it. The
+   text starts at the top and takes the portrait scrim and band (above). */
+@media (orientation: landscape) and (max-height: 520px) {
+  :root {
+    --sb-hero-h: calc(100vh - var(--nav-height));
+    --sb-hero-pad-top: var(--spacing-sm);
+    --sb-hero-pad-bottom: 76px;
+  }
+
+  .sb-hero__eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .sb-hero__head::before {
+    --sb-hero-band: 0.59;
+  }
+
+  .sb-hero__title {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .sb-hero__tagline {
+    font-size: 1.25rem;
+    margin-bottom: 14px;
+  }
+
+  .sb-hero__pitch {
+    display: none;
+  }
+
+  .sb-hero__actions .btn {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .sb-hero__alt {
+    margin-top: 12px;
+  }
+}
+
+/* Reduced motion: style.css already zeroes animations and transitions;
+   also keep the hover lifts still. The hero video never plays here (the
+   script leaves the still), and nothing fades if it ever shows. */
+@media (prefers-reduced-motion: reduce) {
+  .sb-dl:hover,
+  .sb-platform__card:hover,
+  .sb-platform__card:focus-visible,
+  .sb-platform__card:hover .sb-chip svg,
+  .sb-platform__card:focus-visible .sb-chip svg,
+  .sb-btn--amber:hover,
+  .sb-btn--light:hover,
+  .sb-tile:hover img {
+    transform: none;
+  }
+
+  .sb-hero__video {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Legal page (speedbreaker/legal/index.html), added 2026-10-05
+   The SpeedBreaker page's long Legal section moved to its own page. Every
+   rule below is scoped to .sb-lp (only the legal page uses it) or to the new
+   .sb-footer__notice, so nothing already on the main page changes.
+   One reading column; the two notices every visitor needs (not affiliated,
+   no game files) sit in raised cards at the top, the rest follows as short
+   headed sections split by hairlines.
+   ========================================================================== */
+.sb-lp__head {
+  position: relative;
+  padding: calc(var(--nav-height) + var(--spacing-lg)) 0 var(--spacing-lg);
+  background:
+    radial-gradient(900px 360px at 88% -20%, rgba(255, 168, 31, 0.10), transparent 60%),
+    radial-gradient(700px 320px at -10% 40%, rgba(232, 64, 40, 0.08), transparent 60%),
+    linear-gradient(var(--sb-ink), var(--sb-ink-deep));
+}
+
+/* a reading width: 760px of text plus the container's side padding */
+.sb-lp__wrap {
+  max-width: calc(760px + 2 * var(--spacing-md));
+}
+
+.sb-lp__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--sb-amber);
+  transition: color var(--transition);
+}
+
+.sb-lp__back:hover {
+  color: var(--sb-amber-hover);
+}
+
+.sb-lp__back svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.sb-lp__head .sb-lp__back {
+  margin-bottom: var(--spacing-md);
+}
+
+.sb-lp__title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  background: linear-gradient(180deg, #ffffff 35%, #c9c9d1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sb-lp__lead {
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+  color: var(--sb-on-ink-muted);
+  text-wrap: pretty;
+}
+
+.sb-lp__updated {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--sb-on-ink-muted);
+}
+
+/* on-page links: pills that wrap, never a sideways scroll */
+.sb-lp__toc ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--spacing-md);
+}
+
+.sb-lp__toc a {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--sb-on-ink-muted);
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.sb-lp__toc a:hover {
+  color: var(--sb-on-ink);
+  border-color: var(--sb-amber-edge);
+  background: var(--sb-amber-wash);
+}
+
+/* style.css squares every focused link to 4px; keep the pill */
+body.sb-page .sb-lp__toc a:focus-visible {
+  border-radius: 100px;
+}
+
+.sb-lp__body {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-xl);
+}
+
+.sb-lp__key {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.sb-lp__card {
+  padding: var(--spacing-md);
+  border: 1px solid var(--sb-ink-line);
+  border-top: 2px solid var(--sb-amber);
+  border-radius: var(--radius-md);
+  background: var(--sb-ink-raised);
+}
+
+.sb-lp__sec {
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid var(--sb-hairline);
+}
+
+.sb-lp__h2 {
+  margin-bottom: 12px;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+  color: var(--sb-on-ink);
+}
+
+.sb-lp__card .sb-lp__h2 {
+  font-size: var(--font-size-lg);
+}
+
+.sb-lp__body p,
+.sb-lp__body li {
+  line-height: 1.7;
+  color: var(--sb-on-ink-muted);
+}
+
+.sb-lp__body p + p,
+.sb-lp__body p + ul,
+.sb-lp__body ul + p {
+  margin-top: 12px;
+}
+
+.sb-lp__body strong {
+  font-weight: 600;
+  color: var(--sb-on-ink);
+}
+
+.sb-lp__list {
+  display: grid;
+  gap: 12px;
+}
+
+.sb-lp__list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.sb-lp__list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.72em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sb-amber);
+}
+
+/* long words (licence names, URLs) wrap instead of widening the page */
+.sb-lp__body {
+  overflow-wrap: anywhere;
+}
+
+.sb-lp__end {
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--sb-hairline);
+}
+
+/* The main page's short legal notice, above the footer's © line (the
+   SpeedBreaker page's footer; the long Legal section is gone): not
+   affiliated, no game files, EA's and Valve's marks (facts.md section 0
+   ties Valve's device icons to the Valve sentence), then a link to legal/.
+   No top padding: it follows the Carbon teaser, whose own bottom padding is
+   the gap. */
+.sb-footer__notice {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 0 var(--spacing-md);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+  color: var(--sb-on-ink-muted);
+  text-wrap: pretty;
+}
+
+.sb-footer__notice strong {
+  font-weight: 600;
+  color: var(--sb-on-ink);
+}
+
+/* "Legal & credits ->" stays in one piece at the end of the notice */
+.sb-footer__notice a {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .sb-lp__head {
+    padding: calc(var(--nav-height) + var(--spacing-md)) 0 var(--spacing-md);
+  }
+
+  .sb-lp__title {
+    font-size: 2.25rem;
+  }
+
+  .sb-lp__lead {
+    font-size: var(--font-size-base);
+  }
+
+  .sb-lp__key {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sb-lp__card {
+    padding: var(--spacing-sm) var(--spacing-sm) 20px;
+  }
+
+  .sb-lp__h2 {
+    font-size: 1.25rem;
+  }
+
+  .sb-lp__body {
+    padding-bottom: var(--spacing-lg);
+  }
+
+  /* the main page's notice: footer-sized type on phones, so the trademark
+     sentences cost a few lines rather than a screen */
+  .sb-footer__notice {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+}
