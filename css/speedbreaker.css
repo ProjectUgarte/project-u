@@ -1294,6 +1294,17 @@ body.sb-page .sb-platform__card:focus-visible {
   text-wrap: pretty;
 }
 
+/* File names and commands in an answer (portable.txt, NFSMW_GPU) */
+.sb-details__body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  color: var(--sb-on-ink);
+  background: var(--sb-hairline);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  overflow-wrap: anywhere;
+}
+
 /* ===== Carbon teaser ===== */
 .sb-section.sb-section--teaser {
   background:
