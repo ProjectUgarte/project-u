@@ -339,7 +339,12 @@ body.sb-page .sb-footer .footer__bottom {
    #b4b4bd grey the pitch dipped to 3.4:1 on brief frames (the newspaper
    box, the sparks), and edl.md's 8.6:1 white figure is about 6.7:1 in the
    browser. Don't lighten it without re-running that check.
-   Wide screens: a plateau of 0.67 behind the text, 0.335 in the corners.
+   2026-10-12: the v0.1.3 loop (sunlit roads, the tunnel exit, sparks) is
+   brighter than the old one, which was graded and in permanent shade. In
+   bg_hero_final.py's model the old 0.67 left the grey pitch at 3.3:1 on 107
+   frames; 0.76 is the least that keeps every line at its target on every
+   frame, and 0.78 adds a margin for the model's optimism (video-v013/legib).
+   Wide screens: a plateau of 0.78 behind the text, 0.39 in the corners.
    Both: the bottom fades into the next section's ink, so there's no edge. */
 .sb-hero__media::after {
   content: '';
@@ -348,7 +353,7 @@ body.sb-page .sb-footer .footer__bottom {
   pointer-events: none;
   background:
     linear-gradient(to bottom, rgba(11, 12, 15, 0) 66%, var(--sb-ink-deep) 100%),
-    radial-gradient(61% 56% at 50% 52.5%, rgba(11, 12, 15, 0.67) 70%, rgba(11, 12, 15, 0.335) 100%);
+    radial-gradient(61% 56% at 50% 52.5%, rgba(11, 12, 15, 0.78) 70%, rgba(11, 12, 15, 0.39) 100%);
 }
 
 /* Portrait or narrow screens (the portrait still and video; the first query
