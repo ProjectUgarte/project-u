@@ -2015,3 +2015,12 @@ body.sb-page .sb-lp__toc a:focus-visible {
     line-height: 1.6;
   }
 }
+
+/* The hero's download count, under the pitch: small and quiet. */
+.sb-hero__downloads {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  opacity: 0.8;
+}

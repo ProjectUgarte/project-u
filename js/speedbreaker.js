@@ -183,3 +183,25 @@
     }
   });
 })();
+
+// The hero's download count: every release file on GitHub, checksum files left out, rounded down
+// to the hundred ("Downloaded over 7,100 times"). The page's own text stands if GitHub can't be reached.
+(() => {
+  const el = document.getElementById('sb-downloads');
+  if (!el || !window.fetch) return;
+  fetch('https://api.github.com/repos/SpeedBreakerProject/speedbreaker/releases?per_page=100')
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((releases) => {
+      let total = 0;
+      for (const rel of releases) {
+        for (const a of rel.assets || []) {
+          if (!/\.sha256$/.test(a.name)) total += a.download_count || 0;
+        }
+      }
+      if (total >= 1000) {
+        const shown = Math.floor(total / 100) * 100;
+        el.textContent = `Downloaded over ${shown.toLocaleString('en-US')} times`;
+      }
+    })
+    .catch(() => {});
+})();
