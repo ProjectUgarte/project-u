@@ -2016,11 +2016,14 @@ body.sb-page .sb-lp__toc a:focus-visible {
   }
 }
 
-/* The hero's download count, under the pitch: small and quiet. */
-.sb-hero__downloads {
-  margin: 0.75rem 0 0;
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  opacity: 0.8;
+/* The download count, a band of its own above the Carbon teaser. */
+.sb-downloads-band {
+  padding: 3rem 0 1rem;
+  text-align: center;
+}
+.sb-downloads {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
