@@ -2018,8 +2018,12 @@ body.sb-page .sb-lp__toc a:focus-visible {
 
 /* The download count, a band of its own above the Carbon teaser. */
 .sb-downloads-band {
-  padding: 3rem 0 1rem;
+  padding: 3rem 0 0;
   text-align: center;
+}
+/* Pull the Carbon teaser up to the count. */
+.sb-downloads-band + .sb-section--teaser {
+  padding-top: 1.5rem;
 }
 .sb-downloads {
   margin: 0;
