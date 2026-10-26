@@ -2209,7 +2209,7 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
    the script measures so the triangle, at the same angle, just clears the
    hero's far corner at 64% of the way: the operator's tested speed. */
 .sb-hero {
-  --cb-w-rest: clamp(220px, 21vw, 480px);
+  --cb-w-rest: clamp(260px, 21vw, 480px);   /* 260: room for the stacked label on a 1024px iPad held upright */
   --cb-w: var(--cb-w-rest);
   --cb-h: calc(var(--cb-w) * 0.7);
 }
