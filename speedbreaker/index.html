@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-game="mw">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,17 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta name="theme-color" content="#121317">
   <meta name="color-scheme" content="dark">
+  <!-- Two games, one page (2026-10-26): this file is Most Wanted's page, /speedbreaker/,
+       and the source of Carbon's, /speedbreaker/carbon/index.html, which
+       tools/build_carbon_page.py generates from it (run it after every edit here; it
+       refuses to write if a piece it swaps has moved). Both pages hold both games; the
+       page's own game is <html data-game>, and js/speedbreaker.js switches between them
+       in place (the hero's corner blade, history.pushState). Between the game-head
+       markers is what the build swaps for Carbon's own: title, description, canonical,
+       social card and the hero preloads. Paths are root-relative (/assets/...), never
+       ../: a switch moves the address between the two folders without reloading, and a
+       relative path would then point into the wrong one. -->
+  <!-- game-head -->
   <title>SpeedBreaker — project(u)</title>
   <meta name="description" content="SpeedBreaker: the definitive Need for Speed: Most Wanted recompilation, built from the 2005 Xbox 360 version by static recompilation. Sharper, wider and smoother on Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc. On iPhone and iPad, sideload the experimental IPA or build it yourself. Free and unofficial. No game files included. Not affiliated with EA or Valve.">
 
@@ -33,11 +44,12 @@
   <meta name="twitter:title" content="SpeedBreaker — An Unofficial Native Port">
   <meta name="twitter:description" content="The definitive Need for Speed: Most Wanted recompilation, built from the 2005 Xbox 360 version. Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc. No game files included. Not affiliated with EA or Valve.">
   <meta name="twitter:image" content="https://projectugarte.com/assets/images/speedbreaker/sb-hero-chase-cam-social.jpg">
+  <!-- /game-head -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/speedbreaker.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/speedbreaker.css">
   <!-- The hero's still is the LCP image, art-directed like the hero <picture>: the portrait
        crop on portrait or narrow screens, the 21:9 still everywhere else. The first preload's
        media is the <source>'s query, the second's its opposite (600.02px, not 601px, so the
@@ -45,14 +57,16 @@
        syntax would be exact but drops the preload in older browsers), and the 21:9 one repeats the
        <img>'s srcset and sizes exactly. No href on the 21:9 one on purpose: a browser without
        imagesrcset then skips the preload instead of fetching a file the <img> won't pick. -->
+  <!-- game-preload -->
   <link rel="preload" as="image" media="(orientation: portrait), (max-width: 600px)"
-        href="../assets/images/speedbreaker/sb-hero-v3-poster-portrait-720.jpg"
+        href="/assets/images/speedbreaker/sb-hero-v3-poster-portrait-720.jpg"
         fetchpriority="high">
   <link rel="preload" as="image" media="(orientation: landscape) and (min-width: 600.02px)"
-        imagesrcset="../assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-1280.jpg 1280w, ../assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-2400.jpg 2400w"
+        imagesrcset="/assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-1280.jpg 1280w, /assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-2400.jpg 2400w"
         imagesizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
         fetchpriority="high">
-  <script src="../js/speedbreaker.js" defer></script>
+  <!-- /game-preload -->
+  <script src="/js/speedbreaker.js" defer></script>
 </head>
 <body class="sb-page">
 
@@ -67,16 +81,37 @@
 
   <main id="main">
 
-    <!-- Hero: the gameplay loop fills the first screen, behind the title.
-         Layers, bottom to top:
+    <!-- Hero: each game's gameplay fills the first screen, behind its title.
+         Two games, one hero (2026-10-26): Most Wanted's layer and Carbon's sit in the
+         same grid cell. The page's own game is .is-base and fills the hero; the other is
+         .is-blade, clipped to a triangle in the upper right corner under the nav, which
+         shows only its picture (the operator's design, from
+         speedbreaker/carbon-blade-prototype.html). The link over that corner (.sb-blade)
+         sweeps the blade across the hero in 0.9 s and the page's accent cross-fades to
+         that game's; without script it is a plain link to the other game's page. The
+         layer not shown is inert and aria-hidden. tools/build_carbon_page.py swaps the
+         two layers' roles (and their images' priorities) for Carbon's page.
+         Each layer, bottom to top:
          1. The still (<picture>): the LCP image, and all that no-JS, reduced-motion and
             data-saver visitors see. Portrait or narrow screens get the portrait crop
             (720x960, cut from the master, following the car); the rest get the 21:9 still.
-            Both are the v0.1.3 master's frame 364 (Speedbreaker #1). The alt holds for
-            both crops (the police car is only in the wide one).
-         2. The video: js/speedbreaker.js picks the file (portrait, or 21:9 1280/2400),
-            adds it and fades it in once it is actually playing. It carries no
-            description of its own.
+            The blade's copy starts with sizes="400px", so the browser picks the smallest
+            file for the corner; js/speedbreaker.js puts the real sizes (data-sizes) back
+            when the blade is hovered or focused, or once the page is idle, so the sweep
+            never waits for the full picture.
+            Most Wanted's: the v0.1.3 master's frame 364 (Speedbreaker #1); the alt holds
+            for both crops (the police car is only in the wide one).
+            Carbon's (the operator's pick, 2026-10-26): launch screenshot 14, the prologue's
+            crash cutscene, the BMW M3 GTR in front of Palmont's skyline, no HUD
+            (carbon/launch/screenshots, master 2560x1440: the 21:9 crops are rows 60-1156,
+            the portrait crop columns 960-2039). Its skyline lights fill the upper right
+            corner, so the blade on Most Wanted's side shows them at rest.
+         2. The video: js/speedbreaker.js picks the file (portrait, or 21:9 1280/2400) from
+            the data-src-* attributes, adds it and fades it in once it is actually playing,
+            only while that game is shown. It carries no description of its own. Carbon's
+            <video> has no data-src-* yet: its loop comes from the operator's recording;
+            add data-src-small/-large/-portrait (same shapes and sizes as Most Wanted's) and
+            a credit line, and the same code plays it.
          3. The scrim (.sb-hero__media::after): darkens the footage so the text keeps its
             contrast on the brightest frames, and fades the bottom into the next
             section's ink. Its values come from video/edl.md's legibility section. On
@@ -86,46 +121,102 @@
          Video and stills are the ungraded v3 cut (the game's own colours). The credit
          line's facts come from SpeedBreaker's own log of that session: Apple M1 Pro,
          macOS, 2560x1440 render, 60.0 fps held for the whole recording. -->
-    <header class="sb-hero" id="sb-hero">
-      <div class="sb-hero__media" id="sb-hero-media">
-        <picture class="sb-hero__still">
-          <source media="(orientation: portrait), (max-width: 600px)"
-                  srcset="../assets/images/speedbreaker/sb-hero-v3-poster-portrait-720.jpg"
-                  width="720" height="960">
-          <img src="../assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-2400.jpg"
-               srcset="../assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-1280.jpg 1280w, ../assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-2400.jpg 2400w"
-               sizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
-               width="2400" height="1028" fetchpriority="high" decoding="async"
-               alt="SpeedBreaker gameplay in the game's Speedbreaker slow motion: the player's silver and blue car racing past a row of glowing gold chevrons on a sunlit city plaza">
-        </picture>
-        <video class="sb-hero__video" muted loop playsinline preload="none"
-               disablepictureinpicture disableremoteplayback aria-hidden="true"
-               data-src-small="../assets/video/speedbreaker/sb-hero-v3-21x9-1280.mp4"
-               data-src-large="../assets/video/speedbreaker/sb-hero-v3-21x9-2400.mp4"
-               data-src-portrait="../assets/video/speedbreaker/sb-hero-v3-portrait-720.mp4"></video>
-      </div>
+    <header class="sb-hero" id="sb-hero" data-blade="carbon">
+      <!-- layer:mw -->
+      <div class="sb-hero__layer sb-hero__layer--mw is-base" data-game-layer="mw">
+        <div class="sb-hero__media">
+          <picture class="sb-hero__still">
+            <source media="(orientation: portrait), (max-width: 600px)"
+                    srcset="/assets/images/speedbreaker/sb-hero-v3-poster-portrait-720.jpg"
+                    width="720" height="960">
+            <img src="/assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-2400.jpg"
+                 srcset="/assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-1280.jpg 1280w, /assets/images/speedbreaker/sb-hero-v3-poster-21x9-sb-2400.jpg 2400w"
+                 sizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
+                 width="2400" height="1028" fetchpriority="high" decoding="async"
+                 alt="SpeedBreaker gameplay in the game's Speedbreaker slow motion: the player's silver and blue car racing past a row of glowing gold chevrons on a sunlit city plaza">
+          </picture>
+          <video class="sb-hero__video" muted loop playsinline preload="none"
+                 disablepictureinpicture disableremoteplayback aria-hidden="true"
+                 data-src-small="/assets/video/speedbreaker/sb-hero-v3-21x9-1280.mp4"
+                 data-src-large="/assets/video/speedbreaker/sb-hero-v3-21x9-2400.mp4"
+                 data-src-portrait="/assets/video/speedbreaker/sb-hero-v3-portrait-720.mp4"></video>
+        </div>
 
-      <div class="container sb-hero__head">
-        <h1 class="sb-hero__title">SpeedBreaker</h1>
-        <p class="sb-hero__tagline">Most Wanted, the way you remember it.</p>
-        <!-- Phones show only the first sentence (css: .sb-hero__pitch-more hides
-             the rest), so the hero fits one phone screen; phones held sideways
-             skip the pitch. -->
-        <p class="sb-hero__pitch">The definitive Need for Speed: Most Wanted recompilation.<span class="sb-hero__pitch-more"> Built from the 2005 Xbox 360 version, the best-looking one, and made sharper, wider and smoother for the modern era.</span></p>
-      </div>
+        <div class="container sb-hero__head">
+          <h1 class="sb-hero__title" tabindex="-1">SpeedBreaker</h1>
+          <p class="sb-hero__tagline">Most Wanted, the way you remember it.</p>
+          <!-- Phones show only the first sentence (css: .sb-hero__pitch-more hides
+               the rest), so the hero fits one phone screen; phones held sideways
+               skip the pitch. -->
+          <p class="sb-hero__pitch">The definitive Need for Speed: Most Wanted recompilation.<span class="sb-hero__pitch-more"> Built from the 2005 Xbox 360 version, the best-looking one, and made sharper, wider and smoother for the modern era.</span></p>
+        </div>
 
-      <!-- Along the hero's bottom edge, clear of the text: the capture facts (left) and
-           the pause button (right; WCAG 2.2.2, hidden until the video is playing). -->
-      <div class="sb-hero__foot">
-        <p class="sb-hero__credit">Gameplay captured from SpeedBreaker on macOS on an M1&nbsp;Pro chip at 60&nbsp;fps and 1440p.</p>
-        <button type="button" class="sb-hero__toggle" aria-label="Pause video" hidden>
-          <svg class="sb-hero__toggle-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-          <svg class="sb-hero__toggle-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>
-        </button>
+        <!-- Along the hero's bottom edge, clear of the text: the capture facts (left) and
+             the pause button (right; WCAG 2.2.2, hidden until the video is playing). -->
+        <div class="sb-hero__foot">
+          <p class="sb-hero__credit">Gameplay captured from SpeedBreaker on macOS on an M1&nbsp;Pro chip at 60&nbsp;fps and 1440p.</p>
+          <button type="button" class="sb-hero__toggle" aria-label="Pause video" hidden>
+            <svg class="sb-hero__toggle-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg class="sb-hero__toggle-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
+        </div>
       </div>
+      <!-- /layer:mw -->
+
+      <!-- layer:carbon -->
+      <div class="sb-hero__layer sb-hero__layer--carbon is-blade" data-game-layer="carbon" inert aria-hidden="true">
+        <div class="sb-hero__media">
+          <picture class="sb-hero__still">
+            <source media="(orientation: portrait), (max-width: 600px)"
+                    srcset="/assets/images/speedbreaker/sb-carbon-hero-portrait-720.jpg"
+                    width="720" height="960">
+            <img src="/assets/images/speedbreaker/sb-carbon-hero-21x9-2400.jpg"
+                 srcset="/assets/images/speedbreaker/sb-carbon-hero-21x9-1280.jpg 1280w, /assets/images/speedbreaker/sb-carbon-hero-21x9-2400.jpg 2400w"
+                 sizes="400px" data-sizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
+                 width="2400" height="1028" fetchpriority="low" decoding="async"
+                 alt="SpeedBreaker: Carbon gameplay: a silver and blue BMW M3 GTR sliding sideways in a cloud of tyre smoke, in front of the night lights of Palmont City">
+          </picture>
+          <video class="sb-hero__video" muted loop playsinline preload="none"
+                 disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
+        </div>
+
+        <div class="container sb-hero__head">
+          <h1 class="sb-hero__title" tabindex="-1">SpeedBreaker<span class="sb-hero__title-game"><span class="sb-sr">: </span>Carbon</span></h1>
+          <p class="sb-hero__tagline">Carbon, the way you remember it.</p>
+          <p class="sb-hero__pitch">The definitive Need for Speed: Carbon recompilation.<span class="sb-hero__pitch-more"> Built from the 2006 Xbox 360 version, out on its 20th anniversary, and made sharper and wider for the modern era.</span></p>
+        </div>
+
+        <!-- No credit line until Carbon's video arrives; the pause button is ready for it. -->
+        <div class="sb-hero__foot">
+          <button type="button" class="sb-hero__toggle" aria-label="Pause video" hidden>
+            <svg class="sb-hero__toggle-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg class="sb-hero__toggle-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- /layer:carbon -->
+
+      <!-- The blade's lit edge (a slightly larger triangle under the blade, in the blade
+           game's colour, with a highlight gliding along it), then the link over the blade:
+           its whole triangle is the hit area, and it is a real link to the other game's
+           page, so it works without script, opens in a new tab and shows where it goes.
+           With script, a click, Enter or Space sweeps instead. The script keeps its name,
+           label and address pointing at whichever game waits in the corner. -->
+      <div class="sb-edge" aria-hidden="true"></div>
+      <a class="sb-blade" id="sb-blade" href="/speedbreaker/carbon/" aria-label="Switch to SpeedBreaker: Carbon">
+        <span class="sb-blade__label"><span class="sb-blade__name">Carbon</span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 3 3 13M5 3h8v8"/></svg>
+        </span>
+      </a>
     </header>
 
-    <!-- Steam hardware -->
+    <!-- Two games, one page: from here down, both games share each section's layout and
+         most of its words. What differs is written twice with data-only="mw" or
+         data-only="carbon" (css: the other game's copy is display: none, so each page reads
+         right without script); a section that only one game has carries data-only itself.
+         Keep the pairs side by side so an edit to one shows the other.
+
+         Steam hardware: the same for both games -->
     <section class="sb-section sb-section--alt sb-steam sb-speedlines" id="steam" aria-labelledby="steam-title">
       <div class="container">
         <div class="sb-section__header">
@@ -137,21 +228,21 @@
         <ul class="sb-devices" role="list">
           <li class="sb-device">
             <span class="sb-device__icon" aria-hidden="true">
-              <img src="../assets/images/speedbreaker/icons/steam-deck.svg" alt="" width="48" height="48" decoding="async">
+              <img src="/assets/images/speedbreaker/icons/steam-deck.svg" alt="" width="48" height="48" decoding="async">
             </span>
             <h3 class="sb-device__name">Steam Deck</h3>
             <p class="sb-device__text">In your hands, with the built&#8209;in controls.</p>
           </li>
           <li class="sb-device">
             <span class="sb-device__icon" aria-hidden="true">
-              <img src="../assets/images/speedbreaker/icons/steam-machine.svg" alt="" width="48" height="48" decoding="async">
+              <img src="/assets/images/speedbreaker/icons/steam-machine.svg" alt="" width="48" height="48" decoding="async">
             </span>
             <h3 class="sb-device__name">Steam Machine</h3>
             <p class="sb-device__text">On your TV or monitor. Ultrawide shows more road.</p>
           </li>
           <li class="sb-device">
             <span class="sb-device__icon" aria-hidden="true">
-              <img src="../assets/images/speedbreaker/icons/steam-frame.svg" alt="" width="48" height="48" decoding="async">
+              <img src="/assets/images/speedbreaker/icons/steam-frame.svg" alt="" width="48" height="48" decoding="async">
             </span>
             <h3 class="sb-device__name">Steam Frame</h3>
             <p class="sb-device__text">A giant flat screen in the headset. Not VR.</p>
@@ -175,7 +266,8 @@
         <div class="sb-section__header">
           <p class="sb-label">Why SpeedBreaker</p>
           <h2 class="sb-title" id="why-title">Better than you remember it</h2>
-          <p class="sb-lead">The golden-hour haze. The Blacklist. Pursuits that never let up, and every live-action cutscene. It's all here, the way the Xbox 360 drew it, with a few modern comforts on top.</p>
+          <p class="sb-lead" data-only="mw">The golden-hour haze. The Blacklist. Pursuits that never let up, and every live-action cutscene. It's all here, the way the Xbox 360 drew it, with a few modern comforts on top.</p>
+          <p class="sb-lead" data-only="carbon">Palmont after dark. Canyon duels. Your crew at your side, and every cutscene. It's all here, the way the Xbox 360 drew it, with a few modern comforts on top.</p>
         </div>
 
         <ul class="sb-perks" role="list">
@@ -183,29 +275,33 @@
             <span class="sb-perk__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
             </span>
-            <h3 class="sb-perk__title">60 fps, and up to 120</h3>
-            <p class="sb-perk__text">The game's full 60, paced to your display. With a 120&nbsp;Hz screen on a Mac or a SteamOS or Linux PC, Smooth Motion draws up to 120. Prefer a steady 30? It's a setting.</p>
+            <h3 class="sb-perk__title"><span data-only="mw">60 fps, and up to 120</span><span data-only="carbon">A steady 60 fps</span></h3>
+            <p class="sb-perk__text" data-only="mw">The game's full 60, paced to your display. With a 120&nbsp;Hz screen on a Mac or a SteamOS or Linux PC, Smooth Motion draws up to 120. Prefer a steady 30? It's a setting.</p>
+            <p class="sb-perk__text" data-only="carbon">The game's full 60, paced to your display, with the movies timed as on the console. Prefer a steady 30? It's a setting.</p>
           </li>
           <li class="sb-perk">
             <span class="sb-perk__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="6" width="21" height="12" rx="2"/><path d="M6.5 12h11"/><path d="M9 9.5 6.5 12 9 14.5"/><path d="m15 9.5 2.5 2.5-2.5 2.5"/></svg>
             </span>
             <h3 class="sb-perk__title">Every screen shape</h3>
-            <p class="sb-perk__text">Ultrawide shows more road; a 4:3 iPad, more above and below. Nothing stretched.</p>
+            <p class="sb-perk__text" data-only="mw">Ultrawide shows more road; a 4:3 iPad, more above and below. Nothing stretched.</p>
+            <p class="sb-perk__text" data-only="carbon">Ultrawide shows more road; the Steam Deck's 16:10, more above and below. Nothing stretched.</p>
           </li>
           <li class="sb-perk">
             <span class="sb-perk__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
             </span>
             <h3 class="sb-perk__title">Sharp, and true to the original</h3>
-            <p class="sb-perk__text">Up to 4K, with the original colours, reflections and low-sun glare.</p>
+            <p class="sb-perk__text" data-only="mw">Up to 4K, with the original colours, reflections and low-sun glare.</p>
+            <p class="sb-perk__text" data-only="carbon">Up to 4K, with the original colours and the nitrous light trails at full length.</p>
           </li>
           <li class="sb-perk">
             <span class="sb-perk__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15.5V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v1.5"/><path d="M1 19h12"/><rect x="15" y="9.5" width="7.5" height="11.5" rx="1.5"/></svg>
             </span>
             <h3 class="sb-perk__title">On the devices you own</h3>
-            <p class="sb-perk__text">Steam Deck, Steam Machine, Steam Frame, Linux PCs and Macs, plus iPhone and iPad.</p>
+            <p class="sb-perk__text" data-only="mw">Steam Deck, Steam Machine, Steam Frame, Linux PCs and Macs, plus iPhone and iPad.</p>
+            <p class="sb-perk__text" data-only="carbon">Steam Deck, Steam Machine, Steam Frame, Linux PCs and Macs. More to come.</p>
           </li>
           <li class="sb-perk">
             <span class="sb-perk__icon" aria-hidden="true">
@@ -218,8 +314,9 @@
             <span class="sb-perk__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10a5 5 0 0 1 4.9 6l-.8 3.6a2.4 2.4 0 0 1-4.1 1.1L15.3 16H8.7L7 17.7a2.4 2.4 0 0 1-4.1-1.1L2.1 13A5 5 0 0 1 7 7z"/><path d="M7.5 10v3M6 11.5h3"/><path d="M15.5 10.5h.01M17.5 12.5h.01" stroke-width="3"/></svg>
             </span>
-            <h3 class="sb-perk__title">Race a friend, side by side</h3>
-            <p class="sb-perk__text">The Xbox 360's two-player split screen is back: two controllers, one screen. Any controller plays like an Xbox 360 pad, rumble included, and steering wheels work too (experimental).</p>
+            <h3 class="sb-perk__title"><span data-only="mw">Race a friend, side by side</span><span data-only="carbon">Your controller, or the keyboard</span></h3>
+            <p class="sb-perk__text" data-only="mw">The Xbox 360's two-player split screen is back: two controllers, one screen. Any controller plays like an Xbox 360 pad, rumble included, and steering wheels work too (experimental).</p>
+            <p class="sb-perk__text" data-only="carbon">Any controller plays like an Xbox 360 pad, rumble included, and every keyboard key can be reassigned.</p>
           </li>
         </ul>
       </div>
@@ -237,12 +334,14 @@
           <li class="sb-step">
             <span class="sb-step__num" aria-hidden="true">1</span>
             <h3 class="sb-step__title"><span class="sb-sr">Step 1: </span>Back up your disc</h3>
-            <p class="sb-step__text">Make a disc image of your own Xbox 360 copy (the USA release, or the Spanish PAL one). SpeedBreaker comes with no game files.</p>
+            <p class="sb-step__text" data-only="mw">Make a disc image of your own Xbox 360 copy (the USA release, or the Spanish PAL one). SpeedBreaker comes with no game files.</p>
+            <p class="sb-step__text" data-only="carbon">Make a disc image of your own Xbox 360 copy of the USA Collector's Edition. SpeedBreaker: Carbon comes with no game files.</p>
           </li>
           <li class="sb-step">
             <span class="sb-step__num" aria-hidden="true">2</span>
-            <h3 class="sb-step__title"><span class="sb-sr">Step 2: </span>Download SpeedBreaker</h3>
-            <p class="sb-step__text">Get it for Steam Deck, Steam Machine, Steam Frame, Linux or Mac. On iPhone and iPad, sideload the experimental IPA or build it yourself.</p>
+            <h3 class="sb-step__title"><span class="sb-sr">Step 2: </span>Download SpeedBreaker<span data-only="carbon">: Carbon</span></h3>
+            <p class="sb-step__text" data-only="mw">Get it for Steam Deck, Steam Machine, Steam Frame, Linux or Mac. On iPhone and iPad, sideload the experimental IPA or build it yourself.</p>
+            <p class="sb-step__text" data-only="carbon">Get it for Steam Deck, Steam Machine, Steam Frame, Linux or Mac.</p>
           </li>
           <li class="sb-step">
             <span class="sb-step__num" aria-hidden="true">3</span>
@@ -252,13 +351,16 @@
         </ol>
 
         <p class="sb-more">
-          <a href="https://github.com/SpeedBreakerProject/speedbreaker#setup-by-platform" class="sb-text-link" target="_blank" rel="noopener noreferrer">Step-by-step setup for each device <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://github.com/SpeedBreakerProject/speedbreaker#setup-by-platform" class="sb-text-link" target="_blank" rel="noopener noreferrer" data-only="mw">Step-by-step setup for each device <span aria-hidden="true">&rarr;</span></a>
+          <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon#setup-by-platform" class="sb-text-link" target="_blank" rel="noopener noreferrer" data-only="carbon">Step-by-step setup for each device <span aria-hidden="true">&rarr;</span></a>
         </p>
       </div>
     </section>
 
-    <!-- Screenshots -->
-    <section class="sb-section" id="screens" aria-labelledby="screens-title">
+    <!-- Screenshots: Most Wanted's only, for now. Carbon's gallery waits for the operator's
+         picks from carbon/launch/screenshots (contact-sheet.jpg); give it its own copy of
+         this section with data-only="carbon" then. -->
+    <section class="sb-section" id="screens" aria-labelledby="screens-title" data-only="mw">
       <div class="container">
         <div class="sb-section__header">
           <p class="sb-label">Screenshots</p>
@@ -270,8 +372,8 @@
           <!-- The feature is the chase cam (the operator's pick, 2026-10-05); its src is
                the full 2400 file because the lightbox opens img.src. -->
           <figure class="sb-tile sb-tile--feature" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-hero-chase-cam-ultrawide.jpg"
-                 srcset="../assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-960.jpg 960w, ../assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-1600.jpg 1600w, ../assets/images/speedbreaker/sb-hero-chase-cam-ultrawide.jpg 2400w"
+            <img src="/assets/images/speedbreaker/sb-hero-chase-cam-ultrawide.jpg"
+                 srcset="/assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-1600.jpg 1600w, /assets/images/speedbreaker/sb-hero-chase-cam-ultrawide.jpg 2400w"
                  sizes="(max-width: 1120px) calc(100vw - 48px), 1072px"
                  width="2400" height="1005" loading="lazy" decoding="async"
                  alt="Chase cam, 21:9: the camera behind the player's car, nitrous lit, heading into the setting sun">
@@ -279,8 +381,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-01-rivals-ultrawide.jpg"
-                 srcset="../assets/images/speedbreaker/sb-01-rivals-ultrawide-960.jpg 960w, ../assets/images/speedbreaker/sb-01-rivals-ultrawide.jpg 1920w"
+            <img src="/assets/images/speedbreaker/sb-01-rivals-ultrawide.jpg"
+                 srcset="/assets/images/speedbreaker/sb-01-rivals-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sb-01-rivals-ultrawide.jpg 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="804" loading="lazy" decoding="async"
                  alt="Intro cinematic, 21:9: two cars side by side">
@@ -288,8 +390,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-x4-sun-glare-ultrawide.jpg"
-                 srcset="../assets/images/speedbreaker/sb-x4-sun-glare-ultrawide-960.jpg 960w, ../assets/images/speedbreaker/sb-x4-sun-glare-ultrawide.jpg 1920w"
+            <img src="/assets/images/speedbreaker/sb-x4-sun-glare-ultrawide.jpg"
+                 srcset="/assets/images/speedbreaker/sb-x4-sun-glare-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sb-x4-sun-glare-ultrawide.jpg 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="804" loading="lazy" decoding="async"
                  alt="Sun glare, 21:9: a car sliding along a wall toward a low sun, throwing sparks, with the race HUD">
@@ -297,8 +399,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-04-pursuit-crash-4k.jpg"
-                 srcset="../assets/images/speedbreaker/sb-04-pursuit-crash-4k-960.jpg 960w, ../assets/images/speedbreaker/sb-04-pursuit-crash-4k.jpg 1920w"
+            <img src="/assets/images/speedbreaker/sb-04-pursuit-crash-4k.jpg"
+                 srcset="/assets/images/speedbreaker/sb-04-pursuit-crash-4k-960.jpg 960w, /assets/images/speedbreaker/sb-04-pursuit-crash-4k.jpg 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="1080" loading="lazy" decoding="async"
                  alt="Pursuit, 4K: police cars crashing into a barrier in a shower of sparks">
@@ -306,8 +408,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-03-flame-livery-4x3.jpg"
-                 srcset="../assets/images/speedbreaker/sb-03-flame-livery-4x3-960.jpg 960w, ../assets/images/speedbreaker/sb-03-flame-livery-4x3.jpg 1920w"
+            <img src="/assets/images/speedbreaker/sb-03-flame-livery-4x3.jpg"
+                 srcset="/assets/images/speedbreaker/sb-03-flame-livery-4x3-960.jpg 960w, /assets/images/speedbreaker/sb-03-flame-livery-4x3.jpg 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="1439" loading="lazy" decoding="async"
                  alt="iPad shape, 4:3: a close side view of a black car with a flame livery">
@@ -315,8 +417,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-02-car-closeup-ultrawide.jpg"
-                 srcset="../assets/images/speedbreaker/sb-02-car-closeup-ultrawide-960.jpg 960w, ../assets/images/speedbreaker/sb-02-car-closeup-ultrawide.jpg 1920w"
+            <img src="/assets/images/speedbreaker/sb-02-car-closeup-ultrawide.jpg"
+                 srcset="/assets/images/speedbreaker/sb-02-car-closeup-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sb-02-car-closeup-ultrawide.jpg 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="804" loading="lazy" decoding="async"
                  alt="Cinematic, 21:9: a close-up of the front of a silver and blue sports car, with a police chase behind it">
@@ -324,8 +426,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-10-settings-graphics-4k.png"
-                 srcset="../assets/images/speedbreaker/sb-10-settings-graphics-4k-960.jpg 960w, ../assets/images/speedbreaker/sb-10-settings-graphics-4k.png 1920w"
+            <img src="/assets/images/speedbreaker/sb-10-settings-graphics-4k.png"
+                 srcset="/assets/images/speedbreaker/sb-10-settings-graphics-4k-960.jpg 960w, /assets/images/speedbreaker/sb-10-settings-graphics-4k.png 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="1080" loading="lazy" decoding="async"
                  alt="Settings, live: SpeedBreaker's settings menu over a paused race, on the Graphics page">
@@ -333,8 +435,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-11-installer-image-found.png"
-                 srcset="../assets/images/speedbreaker/sb-11-installer-image-found-960.jpg 960w, ../assets/images/speedbreaker/sb-11-installer-image-found.png 1920w"
+            <img src="/assets/images/speedbreaker/sb-11-installer-image-found.png"
+                 srcset="/assets/images/speedbreaker/sb-11-installer-image-found-960.jpg 960w, /assets/images/speedbreaker/sb-11-installer-image-found.png 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="1200" loading="lazy" decoding="async"
                  alt="Installer: disc found. SpeedBreaker's first-run installer shows a disc image it found, ready to install">
@@ -342,8 +444,8 @@
           </figure>
 
           <figure class="sb-tile" data-lightbox-app>
-            <img src="../assets/images/speedbreaker/sb-12-installer-verified.png"
-                 srcset="../assets/images/speedbreaker/sb-12-installer-verified-960.jpg 960w, ../assets/images/speedbreaker/sb-12-installer-verified.png 1920w"
+            <img src="/assets/images/speedbreaker/sb-12-installer-verified.png"
+                 srcset="/assets/images/speedbreaker/sb-12-installer-verified-960.jpg 960w, /assets/images/speedbreaker/sb-12-installer-verified.png 1920w"
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="1200" loading="lazy" decoding="async"
                  alt="Every file checked: SpeedBreaker's installer has finished, and every file matched the known-good disc">
@@ -358,16 +460,28 @@
          Inside each link the DOM order is name, pill, info, so a screen reader hears
          "Steam Deck, Download, ..." once; the grid puts the pill top-right visually.
          Each card's info says what that device needs, not what the Steam section said.
+         Each game has its own list (data-only): its own downloads and its own notes.
          .sb-platform__logo is one fixed 48px slot per card, aria-hidden (the name is
          right there). Steam devices: Valve's own icon files, never recoloured.
          Linux (Tux), Apple, iOS, Windows and Android: the operator's request (2026-10-05),
-         inline so they take the text colour (fill="currentColor"). Path data is Simple
-         Icons 16.34.0 (CC0 SVG data), unmodified; the marks are their owners' (see the
-         Legal & credits page, legal/, which carries the Tux and Android robot credits).
-         To replace one: swap the <svg> inside its slot for another <svg fill="currentColor">
-         or an <img src="..." alt="" width="28" height="28">; the slot draws either at 28px.
+         inline so they take the text colour (fill="currentColor"). Since both lists draw
+         them, each mark's path is written once, as a <symbol> in the hidden sprite just
+         below, and each slot draws it with <use>. Path data is Simple Icons 16.34.0 (CC0
+         SVG data), unmodified; the marks are their owners' (see the Legal & credits page,
+         legal/, which carries the Tux and Android robot credits).
+         To replace one: change its <symbol> (it then changes in both lists), or swap the
+         <svg> inside one slot for another <svg fill="currentColor"> or an
+         <img src="..." alt="" width="28" height="28">; the slot draws either at 28px.
          An <img> keeps the file's own colours, so a black mark needs a light fill here. -->
     <section class="sb-section sb-section--alt sb-speedlines" id="platforms" aria-labelledby="platforms-title">
+      <svg class="sb-sprite" aria-hidden="true" focusable="false">
+        <symbol id="sb-i-tux" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336zm7.159-9.074c-.435.201-.945.535-1.488.535-.542 0-.97-.267-1.28-.466-.154-.134-.28-.268-.373-.335-.164-.134-.144-.333-.074-.333.109.016.129.134.199.2.096.066.215.2.36.333.292.2.68.467 1.167.467.485 0 1.053-.267 1.398-.466.195-.135.445-.334.648-.467.156-.136.149-.267.279-.267.128.016.034.134-.147.332a8.097 8.097 0 01-.69.468zm-1.082-1.583V5.64c-.006-.02.013-.042.029-.05.074-.043.18-.027.26.004.063 0 .16.067.15.135-.006.049-.085.066-.135.066-.055 0-.092-.043-.141-.068-.052-.018-.146-.008-.163-.065zm-.551 0c-.02.058-.113.049-.166.066-.047.025-.086.068-.14.068-.05 0-.13-.02-.136-.068-.01-.066.088-.133.15-.133.08-.031.184-.047.259-.005.019.009.036.03.03.05v.02h.003z"/></symbol>
+        <symbol id="sb-i-apple" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+        <symbol id="sb-i-ios" viewBox="0 0 24 24"><path d="M1.1 6.05C.486 6.05 0 6.53 0 7.13A1.08 1.08 0 0 0 1.1 8.21C1.72 8.21 2.21 7.73 2.21 7.13C2.21 6.53 1.72 6.05 1.1 6.05M8.71 6.07C5.35 6.07 3.25 8.36 3.25 12C3.25 15.67 5.35 17.95 8.71 17.95C12.05 17.95 14.16 15.67 14.16 12C14.16 8.36 12.05 6.07 8.71 6.07M19.55 6.07C17.05 6.07 15.27 7.45 15.27 9.5C15.27 11.13 16.28 12.15 18.4 12.64L19.89 13C21.34 13.33 21.93 13.81 21.93 14.64C21.93 15.6 20.96 16.28 19.58 16.28C18.17 16.28 17.11 15.59 17 14.53H15C15.08 16.65 16.82 17.95 19.46 17.95C22.25 17.95 24 16.58 24 14.4C24 12.69 23 11.72 20.68 11.19L19.35 10.89C17.94 10.55 17.36 10.1 17.36 9.34C17.36 8.38 18.24 7.74 19.54 7.74C20.85 7.74 21.75 8.39 21.85 9.46H23.81C23.76 7.44 22.09 6.07 19.55 6.07M8.71 7.82C10.75 7.82 12.06 9.45 12.06 12C12.06 14.57 10.75 16.2 8.71 16.2C6.65 16.2 5.35 14.57 5.35 12C5.35 9.45 6.65 7.82 8.71 7.82M.111 9.31V17.76H2.1V9.31H.11Z"/></symbol>
+        <symbol id="sb-i-windows" viewBox="0 0 24 24"><path d="M0,0H11.377V11.372H0ZM12.623,0H24V11.372H12.623ZM0,12.623H11.377V24H0Zm12.623,0H24V24H12.623"/></symbol>
+        <symbol id="sb-i-android" viewBox="0 0 24 24"><path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></symbol>
+        <symbol id="sb-i-dl" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></symbol>
+      </svg>
       <div class="container">
         <div class="sb-section__header">
           <p class="sb-label">Platforms</p>
@@ -375,61 +489,61 @@
           <p class="sb-lead">Every device, and what it needs.</p>
         </div>
 
-        <ul class="sb-platforms" role="list">
+        <ul class="sb-platforms" role="list" data-only="mw">
           <li class="sb-platform sb-platform--steam">
             <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest/download/SpeedBreaker-steamos-x86_64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
-                <img src="../assets/images/speedbreaker/icons/steam-deck.svg" alt="" width="28" height="28" decoding="async">
+                <img src="/assets/images/speedbreaker/icons/steam-deck.svg" alt="" width="28" height="28" decoding="async">
               </span>
               <h3 class="sb-platform__name">Steam Deck</h3>
-              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download</span>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
               <p class="sb-platform__text">On a Deck OLED, set the screen to 60&nbsp;Hz for smooth motion. Tested on the OLED, not yet the LCD.</p>
             </a>
           </li>
           <li class="sb-platform sb-platform--steam">
             <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest/download/SpeedBreaker-steamos-x86_64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
-                <img src="../assets/images/speedbreaker/icons/steam-machine.svg" alt="" width="28" height="28" decoding="async">
+                <img src="/assets/images/speedbreaker/icons/steam-machine.svg" alt="" width="28" height="28" decoding="async">
               </span>
               <h3 class="sb-platform__name">Steam Machine</h3>
-              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download</span>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
               <p class="sb-platform__text">In Steam, set its Game Resolution to Native. Tested on a 3440&times;1440 ultrawide, which shows more road.</p>
             </a>
           </li>
           <li class="sb-platform sb-platform--steam">
             <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest/download/SpeedBreaker-steamos-arm64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
-                <img src="../assets/images/speedbreaker/icons/steam-frame.svg" alt="" width="28" height="28" decoding="async">
+                <img src="/assets/images/speedbreaker/icons/steam-frame.svg" alt="" width="28" height="28" decoding="async">
               </span>
               <h3 class="sb-platform__name">Steam Frame</h3>
-              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download</span>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
               <p class="sb-platform__text">Set Frame Rate to 30&nbsp;fps for the smoothest ride in the headset. A flat screen, not VR. Its own version, for the Frame only.</p>
             </a>
           </li>
           <li class="sb-platform">
             <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest/download/SpeedBreaker-steamos-x86_64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336zm7.159-9.074c-.435.201-.945.535-1.488.535-.542 0-.97-.267-1.28-.466-.154-.134-.28-.268-.373-.335-.164-.134-.144-.333-.074-.333.109.016.129.134.199.2.096.066.215.2.36.333.292.2.68.467 1.167.467.485 0 1.053-.267 1.398-.466.195-.135.445-.334.648-.467.156-.136.149-.267.279-.267.128.016.034.134-.147.332a8.097 8.097 0 01-.69.468zm-1.082-1.583V5.64c-.006-.02.013-.042.029-.05.074-.043.18-.027.26.004.063 0 .16.067.15.135-.006.049-.085.066-.135.066-.055 0-.092-.043-.141-.068-.052-.018-.146-.008-.163-.065zm-.551 0c-.02.058-.113.049-.166.066-.047.025-.086.068-.14.068-.05 0-.13-.02-.136-.068-.01-.066.088-.133.15-.133.08-.031.184-.047.259-.005.019.009.036.03.03.05v.02h.003z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-tux"/></svg>
               </span>
               <h3 class="sb-platform__name">Linux PC</h3>
-              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download</span>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
               <p class="sb-platform__text">An Intel or AMD processor with AVX2, and Vulkan&nbsp;1.2 graphics. Tested on SteamOS; players report Fedora and Ubuntu working&nbsp;too.</p>
             </a>
           </li>
           <li class="sb-platform">
             <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest/download/SpeedBreaker-macos.dmg" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-apple"/></svg>
               </span>
               <h3 class="sb-platform__name">Mac</h3>
-              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download</span>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
               <p class="sb-platform__text">Apple silicon, macOS 15 or later. Not notarized by Apple yet: allow it in Privacy&nbsp;&amp;&nbsp;Security.</p>
             </a>
           </li>
           <li class="sb-platform">
             <a href="https://github.com/SpeedBreakerProject/speedbreaker#iphone-and-ipad" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M1.1 6.05C.486 6.05 0 6.53 0 7.13A1.08 1.08 0 0 0 1.1 8.21C1.72 8.21 2.21 7.73 2.21 7.13C2.21 6.53 1.72 6.05 1.1 6.05M8.71 6.07C5.35 6.07 3.25 8.36 3.25 12C3.25 15.67 5.35 17.95 8.71 17.95C12.05 17.95 14.16 15.67 14.16 12C14.16 8.36 12.05 6.07 8.71 6.07M19.55 6.07C17.05 6.07 15.27 7.45 15.27 9.5C15.27 11.13 16.28 12.15 18.4 12.64L19.89 13C21.34 13.33 21.93 13.81 21.93 14.64C21.93 15.6 20.96 16.28 19.58 16.28C18.17 16.28 17.11 15.59 17 14.53H15C15.08 16.65 16.82 17.95 19.46 17.95C22.25 17.95 24 16.58 24 14.4C24 12.69 23 11.72 20.68 11.19L19.35 10.89C17.94 10.55 17.36 10.1 17.36 9.34C17.36 8.38 18.24 7.74 19.54 7.74C20.85 7.74 21.75 8.39 21.85 9.46H23.81C23.76 7.44 22.09 6.07 19.55 6.07M8.71 7.82C10.75 7.82 12.06 9.45 12.06 12C12.06 14.57 10.75 16.2 8.71 16.2C6.65 16.2 5.35 14.57 5.35 12C5.35 9.45 6.65 7.82 8.71 7.82M.111 9.31V17.76H2.1V9.31H.11Z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-ios"/></svg>
               </span>
               <h3 class="sb-platform__name">iPhone &amp; iPad</h3>
               <span class="sb-chip sb-chip--diy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>Sideload or build</span>
@@ -442,26 +556,104 @@
             <span class="sb-chip sb-chip--soon" aria-hidden="true">Coming soon</span>
             <div class="sb-soon">
               <span class="sb-platform__logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M0,0H11.377V11.372H0ZM12.623,0H24V11.372H12.623ZM0,12.623H11.377V24H0Zm12.623,0H24V24H12.623"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-windows"/></svg>
               </span>
               <h3 class="sb-soon__name">Windows<span class="sb-sr">, coming soon</span></h3>
             </div>
             <div class="sb-soon">
               <span class="sb-platform__logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-android"/></svg>
               </span>
               <h3 class="sb-soon__name">Android<span class="sb-sr">, coming soon</span></h3>
             </div>
           </li>
         </ul>
+        <ul class="sb-platforms" role="list" data-only="carbon">
+          <li class="sb-platform sb-platform--steam">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases/latest/download/SpeedBreaker-Carbon-steamos-x86_64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <img src="/assets/images/speedbreaker/icons/steam-deck.svg" alt="" width="28" height="28" decoding="async">
+              </span>
+              <h3 class="sb-platform__name">Steam Deck</h3>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
+              <p class="sb-platform__text">On a Deck OLED, set the screen to 60&nbsp;Hz for smooth motion, and leave the Framerate Limit off.</p>
+            </a>
+          </li>
+          <li class="sb-platform sb-platform--steam">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases/latest/download/SpeedBreaker-Carbon-steamos-x86_64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <img src="/assets/images/speedbreaker/icons/steam-machine.svg" alt="" width="28" height="28" decoding="async">
+              </span>
+              <h3 class="sb-platform__name">Steam Machine</h3>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
+              <p class="sb-platform__text">In Steam, set its Game Resolution to Native. Ultrawide shows more road.</p>
+            </a>
+          </li>
+          <li class="sb-platform sb-platform--steam">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases/latest/download/SpeedBreaker-Carbon-steamos-arm64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <img src="/assets/images/speedbreaker/icons/steam-frame.svg" alt="" width="28" height="28" decoding="async">
+              </span>
+              <h3 class="sb-platform__name">Steam Frame</h3>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
+              <p class="sb-platform__text">A flat screen in the headset, not VR. Its own version, for the Frame only.</p>
+            </a>
+          </li>
+          <li class="sb-platform">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases/latest/download/SpeedBreaker-Carbon-steamos-x86_64.tar.xz" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-tux"/></svg>
+              </span>
+              <h3 class="sb-platform__name">Linux PC</h3>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
+              <p class="sb-platform__text">An Intel or AMD processor with AVX2, and Vulkan&nbsp;1.2 graphics. Tested on SteamOS; reports from other distributions are welcome.</p>
+            </a>
+          </li>
+          <li class="sb-platform">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases/latest/download/SpeedBreaker-Carbon-macos.dmg" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-apple"/></svg>
+              </span>
+              <h3 class="sb-platform__name">Mac</h3>
+              <span class="sb-chip sb-chip--go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#sb-i-dl"/></svg>Download</span>
+              <p class="sb-platform__text">Apple silicon, macOS 15 or later. Not notarized by Apple yet: allow it in Privacy&nbsp;&amp;&nbsp;Security.</p>
+            </a>
+          </li>
+          <!-- Not links: Carbon's versions for these come later (its README says "Coming
+               soon" for Windows, iPhone and iPad). The same strip as Most Wanted's. -->
+          <li class="sb-platform sb-platform--soon">
+            <span class="sb-chip sb-chip--soon" aria-hidden="true">Later</span>
+            <div class="sb-soon">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-ios"/></svg>
+              </span>
+              <h3 class="sb-soon__name">iPhone &amp; iPad<span class="sb-sr">, later</span></h3>
+            </div>
+            <div class="sb-soon">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-windows"/></svg>
+              </span>
+              <h3 class="sb-soon__name">Windows<span class="sb-sr">, later</span></h3>
+            </div>
+            <div class="sb-soon">
+              <span class="sb-platform__logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-android"/></svg>
+              </span>
+              <h3 class="sb-soon__name">Android<span class="sb-sr">, later</span></h3>
+            </div>
+          </li>
+        </ul>
         <p class="sb-dl-all">
-          <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest" target="_blank" rel="noopener noreferrer">All downloads and checksums</a>
+          <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases/latest" target="_blank" rel="noopener noreferrer" data-only="mw">All downloads and checksums</a>
+          <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases/latest" target="_blank" rel="noopener noreferrer" data-only="carbon">All downloads and checksums</a>
         </p>
       </div>
     </section>
 
     <!-- FAQ -->
     <section class="sb-section" id="faq" aria-labelledby="faq-title">
+      <!-- Questions both games answer the same way are written once; the rest come in
+         pairs (data-only), or only on the game they apply to. -->
       <div class="container sb-faq-wrap">
         <div class="sb-section__header">
           <p class="sb-label">FAQ</p>
@@ -484,7 +676,8 @@
           <details class="sb-details">
             <summary>Which copy of the game do I need?</summary>
             <div class="sb-details__body">
-              <p>The USA Xbox 360 disc (English), or since v0.2.0 the European PAL disc with Spanish movies and speech. The installer checks your copy and says which one it found. Other European discs, such as the German one, and Japanese discs aren't supported yet: each region's disc has its own version of the game's program, and SpeedBreaker has to be prepared for each one before it can run it.</p>
+              <p data-only="carbon">The USA Collector's Edition for Xbox 360: its case and cover say Collector's Edition. The standard edition, other regions, Games on Demand and the PC version aren't supported yet; the installer checks your copy and tells you. <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon#which-copy-do-i-need" class="sb-text-link" target="_blank" rel="noopener noreferrer">Which copy do I need?</a></p>
+              <p data-only="mw">The USA Xbox 360 disc (English), or since v0.2.0 the European PAL disc with Spanish movies and speech. The installer checks your copy and says which one it found. Other European discs, such as the German one, and Japanese discs aren't supported yet: each region's disc has its own version of the game's program, and SpeedBreaker has to be prepared for each one before it can run it.</p>
             </div>
           </details>
           <details class="sb-details">
@@ -496,7 +689,8 @@
           <details class="sb-details">
             <summary>Can it run above 60 fps?</summary>
             <div class="sb-details__body">
-              <p>On a Mac with a 120&nbsp;Hz screen, or a SteamOS or Linux PC at 120 or 90&nbsp;Hz, yes: turn on Smooth Motion (Settings › Display, then restart the game) for up to 120 fps. Most Wanted's physics, AI and timers are built around 60 steps a second, so SpeedBreaker keeps those at 60 and draws an extra picture between each two, which keeps the gameplay exactly as it is. In very heavy scenes it eases off, down to an even 60 for a moment. The Steam Deck stays at a steady 60, and Windows is 60 for now.</p>
+              <p data-only="carbon">Not yet. SpeedBreaker: Carbon runs at a steady 60 (or 30, if you prefer), locked to your display; Smooth Motion, which draws up to 120 in SpeedBreaker for Most Wanted, isn't in this first release. Set a 120&nbsp;Hz screen to 60&nbsp;Hz for the smoothest picture.</p>
+              <p data-only="mw">On a Mac with a 120&nbsp;Hz screen, or a SteamOS or Linux PC at 120 or 90&nbsp;Hz, yes: turn on Smooth Motion (Settings › Display, then restart the game) for up to 120 fps. Most Wanted's physics, AI and timers are built around 60 steps a second, so SpeedBreaker keeps those at 60 and draws an extra picture between each two, which keeps the gameplay exactly as it is. In very heavy scenes it eases off, down to an even 60 for a moment. The Steam Deck stays at a steady 60, and Windows is 60 for now.</p>
             </div>
           </details>
           <details class="sb-details">
@@ -511,7 +705,7 @@
               <p>Not right now. The Mac download needs Apple silicon (M1 or newer) and macOS 15 or later. An Intel Mac version may come later, but there's no Intel Mac to test it on yet. On x86 PCs, SpeedBreaker needs a processor with AVX2: Intel Haswell (2013) or newer, or AMD Excavator or Zen.</p>
             </div>
           </details>
-          <details class="sb-details">
+          <details class="sb-details" data-only="mw">
             <summary>How do I get it on iPhone or iPad?</summary>
             <div class="sb-details__body">
               <p>It isn't on the App Store. Since v0.1.2 each release has an experimental IPA that a sideloading tool such as AltStore signs with your own Apple Account; it hasn't been tried on a device yet, with a paid or a free account, and a free one may not give the game all the memory it asks for. Or build it yourself with Xcode on a Mac. It needs iOS 17 or later (iPhone 13 or newer, or an M&#8209;series iPad) and a controller or keyboard. <a href="https://github.com/SpeedBreakerProject/speedbreaker#iphone-and-ipad" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
@@ -520,22 +714,24 @@
           <details class="sb-details">
             <summary>Can I play in another language?</summary>
             <div class="sb-details__body">
-              <p>Yes. Settings › Game › Language has French, German, Italian, Spanish, Dutch, Swedish, Danish, Polish and Finnish. Menus and race text switch; the movies and voices stay in English, as on the USA disc.</p>
+              <p data-only="carbon">Not yet: the language choice isn't in this first release, so it plays in its disc's language.</p>
+              <p data-only="mw">Yes. Settings › Game › Language has French, German, Italian, Spanish, Dutch, Swedish, Danish, Polish and Finnish. Menus and race text switch; the movies and voices stay in English, as on the USA disc.</p>
             </div>
           </details>
           <details class="sb-details">
             <summary>Does it fill the Steam Deck's screen?</summary>
             <div class="sb-details__body">
-              <p>Yes, since v0.1.1. The Deck's screen is a little taller than the game, so you see a little more above and below, with the HUD where it belongs and nothing stretched. Since v0.1.9 it uses all 1280x800 pixels, so it's sharper too. Prefer the console's 16:9 picture with thin bars? Set Settings › Display › Aspect Ratio to 16:9. On a Deck OLED, set the screen to 60 Hz for smooth motion.</p>
+              <p data-only="carbon">Yes. It fills the Deck's 16:10 screen with a slightly taller view, drawn at all 1280x800 pixels, with the HUD where it belongs and nothing stretched. Prefer the console's 16:9 picture with thin bars? Set Settings › Display › Aspect Ratio to 16:9. On a Deck OLED, set the screen to 60 Hz for smooth motion.</p>
+              <p data-only="mw">Yes, since v0.1.1. The Deck's screen is a little taller than the game, so you see a little more above and below, with the HUD where it belongs and nothing stretched. Since v0.1.9 it uses all 1280x800 pixels, so it's sharper too. Prefer the console's 16:9 picture with thin bars? Set Settings › Display › Aspect Ratio to 16:9. On a Deck OLED, set the screen to 60 Hz for smooth motion.</p>
             </div>
           </details>
-          <details class="sb-details">
+          <details class="sb-details" data-only="mw">
             <summary>Is there something between 1x and 2x?</summary>
             <div class="sb-details__body">
               <p>Yes, since v0.1.2: Settings › Graphics › Internal Resolution › 1.5x renders the 3D scene at 1080p. It's much sharper than 1x for a little over half the pixels of 2x, for graphics that have room above 1x but not for 2x.</p>
             </div>
           </details>
-          <details class="sb-details">
+          <details class="sb-details" data-only="mw">
             <summary>Why does the picture look a little different since v0.1.4?</summary>
             <div class="sb-details__body">
               <p>Since v0.1.4 SpeedBreaker applies the display correction the game itself sets for an Xbox 360 on a TV: slightly deeper shadows and slightly brighter mid-tones, as the console shows them. With it on, the game's own Brightness slider (pause menu › Options › Video) works too. Prefer the earlier, flatter picture? Turn off Settings › Display › Xbox 360 Display Gamma. Settings › Display › Brightness adjusts the picture for your screen or room.</p>
@@ -544,53 +740,66 @@
           <details class="sb-details">
             <summary>How do I quit the game?</summary>
             <div class="sb-details__body">
-              <p>Open the settings menu (F1, Cmd+, on a Mac, or Back + Start on a controller) and choose Quit Game at the bottom; it asks first. On a Mac, Cmd+Q works too. Since v0.1.4, Settings › Display › Fullscreen decides whether the game starts fullscreen or in a window.</p>
+              <p data-only="carbon">Open the settings menu (F1, Cmd+, on a Mac, or Back + Start on a controller) and choose Quit Game at the bottom; it asks first. Settings › Display › Fullscreen decides whether the game starts fullscreen or in a window.</p>
+              <p data-only="mw">Open the settings menu (F1, Cmd+, on a Mac, or Back + Start on a controller) and choose Quit Game at the bottom; it asks first. On a Mac, Cmd+Q works too. Since v0.1.4, Settings › Display › Fullscreen decides whether the game starts fullscreen or in a window.</p>
             </div>
           </details>
           <details class="sb-details">
             <summary>Can I keep everything in one folder?</summary>
             <div class="sb-details__body">
-              <p>Yes, on Steam Deck, Steam Machine and Linux, since v0.1.2. Put an empty file named <code>portable.txt</code> next to <code>speedbreaker.sh</code>, and your saves, settings, caches and the installed game all live in that folder, so you can move or copy it to another machine. To bring what you have now along, run <code>speedbreaker.sh --portable on</code> instead. <a href="https://github.com/SpeedBreakerProject/speedbreaker#steam-deck-and-steam-machine" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
+              <p data-only="carbon">Yes, on Steam Deck, Steam Machine and Linux. Put an empty file named <code>portable.txt</code> next to <code>speedbreaker.sh</code> in the <code>SpeedBreaker-Carbon</code> folder, and your saves, settings, caches and the installed game all live in that folder, so you can move or copy it to another machine. To bring what you have now along, run <code>speedbreaker.sh --portable on</code> instead. <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon#portable-mode" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
+              <p data-only="mw">Yes, on Steam Deck, Steam Machine and Linux, since v0.1.2. Put an empty file named <code>portable.txt</code> next to <code>speedbreaker.sh</code>, and your saves, settings, caches and the installed game all live in that folder, so you can move or copy it to another machine. To bring what you have now along, run <code>speedbreaker.sh --portable on</code> instead. <a href="https://github.com/SpeedBreakerProject/speedbreaker#steam-deck-and-steam-machine" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
             </div>
           </details>
           <details class="sb-details">
             <summary>My laptop has two graphics chips. Which one does it use?</summary>
             <div class="sb-details__body">
-              <p>Since v0.1.2 it picks the dedicated graphics card, and on Linux with NVIDIA's driver the launcher also turns on NVIDIA's PRIME render offload. That isn't confirmed on a real two-GPU laptop yet, so a report from yours helps. To pick another GPU, set <code>NFSMW_GPU</code> in the launch options. <a href="https://github.com/SpeedBreakerProject/speedbreaker#linux" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
+              <p data-only="carbon">The dedicated graphics card, and on Linux with NVIDIA's driver the launcher also turns on NVIDIA's PRIME render offload. To pick another GPU, set <code>NFSMW_GPU</code> in the launch options. <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon#linux" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
+              <p data-only="mw">Since v0.1.2 it picks the dedicated graphics card, and on Linux with NVIDIA's driver the launcher also turns on NVIDIA's PRIME render offload. That isn't confirmed on a real two-GPU laptop yet, so a report from yours helps. To pick another GPU, set <code>NFSMW_GPU</code> in the launch options. <a href="https://github.com/SpeedBreakerProject/speedbreaker#linux" class="sb-text-link" target="_blank" rel="noopener noreferrer">How it works</a></p>
             </div>
           </details>
           <details class="sb-details">
             <summary>Is it VR on the Steam Frame?</summary>
             <div class="sb-details__body">
-              <p>No. It plays on a big flat screen in the headset. For the smoothest ride there, set Display › Frame Rate to 30 fps. The game keeps its full speed.</p>
+              <p data-only="mw">No. It plays on a big flat screen in the headset. For the smoothest ride there, set Display › Frame Rate to 30 fps. The game keeps its full speed.</p>
+              <p data-only="carbon">No. It plays on a big flat screen in the headset. If the picture isn't smooth there, set Display › Frame Rate to 30 fps. The game keeps its full speed.</p>
             </div>
           </details>
           <details class="sb-details">
             <summary>Are my saves kept when I update?</summary>
             <div class="sb-details__body">
               <p>Yes. Your saves, settings and the installed game are kept, and no disc image is needed: on a Mac, drag the new app into Applications and choose Replace; on SteamOS, unpack the new download over the old folder. Settings › Advanced › Check for Updates tells you when a new version is out.</p>
+              <p data-only="carbon">SpeedBreaker: Carbon is its own app with its own saves and settings, so it sits side by side with SpeedBreaker for Most Wanted; neither touches the other.</p>
             </div>
           </details>
           <details class="sb-details">
-            <summary>What about Windows and Android?</summary>
+            <summary><span data-only="mw">What about Windows and Android?</span><span data-only="carbon">What about Windows, iPhone and Android?</span></summary>
             <div class="sb-details__body">
-              <p>A Windows beta is out: get it from the <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases">GitHub releases page</a>. It's a beta, so reports from your PC help a lot. Android is coming; no date yet.</p>
+              <p data-only="carbon">Windows, iPhone and iPad versions of SpeedBreaker: Carbon are on the way, as SpeedBreaker for Most Wanted already runs there, and Android after that. No dates yet.</p>
+              <p data-only="mw">A Windows beta is out: get it from the <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases">GitHub releases page</a>. It's a beta, so reports from your PC help a lot. Android is coming; no date yet.</p>
             </div>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- The download count: every release download on GitHub (checksum files left out); js/speedbreaker.js
-         refreshes it from GitHub's API and rounds it down, and this text stands if that fails. -->
+    <!-- The download count: every release download on GitHub (checksum files left out), one
+         count per game, each from its own repository. js/speedbreaker.js asks GitHub's API only
+         for the game shown, and rounds the count down to the hundred. Most Wanted's text stands
+         if that fails; Carbon's line stays hidden (and the band with it) until its repository
+         has releases with at least a hundred downloads. -->
     <section class="sb-downloads-band" aria-label="Downloads">
       <div class="container">
-        <p class="sb-downloads" id="sb-downloads">Downloaded over 7,000 times</p>
+        <p class="sb-downloads" id="sb-downloads" data-only="mw">Downloaded over 7,000 times</p>
+        <p class="sb-downloads" id="sb-downloads-carbon" data-only="carbon" hidden></p>
       </div>
     </section>
 
-    <!-- Carbon teaser -->
-    <section class="sb-section sb-section--teaser" id="carbon" aria-labelledby="carbon-title">
+    <!-- The bridge between the two games (2026-10-26; Most Wanted's side was the "Coming soon"
+         Carbon teaser): each game's page ends with a card for the other one. Its button is a
+         link to the other game's page; with script it scrolls back to the top and sweeps the
+         hero's blade across instead, the same switch as the blade itself. -->
+    <section class="sb-section sb-section--teaser" id="carbon" aria-labelledby="carbon-title" data-only="mw">
       <div class="container">
         <div class="sb-teaser">
           <picture class="sb-teaser__art">
@@ -599,23 +808,46 @@
                  The largest files are native crops of the source art (never upscaled):
                  1480x832 wide, 850x740 for phones. -->
             <source media="(max-width: 600px)"
-                    srcset="../assets/images/speedbreaker/sb-carbon-teaser-mobile-680.webp 680w, ../assets/images/speedbreaker/sb-carbon-teaser-mobile-850.webp 850w"
+                    srcset="/assets/images/speedbreaker/sb-carbon-teaser-mobile-680.webp 680w, /assets/images/speedbreaker/sb-carbon-teaser-mobile-850.webp 850w"
                     sizes="calc(100vw - 48px)" type="image/webp">
             <source media="(max-width: 600px)"
-                    srcset="../assets/images/speedbreaker/sb-carbon-teaser-mobile-680.jpg 680w, ../assets/images/speedbreaker/sb-carbon-teaser-mobile-850.jpg 850w"
+                    srcset="/assets/images/speedbreaker/sb-carbon-teaser-mobile-680.jpg 680w, /assets/images/speedbreaker/sb-carbon-teaser-mobile-850.jpg 850w"
                     sizes="calc(100vw - 48px)">
-            <source srcset="../assets/images/speedbreaker/sb-carbon-teaser-800.webp 800w, ../assets/images/speedbreaker/sb-carbon-teaser-1480.webp 1480w"
+            <source srcset="/assets/images/speedbreaker/sb-carbon-teaser-800.webp 800w, /assets/images/speedbreaker/sb-carbon-teaser-1480.webp 1480w"
                     sizes="(max-width: 1120px) calc(100vw - 48px), 1072px" type="image/webp">
-            <img src="../assets/images/speedbreaker/sb-carbon-teaser-1480.jpg"
-                 srcset="../assets/images/speedbreaker/sb-carbon-teaser-800.jpg 800w, ../assets/images/speedbreaker/sb-carbon-teaser-1480.jpg 1480w"
+            <img src="/assets/images/speedbreaker/sb-carbon-teaser-1480.jpg"
+                 srcset="/assets/images/speedbreaker/sb-carbon-teaser-800.jpg 800w, /assets/images/speedbreaker/sb-carbon-teaser-1480.jpg 1480w"
                  sizes="(max-width: 1120px) calc(100vw - 48px), 1072px"
                  width="1480" height="832" loading="lazy" decoding="async"
                  alt="Need for Speed: Carbon key art: a black sports car at the edge of a cliff at night, headlights on, above the lights of a city">
           </picture>
           <div class="sb-teaser__body">
             <p class="sb-teaser__label">One more thing…</p>
-            <h2 class="sb-teaser__title" id="carbon-title">SpeedBreaker: Carbon</h2>
-            <p class="sb-teaser__soon">Coming soon</p>
+            <h2 class="sb-teaser__title" id="carbon-title">SpeedBreaker: Carbon is out</h2>
+            <p class="sb-teaser__line">Need for Speed: Carbon, the 2006 Xbox 360 racer, twenty years on.</p>
+            <a class="sb-teaser__go" href="/speedbreaker/carbon/" data-switch="carbon">See SpeedBreaker: Carbon <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 3 3 13M5 3h8v8"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carbon's side: the mirror card, with Most Wanted's chase-cam shot (the gallery's
+         feature, already on the site; centred, since the card is wider than 16:9 is not). -->
+    <section class="sb-section sb-section--teaser sb-section--teaser-mw" id="most-wanted" aria-labelledby="most-wanted-title" data-only="carbon">
+      <div class="container">
+        <div class="sb-teaser sb-teaser--mw">
+          <picture class="sb-teaser__art">
+            <img src="/assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-1600.jpg"
+                 srcset="/assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-1600.jpg 1600w"
+                 sizes="(max-width: 1120px) calc(100vw - 48px), 1072px"
+                 width="1600" height="670" loading="lazy" decoding="async"
+                 alt="SpeedBreaker gameplay: the chase camera behind the player's car, nitrous lit, heading into the setting sun">
+          </picture>
+          <div class="sb-teaser__body">
+            <p class="sb-teaser__label">Where it started</p>
+            <h2 class="sb-teaser__title" id="most-wanted-title">SpeedBreaker for Most Wanted</h2>
+            <p class="sb-teaser__line">Need for Speed: Most Wanted, the 2005 Xbox 360 racer, on the same engine.</p>
+            <a class="sb-teaser__go" href="/speedbreaker/" data-switch="mw">See SpeedBreaker <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 3 3 13M5 3h8v8"/></svg></a>
           </div>
         </div>
       </div>
@@ -632,7 +864,7 @@
        2026-10-05). -->
   <footer class="footer sb-footer">
     <div class="container">
-      <p class="sb-footer__notice">SpeedBreaker is an unofficial, fan-made project by project(u). It is <strong>not affiliated with, endorsed by, or sponsored by Electronic Arts Inc., the Need for Speed brand or Valve Corporation.</strong> <strong>No game files are included:</strong> you need your own legally obtained backup of your own Xbox 360 disc. &ldquo;Need for Speed&rdquo;, &ldquo;Most Wanted&rdquo; and &ldquo;Carbon&rdquo; are trademarks of Electronic Arts Inc., and the Carbon key art is &copy;&nbsp;Electronic Arts Inc. Steam, Steam Deck, Steam Machine, Steam Frame, SteamOS and their logos and icons are trademarks of Valve Corporation; the device icons only show which device is which. All other trademarks and logos belong to their respective owners. <a href="legal/" class="sb-text-link">Legal &amp; credits <span aria-hidden="true">&rarr;</span></a></p>
+      <p class="sb-footer__notice">SpeedBreaker is an unofficial, fan-made project by project(u). It is <strong>not affiliated with, endorsed by, or sponsored by Electronic Arts Inc., the Need for Speed brand or Valve Corporation.</strong> <strong>No game files are included:</strong> you need your own legally obtained backup of your own Xbox 360 disc. &ldquo;Need for Speed&rdquo;, &ldquo;Most Wanted&rdquo; and &ldquo;Carbon&rdquo; are trademarks of Electronic Arts Inc., and the Carbon key art is &copy;&nbsp;Electronic Arts Inc. Steam, Steam Deck, Steam Machine, Steam Frame, SteamOS and their logos and icons are trademarks of Valve Corporation; the device icons only show which device is which. All other trademarks and logos belong to their respective owners. <a href="/speedbreaker/legal/" class="sb-text-link">Legal &amp; credits <span aria-hidden="true">&rarr;</span></a></p>
       <div class="footer__bottom">
         <p>&copy; 2026 project(u)</p>
       </div>
