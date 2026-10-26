@@ -359,9 +359,8 @@
       </div>
     </section>
 
-    <!-- Screenshots: Most Wanted's only, for now. Carbon's gallery waits for the operator's
-         picks from carbon/launch/screenshots (contact-sheet.jpg); give it its own copy of
-         this section with data-only="carbon" then. -->
+    <!-- Screenshots: each game has its own gallery (data-only), the same layout: one wide
+         feature, then eight tiles, each opening full size in the lightbox. -->
     <section class="sb-section" id="screens" aria-labelledby="screens-title" data-only="mw">
       <div class="container">
         <div class="sb-section__header">
@@ -451,6 +450,96 @@
                  sizes="(max-width: 768px) calc(50vw - 30px), 260px"
                  width="1920" height="1200" loading="lazy" decoding="async"
                  alt="Every file checked: SpeedBreaker's installer has finished, and every file matched the known-good disc">
+            <figcaption class="sb-tile__cap">Every file checked</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="sb-section" id="screens-carbon" aria-labelledby="screens-carbon-title" data-only="carbon">
+      <div class="container">
+        <div class="sb-section__header">
+          <p class="sb-label">Screenshots</p>
+          <h2 class="sb-title" id="screens-carbon-title">Straight out of SpeedBreaker: Carbon</h2>
+          <p class="sb-lead">Real frames from the game running in SpeedBreaker: Carbon. Tap any shot to see it full size.</p>
+        </div>
+
+        <div class="sb-gallery">
+          <!-- The feature: nitrous downtown, cut to 21:9 from the 1440p frame (the
+               licence plates in it and in the Speedbreaker, Canyon Duel and finish shots
+               are blurred, as in the README); its src is the full file because the
+               lightbox opens img.src. -->
+          <figure class="sb-tile sb-tile--feature" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-01-nitrous-ultrawide.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-01-nitrous-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sbc-01-nitrous-ultrawide-1600.jpg 1600w, /assets/images/speedbreaker/sbc-01-nitrous-ultrawide.jpg 1920w"
+                 sizes="(max-width: 1120px) calc(100vw - 48px), 1072px"
+                 width="1920" height="804" loading="lazy" decoding="async"
+                 alt="Nitrous at 143 mph downtown: long red light trails behind the player's car between the city's towers, with the race HUD">
+            <figcaption class="sb-tile__cap">Nitrous · 21:9</figcaption>
+          </figure>
+
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-02-speedbreaker-4k.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-02-speedbreaker-4k-960.jpg 960w, /assets/images/speedbreaker/sbc-02-speedbreaker-4k.jpg 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1080" loading="lazy" decoding="async"
+                 alt="Speedbreaker, 4K: slow motion past the neon chevrons downtown">
+            <figcaption class="sb-tile__cap">Speedbreaker · 4K</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-03-canyon-overhead.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-03-canyon-overhead-960.jpg 960w, /assets/images/speedbreaker/sbc-03-canyon-overhead.jpg 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1080" loading="lazy" decoding="async"
+                 alt="The prologue's canyon road, seen from above: the BMW M3 GTR on the cliff edge">
+            <figcaption class="sb-tile__cap">Canyon road</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-04-canyon-duel-16x10.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-04-canyon-duel-16x10-960.jpg 960w, /assets/images/speedbreaker/sbc-04-canyon-duel-16x10.jpg 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1200" loading="lazy" decoding="async"
+                 alt="A Canyon Duel at 16:10, the Steam Deck's shape: chasing the leader at night, with the duel HUD">
+            <figcaption class="sb-tile__cap">Canyon Duel · 16:10</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-05-finish-chevrons.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-05-finish-chevrons-960.jpg 960w, /assets/images/speedbreaker/sbc-05-finish-chevrons.jpg 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1080" loading="lazy" decoding="async"
+                 alt="The finish camera: the pack crossing the line at the neon chevrons">
+            <figcaption class="sb-tile__cap">Finish line</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-06-safehouse.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-06-safehouse-960.jpg 960w, /assets/images/speedbreaker/sbc-06-safehouse.jpg 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1080" loading="lazy" decoding="async"
+                 alt="The career safehouse: a red RX-8 under the garage lights">
+            <figcaption class="sb-tile__cap">Safehouse</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-07-crew-pick.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-07-crew-pick-960.jpg 960w, /assets/images/speedbreaker/sbc-07-crew-pick.jpg 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1080" loading="lazy" decoding="async"
+                 alt="Picking a crew member before a race: Neville, the blocker, and his Nissan 350Z">
+            <figcaption class="sb-tile__cap">Crew pick</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-08-installer-image-found.png"
+                 srcset="/assets/images/speedbreaker/sbc-08-installer-image-found-960.jpg 960w, /assets/images/speedbreaker/sbc-08-installer-image-found.png 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1200" loading="lazy" decoding="async"
+                 alt="SpeedBreaker: Carbon's installer has found the player's disc image, ready to install">
+            <figcaption class="sb-tile__cap">Installer: disc found</figcaption>
+          </figure>
+          <figure class="sb-tile" data-lightbox-app>
+            <img src="/assets/images/speedbreaker/sbc-09-installer-verified.png"
+                 srcset="/assets/images/speedbreaker/sbc-09-installer-verified-960.jpg 960w, /assets/images/speedbreaker/sbc-09-installer-verified.png 1920w"
+                 sizes="(max-width: 768px) calc(50vw - 30px), 260px"
+                 width="1920" height="1200" loading="lazy" decoding="async"
+                 alt="Every file checked: SpeedBreaker: Carbon's installer has finished, and every file matched the known-good disc">
             <figcaption class="sb-tile__cap">Every file checked</figcaption>
           </figure>
         </div>

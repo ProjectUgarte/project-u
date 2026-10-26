@@ -374,12 +374,14 @@
     emit(g, 'start');
 
     setTimeout(() => {
-      // Swap roles without animating: the new blade starts closed in the corner.
-      hero.classList.add('sb-noanim');
+      // Swap roles without animating, the new blade closed into the corner
+      // (is-arriving); then let it grow out of the corner and its label fade in.
+      hero.classList.add('sb-noanim', 'is-arriving');
       hero.classList.remove('is-sweeping');
       settle(g);
       void hero.offsetWidth;
       hero.classList.remove('sb-noanim');
+      requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.remove('is-arriving')));
       hero.style.removeProperty('--sb-sweep-w');
       busy = false;
       emit(g, 'end');
@@ -450,7 +452,14 @@
       then();
     }
     window.addEventListener('scroll', onScroll, { passive: true });
-    timer = setTimeout(finish, 1500); // a visitor scrolling against it, or no smooth scrolling
+    // A long page (a phone's) can take longer than this to scroll smoothly, and
+    // a visitor can scroll against it: then snap the rest of the way, and sweep
+    // only once the hero is on screen (two frames after the jump), so the
+    // sweep is always seen.
+    timer = setTimeout(() => {
+      if (window.scrollY > 1) window.scrollTo({ top: 0, behavior: 'auto' });
+      requestAnimationFrame(() => requestAnimationFrame(finish));
+    }, 1200);
     window.scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
   }
 

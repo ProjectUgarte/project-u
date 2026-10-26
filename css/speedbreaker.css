@@ -2469,6 +2469,22 @@ body.sb-page .sb-blade:focus-visible {
 
 /* Swapping roles at the end of a sweep: the new blade starts closed in its
    corner, without animating there. */
+/* After a switch the new game's blade grows out of the corner (the blade's
+   own 420ms clip transition, from nothing to its resting size), with its lit
+   edge, and its label fades in as it opens. */
+.sb-hero.is-arriving {
+  --cb-w: 0px;
+}
+
+.sb-hero.is-arriving .sb-blade__label,
+.sb-hero.is-arriving .sb-edge {
+  opacity: 0;
+}
+
+.sb-blade__label {
+  transition: opacity 320ms 220ms ease;
+}
+
 .sb-hero.sb-noanim,
 .sb-hero.sb-noanim * {
   transition: none !important;
