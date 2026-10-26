@@ -1415,6 +1415,72 @@ body.sb-page .sb-platform__card:focus-visible {
   line-height: 1.05;
 }
 
+/* The other game's name: a lead line, then the game's own name larger in its
+   colour. The link covers the whole card (::after), so the art is clickable too. */
+.sb-teaser {
+  position: relative;
+}
+
+.sb-teaser__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sb-teaser__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+body.sb-page .sb-teaser__link:focus-visible {
+  outline: none;
+}
+
+body.sb-page .sb-teaser__link:focus-visible::after {
+  outline: 2px solid var(--sb-amber);
+  outline-offset: 3px;
+}
+
+.sb-teaser__lead {
+  display: block;
+  font-size: 0.72em;
+}
+
+.sb-teaser__game {
+  display: block;
+  font-size: 1.3em;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* a text-shadow would paint over the gradient: the shadow comes from a filter */
+  text-shadow: none;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.55));
+}
+
+.sb-teaser__game--carbon {
+  background-image: linear-gradient(180deg, #b9fbfb, #48e0e0);
+}
+
+.sb-teaser__game--mw {
+  background-image: linear-gradient(180deg, #ffd48a, #ffa81f);
+}
+
+.sb-teaser__soon {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  color: #ffa81f;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .sb-teaser__soon {
+    font-size: var(--font-size-lg);
+  }
+}
+
 .sb-teaser__line {
   max-width: 26em;
   font-size: var(--font-size-lg);
@@ -2221,17 +2287,27 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
   color: var(--sb-layer-accent);
 }
 
-/* "SpeedBreaker" over a small, spaced CARBON in teal, as in the prototype */
+/* Carbon's title: "SpeedBreaker:" over "Carbon", the game's name the larger
+   (the operator's layout), in teal. */
+.sb-hero__title-lead {
+  display: block;
+  font-size: 0.72em;
+}
+
 .sb-hero__title-game {
   display: block;
-  margin-top: 0.18em;
-  padding-left: 0.34em;
-  font-size: 0.42em;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  font-size: 1.16em;
+  line-height: 0.95;
   background: linear-gradient(180deg, #b9fbfb, #48e0e0);
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+/* The title takes focus after a switch (for screen readers), but it isn't a
+   control: no focus ring around it. */
+body.sb-page .sb-hero__title:focus,
+body.sb-page .sb-hero__title:focus-visible {
+  outline: none;
 }
 
 .sb-hero__layer.is-base {
