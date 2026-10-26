@@ -138,8 +138,8 @@ def build(src):
     t = edit_layer(t, "carbon", carbon_to_base)
     t = once(t, 'href="/speedbreaker/carbon/" aria-label="Switch to SpeedBreaker: Carbon">',
              'href="/speedbreaker/" aria-label="Switch to SpeedBreaker">', "blade link")
-    t = once(t, '<span class="sb-blade__name">Carbon</span>',
-             '<span class="sb-blade__name">Most Wanted</span>', "blade label")
+    t = once(t, '<span class="sb-blade__name">SpeedBreaker:\nCarbon</span>',
+             '<span class="sb-blade__name">SpeedBreaker</span>', "blade label")
     return t
 
 

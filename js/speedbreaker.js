@@ -290,7 +290,7 @@
 
   const paths = { mw: '/speedbreaker/', carbon: '/speedbreaker/carbon/' };
   const titles = { mw: 'SpeedBreaker — project(u)', carbon: 'SpeedBreaker: Carbon — project(u)' };
-  const names = { mw: 'Most Wanted', carbon: 'Carbon' };          // the blade's label
+  const names = { mw: 'SpeedBreaker', carbon: 'SpeedBreaker:\nCarbon' }; // the blade's label (pre-line: Carbon stacks under)
   const full = { mw: 'SpeedBreaker', carbon: 'SpeedBreaker: Carbon' }; // its accessible name
   const reduceMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   const reduced = () => !!(reduceMotion && reduceMotion.matches);

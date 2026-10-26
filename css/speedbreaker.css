@@ -2407,16 +2407,31 @@ body.sb-page .sb-hero__title:focus-visible {
   top: 22px;
   right: 22px;
   display: inline-flex;
-  align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  align-items: flex-end;     /* the arrow beside the last line */
   white-space: nowrap;
+  text-align: right;
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 14px rgba(0, 0, 0, 0.7);
+  /* close and wide shadows: the name stays readable over bright footage */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.85), 0 0 18px rgba(0, 0, 0, 0.75);
+}
+
+/* "SpeedBreaker:" over "Carbon" (the name has a line break; pre-line keeps it). */
+.sb-blade__name {
+  white-space: pre-line;
+}
+
+/* The other game's full name, in that game's colour. */
+.sb-hero[data-blade="carbon"] .sb-blade__label {
+  color: #48e0e0;
+}
+
+.sb-hero[data-blade="mw"] .sb-blade__label {
+  color: #ffa81f;
 }
 
 .sb-blade__label svg {
@@ -2510,11 +2525,10 @@ body.sb-page .sb-teaser__go:focus-visible {
   }
 
   .sb-blade__label {
-    top: 14px;
+    top: 12px;
     right: 12px;
     gap: 6px;
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
+    font-size: 0.8125rem;
   }
 }
 
@@ -2524,11 +2538,10 @@ body.sb-page .sb-teaser__go:focus-visible {
   }
 
   .sb-blade__label {
-    top: 14px;
+    top: 12px;
     right: 12px;
     gap: 6px;
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
+    font-size: 0.8125rem;
   }
 }
 
