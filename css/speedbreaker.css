@@ -2266,11 +2266,11 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
 /* Carbon's title: "SpeedBreaker:" over "Carbon" in teal, both at Most Wanted's
    title size (the operator's layout). */
 .sb-hero__title-lead {
-  display: block;
+  display: inline;
 }
 
 .sb-hero__title-game {
-  display: block;
+  display: inline;
   background: linear-gradient(180deg, #b9fbfb, #48e0e0);
   -webkit-background-clip: text;
   background-clip: text;
