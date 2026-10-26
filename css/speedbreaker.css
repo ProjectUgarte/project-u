@@ -2408,7 +2408,7 @@ body.sb-page .sb-hero__title:focus-visible {
   right: 22px;
   display: inline-flex;
   gap: 8px;
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.01em;
@@ -2528,7 +2528,7 @@ body.sb-page .sb-teaser__go:focus-visible {
     top: 12px;
     right: 12px;
     gap: 6px;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -2541,7 +2541,7 @@ body.sb-page .sb-teaser__go:focus-visible {
     top: 12px;
     right: 12px;
     gap: 6px;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
   }
 }
 
