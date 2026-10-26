@@ -797,12 +797,13 @@
 
     <!-- The bridge between the two games (2026-10-26; Most Wanted's side was the "Coming soon"
          Carbon teaser): each game's page ends with a card for the other one: a label, the other
-         game's name and "Out Now!", nothing more (the operator's wording). The name is a link
-         to the other game's page that covers the whole card; with script it scrolls back to
-         the top and sweeps the hero's blade across instead, the same switch as the blade. -->
+         game's name and "Out Now!" in amber, in the old teaser's type (the operator's wording).
+         The whole card is a link to the other game's page and lifts on hover like the
+         platform cards; with script it scrolls back to the top and sweeps the hero's blade
+         across instead, the same switch as the blade. -->
     <section class="sb-section sb-section--teaser" id="carbon" aria-labelledby="carbon-title" data-only="mw">
       <div class="container">
-        <div class="sb-teaser">
+        <a class="sb-teaser" href="/speedbreaker/carbon/" data-switch="carbon">
           <picture class="sb-teaser__art">
             <!-- phones: a squarer crop with the car in the middle; the text sits under it.
                  Tablets (601-768px) stack the same way but get the wide art.
@@ -824,10 +825,10 @@
           </picture>
           <div class="sb-teaser__body">
             <p class="sb-teaser__label">One more thing…</p>
-            <h2 class="sb-teaser__title" id="carbon-title"><a class="sb-teaser__link" href="/speedbreaker/carbon/" data-switch="carbon"><span class="sb-teaser__lead">SpeedBreaker:</span> <span class="sb-teaser__game sb-teaser__game--carbon">Carbon</span></a></h2>
+            <h2 class="sb-teaser__title" id="carbon-title">SpeedBreaker: Carbon</h2>
             <p class="sb-teaser__soon">Out Now!</p>
           </div>
-        </div>
+        </a>
       </div>
     </section>
 
@@ -835,7 +836,7 @@
          feature, already on the site; centred, since the card is wider than 16:9 is not). -->
     <section class="sb-section sb-section--teaser sb-section--teaser-mw" id="most-wanted" aria-labelledby="most-wanted-title" data-only="carbon">
       <div class="container">
-        <div class="sb-teaser sb-teaser--mw">
+        <a class="sb-teaser sb-teaser--mw" href="/speedbreaker/" data-switch="mw">
           <picture class="sb-teaser__art">
             <img src="/assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-1600.jpg"
                  srcset="/assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-960.jpg 960w, /assets/images/speedbreaker/sb-hero-chase-cam-ultrawide-1600.jpg 1600w"
@@ -845,10 +846,10 @@
           </picture>
           <div class="sb-teaser__body">
             <p class="sb-teaser__label">Where it all began…</p>
-            <h2 class="sb-teaser__title" id="most-wanted-title"><a class="sb-teaser__link" href="/speedbreaker/" data-switch="mw"><span class="sb-teaser__lead">SpeedBreaker</span> <span class="sb-teaser__game sb-teaser__game--mw">Most Wanted</span></a></h2>
+            <h2 class="sb-teaser__title" id="most-wanted-title">SpeedBreaker</h2>
             <p class="sb-teaser__soon">Out Now!</p>
           </div>
-        </div>
+        </a>
       </div>
     </section>
 
