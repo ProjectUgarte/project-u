@@ -2282,6 +2282,15 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
   background-clip: text;
 }
 
+/* Held upright (phones, an iPad in portrait), "Carbon" goes under
+   "SpeedBreaker:"; landscape screens keep the one line. */
+@media (orientation: portrait) {
+  .sb-hero__title-lead,
+  .sb-hero__title-game {
+    display: block;
+  }
+}
+
 /* The title takes focus after a switch (for screen readers), but it isn't a
    control: no focus ring around it. */
 body.sb-page .sb-hero__title:focus,
