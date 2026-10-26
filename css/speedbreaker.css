@@ -2516,17 +2516,23 @@ body.sb-page .sb-teaser__go:focus-visible {
    of a slightly smaller blade. */
 @media (max-width: 600px) {
   .sb-hero {
-    --cb-w-rest: 170px;
-    --sb-hero-pad-top: calc(170px * 0.7 + 10px);
+    --cb-w-rest: 200px;
+    --sb-hero-pad-top: calc(200px * 0.7 + 10px);
   }
 
   .sb-hero.is-peek {
-    --cb-w: 220px;
+    --cb-w: 250px;
+  }
+
+  /* Carbon's title stacks on phones: "SpeedBreaker:" over "Carbon" */
+  .sb-hero__title-lead,
+  .sb-hero__title-game {
+    display: block;
   }
 
   .sb-blade__label {
-    top: 12px;
-    right: 12px;
+    top: 16px;
+    right: 16px;
     gap: 6px;
     font-size: 0.875rem;
   }
