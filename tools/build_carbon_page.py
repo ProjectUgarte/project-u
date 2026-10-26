@@ -41,14 +41,14 @@ SITE = "https://projectugarte.com"
 
 # Carbon's head. Facts from the Carbon README draft and release notes
 # (carbon/launch/docs/README.md, release/RELEASE-NOTES.prefill.md).
-# The social image is launch screenshot 14 (the operator's pick for the hero,
-# 2026-10-26), cut to 1200x630 from its 2560x1440 master, like MW's
-# sb-hero-chase-cam-social.jpg.
+# The social image is Carbon's key art (the operator's pick for the hero,
+# 2026-10-26, until his gameplay recording replaces it), cut to 1200x630 from
+# release/art/carbon-cliff-source.webp, like MW's sb-hero-chase-cam-social.jpg.
 CARBON_HEAD = f"""<!-- game-head: Carbon's, from tools/build_carbon_page.py -->
   <title>SpeedBreaker: Carbon — project(u)</title>
   <meta name="description" content="SpeedBreaker: Carbon: the definitive Need for Speed: Carbon recompilation, built from the 2006 Xbox 360 version by static recompilation. Native on Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc of the USA Collector's Edition. Free and unofficial. No game files included. Not affiliated with EA or Valve.">
 
-  <!-- Social preview: a real SpeedBreaker: Carbon frame (launch screenshot 14, no HUD). No logos or box art. -->
+  <!-- Social preview: Need for Speed: Carbon's key art (EA's, credited on the Legal page) until gameplay footage replaces it. No logos. -->
   <meta property="og:type" content="website">
   <link rel="canonical" href="{SITE}/speedbreaker/carbon/">
   <meta property="og:url" content="{SITE}/speedbreaker/carbon/">
@@ -57,7 +57,7 @@ CARBON_HEAD = f"""<!-- game-head: Carbon's, from tools/build_carbon_page.py -->
   <meta property="og:image" content="{SITE}{IMG}sb-carbon-hero-social.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="A silver and blue BMW M3 GTR sliding sideways in tyre smoke in front of Palmont City's night lights, from SpeedBreaker: Carbon">
+  <meta property="og:image:alt" content="Need for Speed: Carbon key art: a black sports car at the edge of a cliff at night, above the lights of a city">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SpeedBreaker: Carbon — An Unofficial Native Port">
   <meta name="twitter:description" content="The definitive Need for Speed: Carbon recompilation, built from the 2006 Xbox 360 version. Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc. No game files included. Not affiliated with EA or Valve.">

@@ -2203,15 +2203,18 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
    picture still covers the whole hero at every moment of the sweep (a
    translate would bare its edges mid-sweep). Tune both per picture when it
    changes.
-   Carbon's (launch screenshot 14): the car stays in the middle of the hero;
-   in Most Wanted's corner the picture is 1.18 times larger, which carries
-   Palmont's skyline lights (about 85% across, 25% down) up into the blade
-   in place of the night sky above them. */
+   --sb-blade-origin moves the scale's fixed point along the bottom edge
+   (any point on it keeps the picture covering the hero).
+   Carbon's (the key art, until gameplay footage replaces it): the car sits
+   right of the title, about 40% down; in Most Wanted's corner the picture is
+   1.6 times larger about a point 72% along the bottom, which lifts
+   the car and its headlight up into the blade instead of the night sky. */
 .sb-hero__layer--carbon {
   --sb-layer-accent: #48e0e0;
-  --sb-hero-pos: 50% 50%;
+  --sb-hero-pos: 100% 50%;   /* the car right of the title, clear of the blade */
   --sb-blade-pos: 100% 50%;
-  --sb-blade-shift: scale(1.18);
+  --sb-blade-shift: scale(1.6);
+  --sb-blade-origin: 72% 100%;
 }
 
 .sb-hero__layer .sb-hero__tagline {
@@ -2247,7 +2250,7 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
 .sb-hero__layer.is-blade .sb-hero__video {
   object-position: var(--sb-blade-pos, var(--sb-hero-pos, 50% 50%));
   transform: var(--sb-blade-shift, none);
-  transform-origin: 0 100%;
+  transform-origin: var(--sb-blade-origin, 0 100%);
 }
 
 .sb-hero__layer.is-blade .sb-hero__head,
@@ -2276,7 +2279,7 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
 .sb-hero.is-sweeping .sb-hero__layer.is-blade .sb-hero__video {
   object-position: var(--sb-hero-pos, 50% 50%);
   transform: none;
-  transform-origin: 0 100%;
+  transform-origin: var(--sb-blade-origin, 0 100%);
   transition: object-position var(--sb-sweep) var(--sb-ease), transform var(--sb-sweep) var(--sb-ease);
 }
 
