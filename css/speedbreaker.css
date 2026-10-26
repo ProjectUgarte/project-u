@@ -2263,6 +2263,12 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
   color: var(--sb-layer-accent);
 }
 
+/* Keeps a phrase whole, so a line breaks only between phrases (Carbon's
+   tagline breaks after "Palmont City," when it doesn't fit on one line). */
+.sb-nowrap {
+  white-space: nowrap;
+}
+
 /* Carbon's title: "SpeedBreaker:" over "Carbon" in teal, both at Most Wanted's
    title size (the operator's layout). */
 .sb-hero__title-lead {
