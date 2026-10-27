@@ -2612,9 +2612,9 @@ body.sb-page .sb-teaser__go:focus-visible {
 }
 
 /* ===== The Collector's Edition (Carbon only, under the perks) =====
-   The disc's extras as six figures: the number in the game's accent, what it
+   The disc's extras as five figures: the number in the game's accent, what it
    is beneath. Three across, two on tablets and phones (a phone's figures a
-   size smaller). */
+   size smaller); a short last row is centred. */
 .sb-ce {
   margin-top: var(--spacing-lg);
   background: var(--sb-ink-raised);
@@ -2641,12 +2641,16 @@ body.sb-page .sb-teaser__go:focus-visible {
 }
 
 .sb-ce__list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--spacing-sm);
+  --sb-ce-gap: var(--spacing-sm);
+  --sb-ce-cols: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sb-ce-gap);
 }
 
 .sb-ce__item {
+  flex: 0 0 calc((100% - (var(--sb-ce-cols) - 1) * var(--sb-ce-gap)) / var(--sb-ce-cols));
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -2672,13 +2676,13 @@ body.sb-page .sb-teaser__go:focus-visible {
 
 @media (max-width: 900px) {
   .sb-ce__list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    --sb-ce-cols: 2;
   }
 }
 
 @media (max-width: 600px) {
   .sb-ce__list {
-    gap: 10px;
+    --sb-ce-gap: 10px;
   }
 
   .sb-ce__num {
