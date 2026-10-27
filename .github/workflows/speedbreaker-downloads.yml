@@ -1,0 +1,53 @@
+# The SpeedBreaker page's download counts, saved into the site once an hour, so
+# visitors read them from projectugarte.com instead of each asking GitHub's API
+# (60 anonymous requests an hour per network: an office past it, or a firewall
+# that blocks api.github.com, kept the page's built-in number).
+# data/speedbreaker-downloads.json holds each game's total, every release file
+# but the .sha256 ones, rounded down to the hundred as the page shows it, so a
+# commit lands only when a shown number changes. A game whose repository can't
+# be read (Carbon's, while it is private) is null; js/speedbreaker.js then asks
+# GitHub itself, as before.
+name: SpeedBreaker download counts
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: speedbreaker-downloads
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Count
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          count() {
+            # Prints the total rounded down to the hundred, or null if the repository can't be read.
+            if body=$(gh api "repos/$1/releases?per_page=100" 2>/dev/null); then
+              echo "$body" | jq '[.[].assets[] | select(.name | test("\\.sha256$") | not) | .download_count] | add // 0 | (. / 100 | floor) * 100'
+            else
+              echo null
+            fi
+          }
+          mw=$(count SpeedBreakerProject/speedbreaker)
+          carbon=$(count SpeedBreakerProject/speedbreaker-carbon)
+          jq -n --argjson mw "$mw" --argjson carbon "$carbon" '{mw: $mw, carbon: $carbon}' > data/speedbreaker-downloads.json
+          cat data/speedbreaker-downloads.json
+      - name: Commit if a shown number changed
+        run: |
+          if git diff --quiet -- data/speedbreaker-downloads.json; then echo "unchanged"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/speedbreaker-downloads.json
+          git commit -m "SpeedBreaker download counts: $(jq -c . data/speedbreaker-downloads.json)"
+          git push

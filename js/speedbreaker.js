@@ -217,13 +217,17 @@
 
 // ===== 2. The download count, per game =====
 // Every release file on GitHub, checksum files left out, rounded down to the
-// hundred ("Downloaded over 7,100 times"). Each game reads its own
-// repository, and only once that game is shown, so a visit to one game's page
-// spends one of GitHub's 60 hourly anonymous requests, not two. Most Wanted's
-// page text stands if GitHub can't be reached (and below 1,000). Carbon's line
-// is empty and hidden: it shows, with its band, only once its repository has
-// releases with at least 100 downloads (a 404 before the repository is public,
-// an empty list before the first release, or any failure keep it hidden).
+// hundred ("Downloaded over 8,100 times"). An hourly GitHub Action
+// (.github/workflows/speedbreaker-downloads.yml) saves both games' counts in
+// data/speedbreaker-downloads.json, so a visit reads them from this site: an
+// office network past GitHub's 60 hourly anonymous requests, or a firewall
+// that blocks api.github.com, still sees the real number. When that file
+// can't be read or has no number for the game (null: Carbon's repository is
+// still private), the browser asks GitHub itself, only for the game shown.
+// Most Wanted's page text stands if neither works (and below 1,000). Carbon's
+// line is empty and hidden: it shows, with its band, only once its count
+// reaches 100 (a 404 before the repository is public, an empty list before
+// the first release, or any failure keep it hidden).
 (() => {
   'use strict';
   if (!window.fetch) return;
@@ -233,13 +237,19 @@
     carbon: { repo: 'SpeedBreakerProject/speedbreaker-carbon', id: 'sb-downloads-carbon', min: 100 },
   };
   const asked = {};
+  let saved = null;  // the site's own counts, fetched once for both games
 
-  function count(game) {
-    const g = games[game];
-    const el = g && document.getElementById(g.id);
-    if (!el || asked[game]) return;
-    asked[game] = true;
-    fetch(`https://api.github.com/repos/${g.repo}/releases?per_page=100`)
+  function fromSite() {
+    if (!saved) {
+      saved = fetch('/data/speedbreaker-downloads.json', { cache: 'no-cache' })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .catch(() => ({}));
+    }
+    return saved;
+  }
+
+  function fromGitHub(g) {
+    return fetch(`https://api.github.com/repos/${g.repo}/releases?per_page=100`)
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((releases) => {
         let total = 0;
@@ -248,6 +258,18 @@
             if (!/\.sha256$/.test(a.name)) total += a.download_count || 0;
           }
         }
+        return total;
+      });
+  }
+
+  function count(game) {
+    const g = games[game];
+    const el = g && document.getElementById(g.id);
+    if (!el || asked[game]) return;
+    asked[game] = true;
+    fromSite()
+      .then((counts) => (Number.isFinite(counts[game]) ? counts[game] : fromGitHub(g)))
+      .then((total) => {
         if (total >= g.min) {
           const shown = Math.floor(total / 100) * 100;
           el.textContent = `Downloaded over ${shown.toLocaleString('en-US')} times`;
