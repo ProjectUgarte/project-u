@@ -2247,16 +2247,17 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
    changes.
    --sb-blade-origin moves the scale's fixed point along the bottom edge
    (any point on it keeps the picture covering the hero).
-   Carbon's (the key art, until gameplay footage replaces it): the car sits
-   right of the title, about 40% down; in Most Wanted's corner the picture is
-   1.6 times larger about a point 72% along the bottom, which lifts
-   the car and its headlight up into the blade instead of the night sky. */
+   Carbon's (its video loop's poster, the Speedbreaker through the bus
+   shelter): the hero centres it like Most Wanted's; in Most Wanted's corner
+   the picture is anchored left and 1.6 times larger about the lower left
+   corner, which brings the flying glass and the car's roof into the blade
+   instead of the trees above the street. */
 .sb-hero__layer--carbon {
   --sb-layer-accent: #48e0e0;
-  --sb-hero-pos: 100% 50%;   /* the car right of the title, clear of the blade */
-  --sb-blade-pos: 100% 50%;
+  --sb-hero-pos: 50% 50%;
+  --sb-blade-pos: 0% 50%;
   --sb-blade-shift: scale(1.6);
-  --sb-blade-origin: 72% 100%;
+  --sb-blade-origin: 0% 100%;
 }
 
 .sb-hero__layer .sb-hero__tagline {

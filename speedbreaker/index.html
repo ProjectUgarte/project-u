@@ -101,17 +101,15 @@
             never waits for the full picture.
             Most Wanted's: the v0.1.3 master's frame 364 (Speedbreaker #1); the alt holds
             for both crops (the police car is only in the wide one).
-            Carbon's (the operator's pick, 2026-10-26, until his gameplay recording replaces
-            it): Need for Speed: Carbon's key art, the car on the cliff above Palmont's
-            lights (release/art/carbon-cliff-source.webp, 2000x1283: the 21:9 crops are rows
-            150-1006, the portrait crop columns 1038-1999). EA's art: credited on the Legal
-            & credits page.
+            Carbon's: its v1 loop's frame 444 (Speedbreaker #1, the bus shelter's glass;
+            nfsmw-work/carbon/launch/video/edl.md). The key art it replaced stays as the
+            social image and the teaser card's picture (EA's art: credited on the Legal
+            & credits page).
          2. The video: js/speedbreaker.js picks the file (portrait, or 21:9 1280/2400) from
             the data-src-* attributes, adds it and fades it in once it is actually playing,
             only while that game is shown. It carries no description of its own. Carbon's
-            <video> has no data-src-* yet: its loop comes from the operator's recording;
-            add data-src-small/-large/-portrait (same shapes and sizes as Most Wanted's) and
-            a credit line, and the same code plays it.
+            loop (sbc-hero-v1, 2026-10-27, from the operator's race and chase recordings)
+            has the same shapes, sizes and length as Most Wanted's.
          3. The scrim (.sb-hero__media::after): darkens the footage so the text keeps its
             contrast on the brightest frames, and fades the bottom into the next
             section's ink. Its values come from video/edl.md's legibility section. On
@@ -168,16 +166,19 @@
         <div class="sb-hero__media">
           <picture class="sb-hero__still">
             <source media="(orientation: portrait), (max-width: 600px)"
-                    srcset="/assets/images/speedbreaker/sb-carbon-hero-portrait-720.jpg"
+                    srcset="/assets/images/speedbreaker/sbc-hero-v1-poster-portrait-720.jpg"
                     width="720" height="960">
-            <img src="/assets/images/speedbreaker/sb-carbon-hero-21x9-2400.jpg"
-                 srcset="/assets/images/speedbreaker/sb-carbon-hero-21x9-1280.jpg 1280w, /assets/images/speedbreaker/sb-carbon-hero-21x9-2400.jpg 2400w"
+            <img src="/assets/images/speedbreaker/sbc-hero-v1-poster-21x9-sb-2400.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-hero-v1-poster-21x9-sb-1280.jpg 1280w, /assets/images/speedbreaker/sbc-hero-v1-poster-21x9-sb-2400.jpg 2400w"
                  sizes="400px" data-sizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
                  width="2400" height="1028" fetchpriority="low" decoding="async"
-                 alt="Need for Speed: Carbon key art: a black sports car at the edge of a cliff at night, headlights on, above the lights of a city">
+                 alt="SpeedBreaker: Carbon gameplay in the game's Speedbreaker slow motion: the player's blue car smashing through a bus shelter's glass on a Palmont street at night">
           </picture>
           <video class="sb-hero__video" muted loop playsinline preload="none"
-                 disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
+                 disablepictureinpicture disableremoteplayback aria-hidden="true"
+                 data-src-small="/assets/video/speedbreaker/sbc-hero-v1-21x9-1280.mp4"
+                 data-src-large="/assets/video/speedbreaker/sbc-hero-v1-21x9-2400.mp4"
+                 data-src-portrait="/assets/video/speedbreaker/sbc-hero-v1-portrait-720.mp4"></video>
         </div>
 
         <div class="container sb-hero__head">
@@ -186,8 +187,8 @@
           <p class="sb-hero__pitch">The definitive Need for Speed: Carbon recompilation, out for its 20th anniversary.<span class="sb-hero__pitch-more"> Built from the 2006 Xbox 360 version and tuned for the screens and handhelds of today.</span></p>
         </div>
 
-        <!-- No credit line until Carbon's video arrives; the pause button is ready for it. -->
         <div class="sb-hero__foot">
+          <p class="sb-hero__credit">Gameplay captured from SpeedBreaker: Carbon on macOS on an M1&nbsp;Pro chip at 60&nbsp;fps and 1440p.</p>
           <button type="button" class="sb-hero__toggle" aria-label="Pause video" hidden>
             <svg class="sb-hero__toggle-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
             <svg class="sb-hero__toggle-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>
