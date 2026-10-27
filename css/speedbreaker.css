@@ -2610,3 +2610,78 @@ body.sb-page .sb-teaser__go:focus-visible {
     opacity: 0;
   }
 }
+
+/* ===== The Collector's Edition (Carbon only, under the perks) =====
+   The disc's extras as six figures: the number in the game's accent, what it
+   is beneath. Three across, two on tablets and phones (a phone's figures a
+   size smaller). */
+.sb-ce {
+  margin-top: var(--spacing-lg);
+  background: var(--sb-ink-raised);
+  border: 1px solid var(--sb-ink-line);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.sb-ce__title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--sb-on-ink);
+  margin-bottom: 6px;
+}
+
+.sb-ce__lead {
+  font-size: var(--font-size-sm);
+  color: var(--sb-on-ink-muted);
+  line-height: 1.6;
+  max-width: 62ch;
+  margin-bottom: var(--spacing-md);
+  text-wrap: pretty;
+}
+
+.sb-ce__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.sb-ce__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-sm);
+  border-radius: 12px;
+  background: var(--sb-amber-wash);
+  border: 1px solid rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.25);
+}
+
+.sb-ce__num {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--sb-amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.sb-ce__what {
+  font-size: var(--font-size-sm);
+  color: var(--sb-on-ink);
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .sb-ce__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .sb-ce__list {
+    gap: 10px;
+  }
+
+  .sb-ce__num {
+    font-size: var(--font-size-xl);
+  }
+}

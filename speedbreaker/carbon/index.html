@@ -322,6 +322,22 @@
             <p class="sb-perk__text" data-only="carbon">Any controller plays like an Xbox 360 pad, rumble included, and every keyboard key can be reassigned.</p>
           </li>
         </ul>
+
+        <!-- Carbon only: what the Collector's Edition (the disc SpeedBreaker: Carbon
+             takes) adds over the standard edition. All of it is the game's own content,
+             on the player's disc: nothing is added or changed by SpeedBreaker. -->
+        <div class="sb-ce" data-only="carbon">
+          <h3 class="sb-ce__title">The Collector's Edition, all of it</h3>
+          <p class="sb-ce__lead">SpeedBreaker: Carbon is built from the Collector's Edition, so its extras are part of the game from the first start. No mods needed: they're on your disc.</p>
+          <ul class="sb-ce__list" role="list">
+            <li class="sb-ce__item"><span class="sb-ce__num">4</span> <span class="sb-ce__what">exclusive cars</span></li>
+            <li class="sb-ce__item"><span class="sb-ce__num">10</span> <span class="sb-ce__what">pre-tuned versions of cars already in the game</span></li>
+            <li class="sb-ce__item"><span class="sb-ce__num">9</span> <span class="sb-ce__what">Challenge Series events</span></li>
+            <li class="sb-ce__item"><span class="sb-ce__num">12</span> <span class="sb-ce__what">custom Quick Race routes</span></li>
+            <li class="sb-ce__item"><span class="sb-ce__num">10</span> <span class="sb-ce__what">unique vinyls for your car</span></li>
+            <li class="sb-ce__item"><span class="sb-ce__num">$10,000</span> <span class="sb-ce__what">extra cash at the start of your career</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -642,16 +658,20 @@
               <p class="sb-platform__text">An experimental IPA to sideload with your Apple Account, or build it with Xcode on a Mac. A controller or keyboard; iOS or iPadOS&nbsp;17 or later, on an iPhone 13 or newer or an M&#8209;series iPad.</p>
             </a>
           </li>
-          <!-- Not links. The pill is shown once for both; each name carries
-               "coming soon" for screen readers, so the visible pill is hidden from them. -->
-          <li class="sb-platform sb-platform--soon">
-            <span class="sb-chip sb-chip--soon" aria-hidden="true">Coming soon</span>
-            <div class="sb-soon">
+          <li class="sb-platform">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-windows"/></svg>
               </span>
-              <h3 class="sb-soon__name">Windows<span class="sb-sr">, coming soon</span></h3>
-            </div>
+              <h3 class="sb-platform__name">Windows</h3>
+              <span class="sb-chip sb-chip--diy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>Beta</span>
+              <p class="sb-platform__text">Windows 10 or 11, 64-bit, with an AVX2 processor and Vulkan&nbsp;1.2 graphics. A beta, on its own pre-release on the releases page: reports from your PC help a lot.</p>
+            </a>
+          </li>
+          <!-- Not links. The pill is hidden from screen readers; the name carries
+               "coming soon" for them. -->
+          <li class="sb-platform sb-platform--soon">
+            <span class="sb-chip sb-chip--soon" aria-hidden="true">Coming soon</span>
             <div class="sb-soon">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-android"/></svg>
@@ -721,17 +741,20 @@
               <p class="sb-platform__text">Its own app, beside Most Wanted&rsquo;s. An experimental IPA to sideload with your Apple Account, or build it with Xcode on a Mac. A controller or keyboard; iOS or iPadOS&nbsp;17 or later, on an iPhone 13 or newer or an M&#8209;series iPad.</p>
             </a>
           </li>
-          <!-- Not links. The pill is shown once for both; each name carries
-               "coming soon" for screen readers, so the visible pill is hidden from them.
-               Windows: a beta on its own pre-release (the FAQ), as Most Wanted's. -->
-          <li class="sb-platform sb-platform--soon">
-            <span class="sb-chip sb-chip--soon" aria-hidden="true">Coming soon</span>
-            <div class="sb-soon">
+          <li class="sb-platform">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-windows"/></svg>
               </span>
-              <h3 class="sb-soon__name">Windows<span class="sb-sr">, coming soon</span></h3>
-            </div>
+              <h3 class="sb-platform__name">Windows</h3>
+              <span class="sb-chip sb-chip--diy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>Beta</span>
+              <p class="sb-platform__text">Windows 10 or 11, 64-bit, with an AVX2 processor and Vulkan&nbsp;1.2 graphics. A beta, on its own pre-release on the releases page: reports from your PC help a lot.</p>
+            </a>
+          </li>
+          <!-- Not links. The pill is hidden from screen readers; the name carries
+               "coming soon" for them. -->
+          <li class="sb-platform sb-platform--soon">
+            <span class="sb-chip sb-chip--soon" aria-hidden="true">Coming soon</span>
             <div class="sb-soon">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-android"/></svg>
