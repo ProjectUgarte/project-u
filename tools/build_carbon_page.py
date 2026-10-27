@@ -46,7 +46,7 @@ SITE = "https://projectugarte.com"
 # release/art/carbon-cliff-source.webp, like MW's sb-hero-chase-cam-social.jpg.
 CARBON_HEAD = f"""<!-- game-head: Carbon's, from tools/build_carbon_page.py -->
   <title>SpeedBreaker: Carbon — project(u)</title>
-  <meta name="description" content="SpeedBreaker: Carbon: the definitive Need for Speed: Carbon recompilation, built from the 2006 Xbox 360 version by static recompilation. Native on Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc of the USA Collector's Edition. Free and unofficial. No game files included. Not affiliated with EA or Valve.">
+  <meta name="description" content="SpeedBreaker: Carbon: the definitive Need for Speed: Carbon recompilation, built from the 2006 Xbox 360 version by static recompilation. Native on Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc of the USA Collector's Edition. On iPhone and iPad, sideload the experimental IPA or build it yourself. Free and unofficial. No game files included. Not affiliated with EA or Valve.">
 
   <!-- Social preview: Need for Speed: Carbon's key art (EA's, credited on the Legal page) until gameplay footage replaces it. No logos. -->
   <meta property="og:type" content="website">

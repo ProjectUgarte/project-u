@@ -303,7 +303,7 @@ Carbon</span>
             </span>
             <h3 class="sb-perk__title">On the devices you own</h3>
             <p class="sb-perk__text" data-only="mw">Steam Deck, Steam Machine, Steam Frame, Linux PCs and Macs, plus iPhone and iPad.</p>
-            <p class="sb-perk__text" data-only="carbon">Steam Deck, Steam Machine, Steam Frame, Linux PCs and Macs. More to come.</p>
+            <p class="sb-perk__text" data-only="carbon">Steam Deck, Steam Machine, Steam Frame, Linux PCs and Macs, plus iPhone and iPad.</p>
           </li>
           <li class="sb-perk">
             <span class="sb-perk__icon" aria-hidden="true">
@@ -343,7 +343,7 @@ Carbon</span>
             <span class="sb-step__num" aria-hidden="true">2</span>
             <h3 class="sb-step__title"><span class="sb-sr">Step 2: </span>Download SpeedBreaker<span data-only="carbon">: Carbon</span></h3>
             <p class="sb-step__text" data-only="mw">Get it for Steam Deck, Steam Machine, Steam Frame, Linux or Mac. On iPhone and iPad, sideload the experimental IPA or build it yourself.</p>
-            <p class="sb-step__text" data-only="carbon">Get it for Steam Deck, Steam Machine, Steam Frame, Linux or Mac.</p>
+            <p class="sb-step__text" data-only="carbon">Get it for Steam Deck, Steam Machine, Steam Frame, Linux or Mac. On iPhone and iPad, sideload the experimental IPA or build it yourself.</p>
           </li>
           <li class="sb-step">
             <span class="sb-step__num" aria-hidden="true">3</span>
@@ -710,27 +710,32 @@ Carbon</span>
               <p class="sb-platform__text">Apple silicon, macOS 15 or later. Not notarized by Apple yet: allow it in Privacy&nbsp;&amp;&nbsp;Security.</p>
             </a>
           </li>
-          <!-- Not links: Carbon's versions for these come later (its README says "Coming
-               soon" for Windows, iPhone and iPad). The same strip as Most Wanted's. -->
-          <li class="sb-platform sb-platform--soon">
-            <span class="sb-chip sb-chip--soon" aria-hidden="true">Later</span>
-            <div class="sb-soon">
+          <li class="sb-platform">
+            <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon#iphone-and-ipad" class="sb-platform__card" target="_blank" rel="noopener noreferrer">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-ios"/></svg>
               </span>
-              <h3 class="sb-soon__name">iPhone &amp; iPad<span class="sb-sr">, later</span></h3>
-            </div>
+              <h3 class="sb-platform__name">iPhone &amp; iPad</h3>
+              <span class="sb-chip sb-chip--diy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>Sideload or build</span>
+              <p class="sb-platform__text">Its own app, beside Most Wanted&rsquo;s. An experimental IPA to sideload with your Apple Account, or build it with Xcode on a Mac. A controller or keyboard; iOS or iPadOS&nbsp;17 or later, on an iPhone 13 or newer or an M&#8209;series iPad.</p>
+            </a>
+          </li>
+          <!-- Not links. The pill is shown once for both; each name carries
+               "coming soon" for screen readers, so the visible pill is hidden from them.
+               Windows: a beta on its own pre-release (the FAQ), as Most Wanted's. -->
+          <li class="sb-platform sb-platform--soon">
+            <span class="sb-chip sb-chip--soon" aria-hidden="true">Coming soon</span>
             <div class="sb-soon">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-windows"/></svg>
               </span>
-              <h3 class="sb-soon__name">Windows<span class="sb-sr">, later</span></h3>
+              <h3 class="sb-soon__name">Windows<span class="sb-sr">, coming soon</span></h3>
             </div>
             <div class="sb-soon">
               <span class="sb-platform__logo" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><use href="#sb-i-android"/></svg>
               </span>
-              <h3 class="sb-soon__name">Android<span class="sb-sr">, later</span></h3>
+              <h3 class="sb-soon__name">Android<span class="sb-sr">, coming soon</span></h3>
             </div>
           </li>
         </ul>
@@ -864,9 +869,9 @@ Carbon</span>
             </div>
           </details>
           <details class="sb-details">
-            <summary><span data-only="mw">What about Windows and Android?</span><span data-only="carbon">What about Windows, iPhone and Android?</span></summary>
+            <summary>What about Windows and Android?</summary>
             <div class="sb-details__body">
-              <p data-only="carbon">Windows, iPhone and iPad versions of SpeedBreaker: Carbon are on the way, as SpeedBreaker for Most Wanted already runs there, and Android after that. No dates yet.</p>
+              <p data-only="carbon">A Windows beta is out: get it from the <a href="https://github.com/SpeedBreakerProject/speedbreaker-carbon/releases">GitHub releases page</a>. It's a beta, so reports from your PC help a lot. Android is coming; no date yet.</p>
               <p data-only="mw">A Windows beta is out: get it from the <a href="https://github.com/SpeedBreakerProject/speedbreaker/releases">GitHub releases page</a>. It's a beta, so reports from your PC help a lot. Android is coming; no date yet.</p>
             </div>
           </details>
