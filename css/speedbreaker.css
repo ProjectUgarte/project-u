@@ -2222,17 +2222,13 @@ html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
    changes.
    --sb-blade-origin moves the scale's fixed point along the bottom edge
    (any point on it keeps the picture covering the hero).
-   Carbon's (its video loop's poster, the Speedbreaker through the bus
-   shelter): the hero centres it like Most Wanted's; in Most Wanted's corner
-   the picture is anchored left and 1.6 times larger about the lower left
-   corner, which brings the flying glass and the car's roof into the blade
-   instead of the trees above the street. */
+   Neither game uses them now: in the corner each picture sits exactly as
+   it fills the hero, so the sweep only reveals it, with no zoom (the
+   operator, 2026-10-28: Carbon's 1.6x corner framing read as a zoom-in on
+   every switch, which Most Wanted's sweep doesn't have). */
 .sb-hero__layer--carbon {
   --sb-layer-accent: #48e0e0;
   --sb-hero-pos: 50% 50%;
-  --sb-blade-pos: 0% 50%;
-  --sb-blade-shift: scale(1.6);
-  --sb-blade-origin: 0% 100%;
 }
 
 .sb-hero__layer .sb-hero__tagline {
