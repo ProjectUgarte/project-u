@@ -65,13 +65,14 @@ CARBON_HEAD = f"""<!-- game-head: Carbon's, from tools/build_carbon_page.py -->
   <!-- /game-head -->"""
 
 # The same two preloads as Most Wanted's (see the comment above them in the
-# source), for Carbon's still (its video loop's poster, frame 444).
+# source), for Carbon's still (its v2 video loop's poster, frame 444; the img in the
+# source's Carbon layer must name the same files, or the preload is wasted).
 CARBON_PRELOAD = f"""<!-- game-preload: Carbon's, from tools/build_carbon_page.py -->
   <link rel="preload" as="image" media="(orientation: portrait), (max-width: 600px)"
-        href="{IMG}sbc-hero-v1-poster-portrait-720.jpg"
+        href="{IMG}sbc-hero-v2-poster-portrait-720.jpg"
         fetchpriority="high">
   <link rel="preload" as="image" media="(orientation: landscape) and (min-width: 600.02px)"
-        imagesrcset="{IMG}sbc-hero-v1-poster-21x9-sb-1280.jpg 1280w, {IMG}sbc-hero-v1-poster-21x9-sb-2400.jpg 2400w"
+        imagesrcset="{IMG}sbc-hero-v2-poster-21x9-sb-1280.jpg 1280w, {IMG}sbc-hero-v2-poster-21x9-sb-2400.jpg 2400w"
         imagesizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
         fetchpriority="high">
   <!-- /game-preload -->"""

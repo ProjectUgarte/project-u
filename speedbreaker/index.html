@@ -101,15 +101,18 @@
             never waits for the full picture.
             Most Wanted's: the v0.1.3 master's frame 364 (Speedbreaker #1); the alt holds
             for both crops (the police car is only in the wide one).
-            Carbon's: its v1 loop's frame 444 (Speedbreaker #1, the bus shelter's glass;
-            nfsmw-work/carbon/launch/video/edl.md). The key art it replaced stays as the
+            Carbon's: its v2 loop's frame 444 (Speedbreaker #1, the bus shelter's glass;
+            nfsmw-work/carbon/launch/video/edl-v2.md; the same picture as v1's). The key art it replaced stays as the
             social image and the teaser card's picture (EA's art: credited on the Legal
             & credits page).
          2. The video: js/speedbreaker.js picks the file (portrait, or 21:9 1280/2400) from
             the data-src-* attributes, adds it and fades it in once it is actually playing,
             only while that game is shown. It carries no description of its own. Carbon's
-            loop (sbc-hero-v1, 2026-10-27, from the operator's race and chase recordings)
-            has the same shapes, sizes and length as Most Wanted's.
+            loop (sbc-hero-v2, 2026-10-28: v1's cut from the operator's race and chase
+            recordings, 2026-10-27, with its canyon drift replaced by two canyon shots
+            from his 2026-10-28 race) has the same shapes and sizes as Most Wanted's and
+            runs 17.77 s. Its credit line names both render sizes: the 2026-10-27 clips
+            ran at 2x (1440p), the canyon shots at 1.5x (1080p).
          3. The scrim (.sb-hero__media::after): darkens the footage so the text keeps its
             contrast on the brightest frames, and fades the bottom into the next
             section's ink. Its values come from video/edl.md's legibility section. On
@@ -166,19 +169,19 @@
         <div class="sb-hero__media">
           <picture class="sb-hero__still">
             <source media="(orientation: portrait), (max-width: 600px)"
-                    srcset="/assets/images/speedbreaker/sbc-hero-v1-poster-portrait-720.jpg"
+                    srcset="/assets/images/speedbreaker/sbc-hero-v2-poster-portrait-720.jpg"
                     width="720" height="960">
-            <img src="/assets/images/speedbreaker/sbc-hero-v1-poster-21x9-sb-2400.jpg"
-                 srcset="/assets/images/speedbreaker/sbc-hero-v1-poster-21x9-sb-1280.jpg 1280w, /assets/images/speedbreaker/sbc-hero-v1-poster-21x9-sb-2400.jpg 2400w"
+            <img src="/assets/images/speedbreaker/sbc-hero-v2-poster-21x9-sb-2400.jpg"
+                 srcset="/assets/images/speedbreaker/sbc-hero-v2-poster-21x9-sb-1280.jpg 1280w, /assets/images/speedbreaker/sbc-hero-v2-poster-21x9-sb-2400.jpg 2400w"
                  sizes="400px" data-sizes="(min-aspect-ratio: 12/5) 100vw, calc((100vh - 72px) * 2.335)"
                  width="2400" height="1028" fetchpriority="low" decoding="async"
                  alt="SpeedBreaker: Carbon gameplay in the game's Speedbreaker slow motion: the player's blue car smashing through a bus shelter's glass on a Palmont street at night">
           </picture>
           <video class="sb-hero__video" muted loop playsinline preload="none"
                  disablepictureinpicture disableremoteplayback aria-hidden="true"
-                 data-src-small="/assets/video/speedbreaker/sbc-hero-v1-21x9-1280.mp4"
-                 data-src-large="/assets/video/speedbreaker/sbc-hero-v1-21x9-2400.mp4"
-                 data-src-portrait="/assets/video/speedbreaker/sbc-hero-v1-portrait-720.mp4"></video>
+                 data-src-small="/assets/video/speedbreaker/sbc-hero-v2-21x9-1280.mp4"
+                 data-src-large="/assets/video/speedbreaker/sbc-hero-v2-21x9-2400.mp4"
+                 data-src-portrait="/assets/video/speedbreaker/sbc-hero-v2-portrait-720.mp4"></video>
         </div>
 
         <div class="container sb-hero__head">
@@ -188,7 +191,7 @@
         </div>
 
         <div class="sb-hero__foot">
-          <p class="sb-hero__credit">Gameplay captured from SpeedBreaker: Carbon on macOS on an M1&nbsp;Pro chip at 60&nbsp;fps and 1440p.</p>
+          <p class="sb-hero__credit">Gameplay captured from SpeedBreaker: Carbon on macOS on an M1&nbsp;Pro chip at 60&nbsp;fps, rendered at 1440p and 1080p.</p>
           <button type="button" class="sb-hero__toggle" aria-label="Pause video" hidden>
             <svg class="sb-hero__toggle-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
             <svg class="sb-hero__toggle-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>
