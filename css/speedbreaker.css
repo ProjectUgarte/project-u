@@ -2088,6 +2088,10 @@ body.sb-page .sb-lp__toc a:focus-visible {
   font-weight: 700;
   letter-spacing: -0.01em;
 }
+.sb-downloads__n {
+  color: var(--sb-amber);
+  font-variant-numeric: tabular-nums;
+}
 
 /* ==========================================================================
    Two games, one page (2026-10-26)

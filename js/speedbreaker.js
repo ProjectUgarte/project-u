@@ -275,7 +275,11 @@
       .then((total) => {
         if (total >= g.min) {
           const shown = Math.floor(total / 100) * 100;
-          el.textContent = `Downloaded over ${shown.toLocaleString('en-US')} times`;
+          // The number in the game's accent colour, as in the launch video.
+          const n = document.createElement('span');
+          n.className = 'sb-downloads__n';
+          n.textContent = shown.toLocaleString('en-US');
+          el.replaceChildren('Downloaded over ', n, ' times');
           el.hidden = false;
           const band = el.closest('.sb-downloads-band');
           if (band) band.classList.add('has-count');

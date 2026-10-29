@@ -53,7 +53,7 @@ CARBON_HEAD = f"""<!-- game-head: Carbon's, from tools/build_carbon_page.py -->
   <link rel="canonical" href="{SITE}/speedbreaker/carbon/">
   <meta property="og:url" content="{SITE}/speedbreaker/carbon/">
   <meta property="og:title" content="SpeedBreaker: Carbon — The 2006 Xbox 360 racer, native on Steam Deck, Steam Machine, Steam Frame and Mac">
-  <meta property="og:description" content="The definitive Need for Speed: Carbon recompilation, built from the 2006 Xbox 360 version, out on its 20th anniversary. Sharper and wider on Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc. Free and unofficial. No game files included. Not affiliated with EA or Valve.">
+  <meta property="og:description" content="The definitive Need for Speed: Carbon recompilation, built from the 2006 Xbox 360 version, out for its 20th anniversary. Sharper and wider on Steam Deck, Steam Machine, Steam Frame, Linux and Mac, from your own disc. Free and unofficial. No game files included. Not affiliated with EA or Valve.">
   <meta property="og:image" content="{SITE}{IMG}sb-carbon-hero-social.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
