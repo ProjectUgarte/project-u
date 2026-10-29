@@ -16,7 +16,7 @@
 // only once it is really playing. Autoplay being blocked, a file that won't
 // play, or reduced motion all leave the still. The video pauses while the
 // hero is off screen and resumes when it's back, unless the visitor paused
-// it with the toggle, and pauses when a switch to the other game settles.
+// it with the toggle, and pauses as a switch to the other game begins.
 // A <video> without data-src-* (Carbon's, until its loop is recorded) is
 // left alone.
 (() => {
@@ -151,13 +151,16 @@
 
     // A switch to this game starts the loop as the sweep begins, so it is
     // already running under the blade as it crosses; a switch away pauses it
-    // once the other game covers it (its last frame stays in the corner).
+    // as the sweep begins, its frame held while the other game covers it
+    // (and then in the corner). Two loops playing at once drop a 120 Hz
+    // screen to 60 for the whole sweep, a visible stutter (2026-10-28).
     document.addEventListener('sb:game', (e) => {
       const d = e.detail || {};
-      if (d.phase === 'start' && d.game === game) {
+      if (d.phase !== 'start') return;
+      if (d.game === game) {
         shown = true;
         start();
-      } else if (d.phase === 'end' && d.game !== game) {
+      } else {
         shown = false;
         if (source && !video.paused) video.pause();
       }
