@@ -26,11 +26,14 @@
     }
   }
 
+  // Prev/next step through the shots on screen only: the SpeedBreaker page
+  // keeps both games' galleries and hides the other game's (data-only).
   function navigate(direction) {
-    let newIndex = currentIndex + direction;
-    if (newIndex < 0) newIndex = items.length - 1;
-    if (newIndex >= items.length) newIndex = 0;
-    showImage(newIndex);
+    const shown = [...items].filter((el) => el.getClientRects().length > 0);
+    if (!shown.length) return;
+    let pos = shown.indexOf(items[currentIndex]);
+    pos = (pos + direction + shown.length) % shown.length;
+    showImage([...items].indexOf(shown[pos]));
   }
 
   function closeLightbox() {

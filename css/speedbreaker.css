@@ -24,22 +24,37 @@
 :root {
   color-scheme: dark;
 
+  /* The accent, as three numbers so every tint below can be written
+     rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), alpha) and follow it.
+     Most Wanted's amber here; html[data-game="carbon"] (the two-game block
+     near the end of this file) swaps in Carbon's teal, and the numbers are
+     registered there so the swap cross-fades. --sb-2r/g/b are the second,
+     rarer glow: MW's red, Carbon's violet. */
+  --sb-ar: 255;
+  --sb-ag: 168;
+  --sb-ab: 31;
+  --sb-2r: 232;
+  --sb-2g: 64;
+  --sb-2b: 40;
+
   --sb-ink: #121317;
   --sb-ink-deep: #0b0c0f;
   --sb-ink-raised: #1c1d22;
   --sb-ink-line: #2c2e35;
   --sb-on-ink: #f4f4f5;
   --sb-on-ink-muted: #b4b4bd;   /* 8.2:1 on raised, 9.0:1 on ink, 9.5:1 on deep */
-  --sb-amber: #ffa81f;          /* 8.7:1 on raised, 9.6:1 on ink */
+  --sb-amber: rgb(var(--sb-ar), var(--sb-ag), var(--sb-ab));   /* #ffa81f: 8.7:1 on raised, 9.6:1 on ink */
   --sb-amber-hover: #ffbb4d;
   --sb-red: #e84028;
 
   --sb-hairline: rgba(255, 255, 255, 0.08);
-  --sb-amber-wash: rgba(255, 168, 31, 0.12);
-  --sb-amber-edge: rgba(255, 168, 31, 0.38);
-  --sb-amber-glow: 0 0 0 1px rgba(255, 168, 31, 0.14), 0 18px 48px -22px rgba(255, 168, 31, 0.5);
+  --sb-amber-wash: rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.12);
+  --sb-amber-edge: rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.38);
+  --sb-amber-glow: 0 0 0 1px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.14), 0 18px 48px -22px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.5);
 
-  /* chips: tinted dark variants (text contrast measured over --sb-ink-raised) */
+  /* chips: tinted dark variants (text contrast measured over --sb-ink-raised).
+     The DIY chip (MW's iPhone & iPad card) stays amber on purpose: it is a
+     status colour, not the page's accent. */
   --sb-ok-text: #6ee7b7;        /* 8.8:1 */
   --sb-ok-tint: rgba(16, 185, 129, 0.14);
   --sb-diy-text: #ffc163;       /* 8.0:1 */
@@ -195,13 +210,13 @@ body.sb-page .sb-footer .footer__bottom {
   position: relative;
   padding: var(--spacing-2xl) 0;
   background:
-    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.07), transparent 70%),
+    radial-gradient(760px 300px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.07), transparent 70%),
     var(--sb-ink);
 }
 
 .sb-section--alt {
   background:
-    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.06), transparent 70%),
+    radial-gradient(760px 300px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.06), transparent 70%),
     var(--sb-ink-deep);
 }
 
@@ -219,7 +234,7 @@ body.sb-page .sb-footer .footer__bottom {
   color: var(--sb-amber);
   font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: rgba(255, 168, 31, 0.45);
+  text-decoration-color: rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.45);
   text-underline-offset: 3px;
 }
 
@@ -269,14 +284,15 @@ body.sb-page .sb-footer .footer__bottom {
   }
 }
 
+/* Since 2026-10-26 the hero holds two games (the two-game block near the
+   end of this file): .sb-hero is a one-cell grid, and each game's layer
+   (.sb-hero__layer) sits in that cell, so the hero is as tall as the taller
+   layer and neither is positioned out of the flow. Each layer is what the
+   whole hero used to be: the box below, its media, its text. */
 .sb-hero {
   position: relative;
   isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: calc(var(--nav-height) + var(--sb-hero-h));
-  padding: calc(var(--nav-height) + var(--sb-hero-pad-top)) 0 var(--sb-hero-pad-bottom);
+  display: grid;
   overflow: hidden;
   text-align: center;
   color: var(--sb-on-ink);
@@ -287,6 +303,18 @@ body.sb-page .sb-footer .footer__bottom {
      lighter grey than the rest of the page's #b4b4bd: over footage it holds
      4.5:1 under a lighter tint, so more of the video shows (12.1:1 on ink). */
   --sb-on-ink-muted: #d0d0d6;
+}
+
+.sb-hero__layer {
+  grid-area: 1 / 1;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: calc(var(--nav-height) + var(--sb-hero-h));
+  padding: calc(var(--nav-height) + var(--sb-hero-pad-top)) 0 var(--sb-hero-pad-bottom);
 }
 
 /* The footage box: everything under the nav, behind the text. Three layers:
@@ -311,10 +339,12 @@ body.sb-page .sb-footer .footer__bottom {
   height: 100%;
 }
 
+/* --sb-hero-pos: where each layer's picture is anchored (set per game in the
+   two-game block; 50% 50% unless a picture needs otherwise). */
 .sb-hero__still img,
 .sb-hero__video {
   object-fit: cover;
-  object-position: 50% 50%;
+  object-position: var(--sb-hero-pos, 50% 50%);
 }
 
 .sb-hero__video {
@@ -374,7 +404,7 @@ body.sb-page .sb-footer .footer__bottom {
    932x430: the grey words at least 5.0:1 (the credit line at 932x430; 5.2:1
    above it), the white words 7.3:1, the tagline 4.1:1, the title 4.9:1. */
 @media (orientation: portrait), (max-width: 600px), (orientation: landscape) and (max-height: 520px) {
-  .sb-hero {
+  .sb-hero__layer {
     justify-content: flex-start;
   }
 
@@ -406,9 +436,16 @@ body.sb-page .sb-footer .footer__bottom {
   }
 }
 
+/* The text rises in once, on load, in the game shown (not in the corner
+   blade, and not again after a switch: the two-game block fades the text
+   instead). Backwards fill only, so the blade's opacity rules still apply
+   once the rise is over. */
 .sb-hero__head {
   position: relative;
-  animation: sb-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+html:not(.sb-switched) .sb-hero__layer.is-base .sb-hero__head {
+  animation: sb-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
 }
 
 /* A soft dark shadow under the hero's words: a little extra margin on the
@@ -448,7 +485,7 @@ body.sb-page .sb-footer .footer__bottom {
 /* The fill is background-clip: text, so a text-shadow would paint over the
    gradient; the same shadow comes from drop-shadow filters instead. */
 .sb-hero__title {
-  font-size: var(--font-size-4xl);
+  font-size: calc(var(--font-size-4xl) * 1.1);   /* a touch above the page's largest size */
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -504,7 +541,7 @@ body.sb-page .sb-footer .footer__bottom {
   background: var(--sb-amber);
   border-color: var(--sb-amber);
   color: #16120a;
-  box-shadow: 0 10px 30px -8px rgba(255, 168, 31, 0.55);
+  box-shadow: 0 10px 30px -8px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.55);
 }
 
 .sb-btn--amber:hover {
@@ -670,8 +707,8 @@ body.sb-page .sb-hero__toggle:focus-visible {
 .sb-section.sb-steam {
   padding-top: var(--spacing-xl);
   background:
-    radial-gradient(720px 380px at 50% 58%, rgba(255, 168, 31, 0.10), transparent 70%),
-    radial-gradient(520px 300px at 88% 100%, rgba(232, 64, 40, 0.07), transparent 70%),
+    radial-gradient(720px 380px at 50% 58%, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.10), transparent 70%),
+    radial-gradient(520px 300px at 88% 100%, rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.07), transparent 70%),
     var(--sb-ink-deep);
 }
 
@@ -687,7 +724,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
   text-align: center;
   padding: var(--spacing-md) var(--spacing-md) 28px;
   background:
-    radial-gradient(240px 140px at 50% 0, rgba(255, 168, 31, 0.10), transparent 70%),
+    radial-gradient(240px 140px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.10), transparent 70%),
     var(--sb-ink-raised);
   border: 1px solid var(--sb-ink-line);
   border-radius: var(--radius-lg);
@@ -699,7 +736,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
   position: absolute;
   inset: 0 0 auto;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 168, 31, 0.55), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.55), transparent);
 }
 
 .sb-device__icon {
@@ -777,7 +814,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
   border-radius: 12px;
   color: var(--sb-amber);
   background: var(--sb-amber-wash);
-  border: 1px solid rgba(255, 168, 31, 0.25);
+  border: 1px solid rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.25);
 }
 
 .sb-steamos__icon svg {
@@ -807,8 +844,8 @@ body.sb-page .sb-hero__toggle:focus-visible {
 /* ===== Why SpeedBreaker ===== */
 #why {
   background:
-    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.08), transparent 70%),
-    radial-gradient(600px 360px at 0% 100%, rgba(232, 64, 40, 0.05), transparent 70%),
+    radial-gradient(760px 300px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.08), transparent 70%),
+    radial-gradient(600px 360px at 0% 100%, rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.05), transparent 70%),
     var(--sb-ink);
 }
 
@@ -833,7 +870,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
   height: 44px;
   border-radius: 12px;
   background: var(--sb-amber-wash);
-  border: 1px solid rgba(255, 168, 31, 0.25);
+  border: 1px solid rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.25);
   color: var(--sb-amber);
   margin-bottom: var(--spacing-sm);
 }
@@ -861,7 +898,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
 /* ===== 3 steps ===== */
 #how {
   background:
-    radial-gradient(820px 340px at 50% 62%, rgba(255, 168, 31, 0.08), transparent 70%),
+    radial-gradient(820px 340px at 50% 62%, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.08), transparent 70%),
     var(--sb-ink-deep);
 }
 
@@ -888,7 +925,7 @@ body.sb-page .sb-hero__toggle:focus-visible {
   top: calc(var(--spacing-md) + 31px);
   left: 100%;
   width: calc(var(--spacing-md) + 2px);
-  border-top: 2px dashed rgba(255, 168, 31, 0.5);
+  border-top: 2px dashed rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.5);
 }
 
 .sb-step__num {
@@ -899,12 +936,12 @@ body.sb-page .sb-hero__toggle:focus-visible {
   height: 64px;
   border-radius: 50%;
   background: var(--sb-ink-deep);
-  border: 1px solid rgba(255, 168, 31, 0.35);
+  border: 1px solid rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.35);
   color: var(--sb-amber);
   font-size: 1.75rem;
   font-weight: 800;
   margin-bottom: var(--spacing-sm);
-  box-shadow: 0 0 0 6px rgba(255, 168, 31, 0.07), 0 0 30px -6px rgba(255, 168, 31, 0.45);
+  box-shadow: 0 0 0 6px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.07), 0 0 30px -6px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.45);
 }
 
 .sb-step__title {
@@ -926,8 +963,8 @@ body.sb-page .sb-hero__toggle:focus-visible {
 /* ===== Screenshot gallery (opens the shared lightbox via data-lightbox-app) ===== */
 #screens {
   background:
-    radial-gradient(700px 320px at 85% 0, rgba(232, 64, 40, 0.08), transparent 70%),
-    radial-gradient(700px 320px at 15% 0, rgba(255, 168, 31, 0.06), transparent 70%),
+    radial-gradient(700px 320px at 85% 0, rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.08), transparent 70%),
+    radial-gradient(700px 320px at 15% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.06), transparent 70%),
     var(--sb-ink);
 }
 
@@ -953,11 +990,11 @@ body.sb-page .sb-hero__toggle:focus-visible {
   grid-column: 1 / -1;
   aspect-ratio: 2400 / 1005; /* the chase-cam shot's own shape */
   border-radius: var(--radius-md);
-  box-shadow: 0 0 0 1px var(--sb-ink-line), 0 30px 80px -40px rgba(255, 168, 31, 0.35);
+  box-shadow: 0 0 0 1px var(--sb-ink-line), 0 30px 80px -40px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.35);
 }
 
 .sb-tile:hover {
-  box-shadow: 0 0 0 1px var(--sb-amber-edge), 0 18px 44px -22px rgba(255, 168, 31, 0.55);
+  box-shadow: 0 0 0 1px var(--sb-amber-edge), 0 18px 44px -22px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.55);
 }
 
 .sb-tile img {
@@ -1003,7 +1040,7 @@ body.sb-page .sb-tile:focus-visible {
 /* ===== Platforms ("Pick your device") ===== */
 #platforms {
   background:
-    radial-gradient(760px 300px at 50% 0, rgba(255, 168, 31, 0.07), transparent 70%),
+    radial-gradient(760px 300px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.07), transparent 70%),
     var(--sb-ink-deep);
 }
 
@@ -1047,7 +1084,7 @@ body.sb-page .sb-tile:focus-visible {
 /* Steam hardware leads the list: a little more amber on those three */
 .sb-platform--steam .sb-platform__card {
   background:
-    radial-gradient(260px 120px at 0 0, rgba(255, 168, 31, 0.09), transparent 70%),
+    radial-gradient(260px 120px at 0 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.09), transparent 70%),
     var(--sb-ink-raised);
 }
 
@@ -1089,7 +1126,7 @@ body.sb-page .sb-platform__card:focus-visible {
 }
 
 .sb-platform--steam .sb-platform__logo {
-  border-color: rgba(255, 168, 31, 0.3);
+  border-color: rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.3);
 }
 
 .sb-platform__logo img,
@@ -1126,32 +1163,21 @@ body.sb-page .sb-platform__card:focus-visible {
   text-wrap: pretty;
 }
 
-/* Coming soon: one slim strip, not links; one pill for both */
-.sb-platform--soon {
-  grid-column: 1 / -1;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 28px;
-  padding: 12px 20px;
-  border: 1px dashed var(--sb-ink-line);
-  border-radius: var(--radius-md);
+/* Coming soon: a card in the grid like the others (same size, same layout),
+   not a link: a dashed border, no fill, a muted logo, and it doesn't lift. */
+.sb-platform__card--soon {
+  background: transparent;
+  border-style: dashed;
 }
 
-.sb-soon {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.sb-soon .sb-platform__logo {
+.sb-platform__card--soon .sb-platform__logo {
   color: var(--sb-on-ink-muted);
 }
 
-.sb-soon__name {
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--sb-on-ink);
+.sb-platform__card--soon:hover {
+  border-color: var(--sb-ink-line);
+  box-shadow: none;
+  transform: none;
 }
 
 .sb-chip {
@@ -1221,7 +1247,7 @@ body.sb-page .sb-platform__card:focus-visible {
 /* ===== FAQ (native <details>, no script) ===== */
 #faq {
   background:
-    radial-gradient(640px 300px at 50% 0, rgba(255, 168, 31, 0.07), transparent 70%),
+    radial-gradient(640px 300px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.07), transparent 70%),
     var(--sb-ink);
 }
 
@@ -1243,7 +1269,7 @@ body.sb-page .sb-platform__card:focus-visible {
 }
 
 .sb-details:hover {
-  border-color: rgba(255, 168, 31, 0.28);
+  border-color: rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.28);
 }
 
 .sb-details[open] {
@@ -1313,7 +1339,7 @@ body.sb-page .sb-platform__card:focus-visible {
 /* ===== Carbon teaser ===== */
 .sb-section.sb-section--teaser {
   background:
-    radial-gradient(900px 420px at 50% 55%, rgba(232, 64, 40, 0.10), transparent 70%),
+    radial-gradient(900px 420px at 50% 55%, rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.10), transparent 70%),
     var(--sb-ink-deep);
 }
 
@@ -1328,7 +1354,7 @@ body.sb-page .sb-platform__card:focus-visible {
   align-items: center;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.07),
-    0 40px 90px -40px rgba(232, 64, 40, 0.45),
+    0 40px 90px -40px rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.45),
     0 30px 60px -30px rgba(0, 0, 0, 0.8);
 }
 
@@ -1378,11 +1404,55 @@ body.sb-page .sb-platform__card:focus-visible {
   line-height: 1.05;
 }
 
+/* The whole card is the link to the other game: it lifts and glows on hover
+   and keyboard focus, like the platform cards. */
+a.sb-teaser {
+  color: var(--sb-on-ink);
+  text-decoration: none;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+a.sb-teaser:hover,
+a.sb-teaser:focus-visible {
+  transform: translateY(-3px) scale(1.012);
+  box-shadow:
+    0 0 0 1px var(--sb-amber-edge),
+    0 40px 90px -40px rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.55),
+    0 30px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+/* style.css squares every focused link to 4px; keep the card's corners */
+body.sb-page a.sb-teaser:focus-visible {
+  border-radius: var(--radius-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.sb-teaser:hover,
+  a.sb-teaser:focus-visible {
+    transform: none;
+  }
+}
+
 .sb-teaser__soon {
   font-size: var(--font-size-xl);
   font-weight: 400;
-  color: var(--sb-amber);
+  color: #ffa81f;
   margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .sb-teaser__soon {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.sb-teaser__line {
+  max-width: 26em;
+  font-size: var(--font-size-lg);
+  line-height: 1.45;
+  color: #d5d8e0;
+  margin-top: 10px;
+  text-wrap: balance;
 }
 
 /* ===== Responsive ===== */
@@ -1441,7 +1511,7 @@ body.sb-page .sb-platform__card:focus-visible {
     height: 52px;
     font-size: 1.4rem;
     margin: 0;
-    box-shadow: 0 0 0 5px rgba(255, 168, 31, 0.07), 0 0 24px -6px rgba(255, 168, 31, 0.45);
+    box-shadow: 0 0 0 5px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.07), 0 0 24px -6px rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.45);
   }
 
   .sb-step__text {
@@ -1456,7 +1526,7 @@ body.sb-page .sb-platform__card:focus-visible {
     width: 0;
     height: calc(var(--spacing-md) + 2px);
     border-top: 0;
-    border-left: 2px dashed rgba(255, 168, 31, 0.5);
+    border-left: 2px dashed rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.5);
   }
 
   .sb-gallery {
@@ -1498,8 +1568,9 @@ body.sb-page .sb-platform__card:focus-visible {
     font-size: var(--font-size-2xl);
   }
 
-  .sb-teaser__soon {
-    font-size: var(--font-size-lg);
+  .sb-teaser__line {
+    font-size: var(--font-size-base);
+    color: var(--sb-on-ink-muted);
   }
 }
 
@@ -1644,20 +1715,6 @@ body.sb-page .sb-platform__card:focus-visible {
     margin-top: 12px;
   }
 
-  /* the pill on its own line, then Windows and Android side by side
-     (one under the other on the narrowest phones) */
-  .sb-platform--soon {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
-    gap: 10px 16px;
-    padding: 12px 16px 14px;
-  }
-
-  .sb-platform--soon > .sb-chip {
-    grid-column: 1 / -1;
-    justify-self: start;
-  }
-
   .sb-details > summary {
     padding: 14px 16px;
   }
@@ -1722,7 +1779,7 @@ body.sb-page .sb-platform__card:focus-visible {
   }
 
   .sb-hero__title {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     margin-bottom: 12px;
   }
 
@@ -1777,8 +1834,8 @@ body.sb-page .sb-platform__card:focus-visible {
   position: relative;
   padding: calc(var(--nav-height) + var(--spacing-lg)) 0 var(--spacing-lg);
   background:
-    radial-gradient(900px 360px at 88% -20%, rgba(255, 168, 31, 0.10), transparent 60%),
-    radial-gradient(700px 320px at -10% 40%, rgba(232, 64, 40, 0.08), transparent 60%),
+    radial-gradient(900px 360px at 88% -20%, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.10), transparent 60%),
+    radial-gradient(700px 320px at -10% 40%, rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.08), transparent 60%),
     linear-gradient(var(--sb-ink), var(--sb-ink-deep));
 }
 
@@ -2021,8 +2078,8 @@ body.sb-page .sb-lp__toc a:focus-visible {
   padding: 3rem 0 0;
   text-align: center;
 }
-/* Pull the Carbon teaser up to the count. */
-.sb-downloads-band + .sb-section--teaser {
+/* Pull the bridge card (either game's) up to the count. */
+.sb-downloads-band ~ .sb-section--teaser {
   padding-top: 1.5rem;
 }
 .sb-downloads {
@@ -2030,4 +2087,517 @@ body.sb-page .sb-lp__toc a:focus-visible {
   font-size: clamp(1.5rem, 3.5vw, 2.25rem);
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+.sb-downloads__n {
+  color: var(--sb-amber);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Two games, one page (2026-10-26)
+   SpeedBreaker for Most Wanted and SpeedBreaker: Carbon share this page
+   (speedbreaker/index.html, and speedbreaker/carbon/index.html, generated
+   from it by tools/build_carbon_page.py). <html data-game="mw|carbon"> is
+   the game shown. The operator's design, from the approved prototype
+   (speedbreaker/carbon-blade-prototype.html): the other game waits as a
+   blade in the hero's upper right corner; hover or keyboard focus opens it
+   a little, with a lit edge and a highlight gliding along it; a click
+   sweeps it diagonally across the hero in 0.9 s ("the speed is perfect")
+   while the page's accent cross-fades, MW amber #ffa81f to Carbon teal
+   #48e0e0. js/speedbreaker.js drives the classes; everything here also
+   reads right without it (each page shows its own game, the blade is a
+   link to the other page).
+   ========================================================================== */
+
+/* The accent's numbers and the inks animate, so they are registered (a
+   browser without @property swaps them at once instead of fading). */
+@property --sb-ar { syntax: '<number>'; inherits: true; initial-value: 255; }
+@property --sb-ag { syntax: '<number>'; inherits: true; initial-value: 168; }
+@property --sb-ab { syntax: '<number>'; inherits: true; initial-value: 31; }
+@property --sb-2r { syntax: '<number>'; inherits: true; initial-value: 232; }
+@property --sb-2g { syntax: '<number>'; inherits: true; initial-value: 64; }
+@property --sb-2b { syntax: '<number>'; inherits: true; initial-value: 40; }
+@property --sb-amber-hover { syntax: '<color>'; inherits: true; initial-value: #ffbb4d; }
+@property --sb-ink { syntax: '<color>'; inherits: true; initial-value: #121317; }
+@property --sb-ink-deep { syntax: '<color>'; inherits: true; initial-value: #0b0c0f; }
+
+:root {
+  --sb-sweep: 900ms;
+  --sb-ease: cubic-bezier(0.65, 0, 0.2, 1);
+  transition:
+    --sb-ar var(--sb-sweep) var(--sb-ease), --sb-ag var(--sb-sweep) var(--sb-ease), --sb-ab var(--sb-sweep) var(--sb-ease),
+    --sb-2r var(--sb-sweep) var(--sb-ease), --sb-2g var(--sb-sweep) var(--sb-ease), --sb-2b var(--sb-sweep) var(--sb-ease),
+    --sb-amber-hover var(--sb-sweep) var(--sb-ease),
+    --sb-ink var(--sb-sweep) var(--sb-ease), --sb-ink-deep var(--sb-sweep) var(--sb-ease);
+}
+
+/* Carbon: teal for amber (the teal of Carbon's own menus; 9.9:1 on raised
+   ink), a soft violet (the race chevrons' neon) for the rare red glow, and
+   inks a touch cooler than Most Wanted's. Same alphas everywhere, so the
+   page keeps MW's restraint. */
+html[data-game="carbon"] {
+  --sb-ar: 72;
+  --sb-ag: 224;
+  --sb-ab: 224;
+  --sb-2r: 138;
+  --sb-2g: 92;
+  --sb-2b: 246;
+  --sb-amber-hover: #8af0f0;
+  --sb-ink: #101417;
+  --sb-ink-deep: #090c0e;
+}
+
+/* Copy written for one game only. After the first switch, whatever a
+   switch brings in fades in (sb-switched is set by the script, so a page
+   load never fades). */
+html[data-game="mw"] [data-only="carbon"],
+html[data-game="carbon"] [data-only="mw"] {
+  display: none;
+}
+
+html.sb-switched [data-only] {
+  animation: sb-swap-in 0.45s ease both;
+}
+
+@keyframes sb-swap-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Carbon's download count is hidden until GitHub has one to give; so is
+   its band. */
+html[data-game="carbon"] .sb-downloads-band:not(.has-count) {
+  display: none;
+}
+
+/* The logo sprite: holds the <symbol>s, draws nothing. Not display: none,
+   which some browsers carry over to the <use>s. */
+.sb-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---- The hero: two layers, one blade ----
+   The blade's legs, from the corner under the nav, grow with the screen:
+   --cb-w across the top, --cb-h (0.7 of it) down the right edge. The lit
+   edge and the link are sized from the same two, so they always fit the
+   blade (the prototype's fix). A sweep sets --cb-w to --sb-sweep-w, which
+   the script measures so the triangle, at the same angle, just clears the
+   hero's far corner at 64% of the way: the operator's tested speed. */
+.sb-hero {
+  --cb-w-rest: clamp(260px, 21vw, 480px);   /* 260: room for the stacked label on a 1024px iPad held upright */
+  --cb-w: var(--cb-w-rest);
+  --cb-h: calc(var(--cb-w) * 0.7);
+}
+
+.sb-hero.is-peek {
+  --cb-w: clamp(320px, 31vw, 700px);
+}
+
+.sb-hero.is-sweeping {
+  --cb-w: var(--sb-sweep-w, 4200px);
+}
+
+.sb-hero[data-blade="carbon"] {
+  --sb-edge-color: #48e0e0;
+}
+
+.sb-hero[data-blade="mw"] {
+  --sb-edge-color: #ffa81f;
+}
+
+/* Each layer keeps its own game's accent in its tagline, so the two don't
+   blend while the page's accent cross-fades. */
+.sb-hero__layer--mw {
+  --sb-layer-accent: #ffa81f;
+}
+
+/* Framing the blade. At rest in the corner, a layer's picture can sit
+   differently from how it fills the hero: --sb-blade-pos (object-position)
+   and --sb-blade-shift (a transform) bring the part worth seeing into the
+   triangle; the sweep glides them back to --sb-hero-pos and no shift. Keep
+   the shift a scale of 1 or more about the lower left corner (the transform
+   origin): every point then moves up and right, toward the blade, and the
+   picture still covers the whole hero at every moment of the sweep (a
+   translate would bare its edges mid-sweep). Tune both per picture when it
+   changes.
+   --sb-blade-origin moves the scale's fixed point along the bottom edge
+   (any point on it keeps the picture covering the hero).
+   Neither game uses them now: in the corner each picture sits exactly as
+   it fills the hero, so the sweep only reveals it, with no zoom (the
+   operator, 2026-10-28: Carbon's 1.6x corner framing read as a zoom-in on
+   every switch, which Most Wanted's sweep doesn't have). */
+.sb-hero__layer--carbon {
+  --sb-layer-accent: #48e0e0;
+  --sb-hero-pos: 50% 50%;
+}
+
+.sb-hero__layer .sb-hero__tagline {
+  color: var(--sb-layer-accent);
+}
+
+/* Keeps a phrase whole, so a line breaks only between phrases (Carbon's
+   tagline breaks after "Palmont City," when it doesn't fit on one line). */
+.sb-nowrap {
+  white-space: nowrap;
+}
+
+/* Carbon's title: "SpeedBreaker:" over "Carbon" in teal, both at Most Wanted's
+   title size (the operator's layout). */
+.sb-hero__title-lead {
+  display: inline;
+}
+
+.sb-hero__title-game {
+  display: inline;
+  background: linear-gradient(180deg, #b9fbfb, #48e0e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Held upright (phones, an iPad in portrait), "Carbon" goes under
+   "SpeedBreaker:"; landscape screens keep the one line. */
+@media (orientation: portrait) {
+  .sb-hero__title-lead,
+  .sb-hero__title-game {
+    display: block;
+  }
+}
+
+/* The title takes focus after a switch (for screen readers), but it isn't a
+   control: no focus ring around it. */
+body.sb-page .sb-hero__title:focus,
+body.sb-page .sb-hero__title:focus-visible {
+  outline: none;
+}
+
+.sb-hero__layer.is-base {
+  z-index: 0;
+}
+
+/* The game not shown: a triangle in the upper right corner, its picture
+   only. */
+.sb-hero__layer.is-blade {
+  z-index: 2;
+  clip-path: polygon(calc(100% - var(--cb-w)) var(--nav-height), 100% var(--nav-height), 100% calc(var(--nav-height) + var(--cb-h)));
+  transition: clip-path 420ms var(--sb-ease);
+}
+
+.sb-hero__layer.is-blade .sb-hero__still img,
+.sb-hero__layer.is-blade .sb-hero__video {
+  object-position: var(--sb-blade-pos, var(--sb-hero-pos, 50% 50%));
+  transform: var(--sb-blade-shift, none);
+  transform-origin: var(--sb-blade-origin, 0 100%);
+}
+
+.sb-hero__layer.is-blade .sb-hero__head,
+.sb-hero__layer.is-blade .sb-hero__foot {
+  opacity: 0;
+}
+
+/* The scrim is there for the text, and the blade has none: its picture
+   shows at full strength (the scrim returns as it sweeps in). */
+.sb-hero__layer.is-blade .sb-hero__media::after {
+  opacity: 0;
+}
+
+.sb-hero.is-sweeping .sb-hero__layer.is-blade .sb-hero__media::after {
+  opacity: 1;
+  transition: opacity var(--sb-sweep) var(--sb-ease);
+}
+
+/* The sweep: the same triangle, legs long enough to cover the whole hero.
+   Its text fades in behind the edge; the old game's text fades out. */
+.sb-hero.is-sweeping .sb-hero__layer.is-blade {
+  transition: clip-path var(--sb-sweep) var(--sb-ease);
+}
+
+.sb-hero.is-sweeping .sb-hero__layer.is-blade .sb-hero__still img,
+.sb-hero.is-sweeping .sb-hero__layer.is-blade .sb-hero__video {
+  object-position: var(--sb-hero-pos, 50% 50%);
+  transform: none;
+  transform-origin: var(--sb-blade-origin, 0 100%);
+  transition: object-position var(--sb-sweep) var(--sb-ease), transform var(--sb-sweep) var(--sb-ease);
+}
+
+.sb-hero.is-sweeping .sb-hero__layer.is-blade .sb-hero__head,
+.sb-hero.is-sweeping .sb-hero__layer.is-blade .sb-hero__foot {
+  opacity: 1;
+  transition: opacity 500ms 350ms ease;
+}
+
+.sb-hero.is-sweeping .sb-hero__layer.is-base .sb-hero__head,
+.sb-hero.is-sweeping .sb-hero__layer.is-base .sb-hero__foot {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+/* The lit edge: its own box over the blade's corner, 6px wider and 4.2px
+   taller than the blade (the same 0.7), clipped to the same triangle and
+   under it, so a thin line of the blade game's colour shows along the long
+   side whatever the screen size. A highlight glides along it now and then. */
+.sb-edge {
+  position: absolute;
+  z-index: 1;
+  top: var(--nav-height);
+  right: 0;
+  width: calc(var(--cb-w) + 6px);
+  height: calc(var(--cb-h) + 4.2px);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom right, transparent 0 38%, rgba(255, 255, 255, 0.9) 50%, transparent 62% 100%) no-repeat,
+    linear-gradient(to bottom right, var(--sb-edge-color), color-mix(in srgb, var(--sb-edge-color) 55%, #fff) 50%, var(--sb-edge-color));
+  background-color: var(--sb-edge-color);
+  background-size: 300% 300%, 100% 100%;
+  background-position: 100% 100%, 0 0;
+  animation: sb-shine 4.5s 1.2s var(--sb-ease) infinite;
+  transition: width 420ms var(--sb-ease), height 420ms var(--sb-ease), opacity 300ms ease;
+}
+
+@keyframes sb-shine {
+  0% {
+    background-position: 100% 100%, 0 0;
+  }
+  35%,
+  100% {
+    background-position: 0 0, 0 0;
+  }
+}
+
+.sb-hero.is-peek .sb-edge {
+  filter: drop-shadow(0 0 10px var(--sb-edge-color));
+}
+
+.sb-hero.is-sweeping .sb-edge {
+  opacity: 0;
+  transition: width var(--sb-sweep) var(--sb-ease), height var(--sb-sweep) var(--sb-ease), opacity 300ms 500ms ease;
+}
+
+/* The link over the blade: its whole triangle is the hit area (clip-path
+   clips hits too), and nothing else of the hero. No touch handlers and the
+   default touch-action, so a swipe that starts on it still scrolls. */
+.sb-blade {
+  position: absolute;
+  z-index: 3;
+  top: var(--nav-height);
+  right: 0;
+  width: var(--cb-w);
+  height: var(--cb-h);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: width 420ms var(--sb-ease), height 420ms var(--sb-ease);
+}
+
+.sb-blade__label {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  display: inline-flex;
+  gap: 8px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  align-items: flex-end;     /* the arrow beside the last line */
+  white-space: nowrap;
+  text-align: right;
+  color: #ffffff;
+  /* close and wide shadows: the name stays readable over bright footage */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.85), 0 0 18px rgba(0, 0, 0, 0.75);
+}
+
+/* "SpeedBreaker:" over "Carbon" (the name has a line break; pre-line keeps it). */
+.sb-blade__name {
+  white-space: pre-line;
+}
+
+/* The other game's full name, in that game's colour. */
+.sb-hero[data-blade="carbon"] .sb-blade__label {
+  color: #48e0e0;
+}
+
+.sb-hero[data-blade="mw"] .sb-blade__label {
+  color: #ffa81f;
+}
+
+.sb-blade__label svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform 300ms var(--sb-ease);
+}
+
+.sb-hero.is-peek .sb-blade__label svg {
+  transform: translate(-3px, 3px);
+}
+
+/* The clip would cut a ring around the link itself; ring the label instead,
+   in the blade game's colour. */
+body.sb-page .sb-blade:focus-visible {
+  outline: none;
+}
+
+.sb-blade:focus-visible .sb-blade__label {
+  outline: 2px solid var(--sb-edge-color);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+.sb-hero.is-sweeping .sb-blade {
+  visibility: hidden;
+}
+
+/* Swapping roles at the end of a sweep: the new blade starts closed in its
+   corner, without animating there. */
+/* After a switch the new game's blade grows out of the corner (the blade's
+   own 420ms clip transition, from nothing to its resting size), with its lit
+   edge, and its label fades in as it opens. */
+.sb-hero.is-arriving {
+  --cb-w: 0px;
+}
+
+.sb-hero.is-arriving .sb-blade__label,
+.sb-hero.is-arriving .sb-edge {
+  opacity: 0;
+}
+
+.sb-blade__label {
+  transition: opacity 320ms 220ms ease;
+}
+
+.sb-hero.sb-noanim,
+.sb-hero.sb-noanim * {
+  transition: none !important;
+}
+
+/* The bridge card's button: a link in the other game's own colour. */
+.sb-section--teaser {
+  --sb-card-accent: #48e0e0;
+}
+
+.sb-section--teaser-mw {
+  --sb-card-accent: #ffa81f;
+}
+
+.sb-teaser--mw .sb-teaser__art img {
+  object-position: 50% 50%;
+}
+
+.sb-teaser__go {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: var(--sb-card-accent);
+  color: #0b0c0f;
+  font-weight: 700;
+  text-shadow: none;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.sb-teaser__go:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -10px var(--sb-card-accent);
+}
+
+.sb-teaser__go svg {
+  width: 14px;
+  height: 14px;
+}
+
+body.sb-page .sb-teaser__go:focus-visible {
+  border-radius: 10px;
+  outline-color: var(--sb-card-accent);
+}
+
+/* Phones: a smaller blade, and the hero's text starts under it, so the
+   title never meets it. Held sideways the text is centred and short, clear
+   of a slightly smaller blade. */
+@media (max-width: 600px) {
+  .sb-hero {
+    --cb-w-rest: 200px;
+    --sb-hero-pad-top: calc(200px * 0.7 + 10px);
+  }
+
+  .sb-hero.is-peek {
+    --cb-w: 250px;
+  }
+
+  /* Carbon's title stacks on phones: "SpeedBreaker:" over "Carbon" */
+  .sb-hero__title-lead,
+  .sb-hero__title-game {
+    display: block;
+  }
+
+  .sb-blade__label {
+    top: 16px;
+    right: 16px;
+    gap: 6px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .sb-hero {
+    --cb-w-rest: 190px;
+  }
+
+  .sb-blade__label {
+    top: 12px;
+    right: 12px;
+    gap: 6px;
+    font-size: 0.875rem;
+  }
+}
+
+/* Reduced motion: no sweep, no gliding highlight; the other game's layer
+   cross-fades in over 300 ms instead (style.css cuts every animation to
+   0.01ms here, so this one says !important to keep its length). */
+@media (prefers-reduced-motion: reduce) {
+  .sb-edge {
+    animation: none;
+  }
+
+  .sb-hero.is-sweeping .sb-hero__layer.is-blade {
+    clip-path: none;
+    animation: sb-cross 300ms ease both !important;
+  }
+
+  html.sb-switched [data-only] {
+    animation: none;
+  }
+
+  .sb-teaser__go:hover {
+    transform: none;
+  }
+}
+
+@keyframes sb-cross {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ===== The Collector's Edition (Carbon only, #collectors) =====
+   Its cards are the perks' (.sb-perk); the number leading each title takes the
+   game's accent. Its own glow sits low on the right, so the two plain-ink
+   sections in a row (#why, then this) don't read as one. */
+#collectors {
+  background:
+    radial-gradient(760px 300px at 50% 0, rgba(var(--sb-ar), var(--sb-ag), var(--sb-ab), 0.07), transparent 70%),
+    radial-gradient(600px 360px at 100% 100%, rgba(var(--sb-2r), var(--sb-2g), var(--sb-2b), 0.05), transparent 70%),
+    var(--sb-ink);
+}
+
+.sb-perk__num {
+  color: var(--sb-amber);
+  font-variant-numeric: tabular-nums;
 }
