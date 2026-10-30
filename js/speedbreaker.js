@@ -220,7 +220,7 @@
 
 // ===== 2. The download count, per game =====
 // Every release file on GitHub, checksum files left out, rounded down to the
-// hundred ("Downloaded over 8,100 times"). An hourly GitHub Action
+// ten ("Downloaded over 10,770 times"). An hourly GitHub Action
 // (.github/workflows/speedbreaker-downloads.yml) saves both games' counts in
 // data/speedbreaker-downloads.json, so a visit reads them from this site: an
 // office network past GitHub's 60 hourly anonymous requests, or a firewall
@@ -274,7 +274,7 @@
       .then((counts) => (Number.isFinite(counts[game]) ? counts[game] : fromGitHub(g)))
       .then((total) => {
         if (total >= g.min) {
-          const shown = Math.floor(total / 100) * 100;
+          const shown = Math.floor(total / 10) * 10;
           // The number in the game's accent colour, as in the launch video.
           const n = document.createElement('span');
           n.className = 'sb-downloads__n';

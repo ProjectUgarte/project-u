@@ -3,7 +3,7 @@
 # (60 anonymous requests an hour per network: an office past it, or a firewall
 # that blocks api.github.com, kept the page's built-in number).
 # data/speedbreaker-downloads.json holds each game's total, every release file
-# but the .sha256 ones, rounded down to the hundred as the page shows it, so a
+# but the .sha256 ones, rounded down to the ten as the page shows it, so a
 # commit lands only when a shown number changes. A game whose repository can't
 # be read (Carbon's, while it is private) is null; js/speedbreaker.js then asks
 # GitHub itself, as before.
@@ -32,9 +32,9 @@ jobs:
         run: |
           set -euo pipefail
           count() {
-            # Prints the total rounded down to the hundred, or null if the repository can't be read.
+            # Prints the total rounded down to the ten, or null if the repository can't be read.
             if body=$(gh api "repos/$1/releases?per_page=100" 2>/dev/null); then
-              echo "$body" | jq '[.[].assets[] | select(.name | test("\\.sha256$") | not) | .download_count] | add // 0 | (. / 100 | floor) * 100'
+              echo "$body" | jq '[.[].assets[] | select(.name | test("\\.sha256$") | not) | .download_count] | add // 0 | (. / 10 | floor) * 10'
             else
               echo null
             fi

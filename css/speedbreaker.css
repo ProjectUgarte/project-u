@@ -2078,9 +2078,12 @@ body.sb-page .sb-lp__toc a:focus-visible {
   padding: 3rem 0 0;
   text-align: center;
 }
-/* Pull the bridge card (either game's) up to the count. */
+/* Pull the bridge card (either game's) up to the count, with no hairline
+   between them: on Carbon's page the visible card follows the hidden one,
+   so .sb-section + .sb-section would draw one under the count. */
 .sb-downloads-band ~ .sb-section--teaser {
   padding-top: 1.5rem;
+  border-top: 0;
 }
 .sb-downloads {
   margin: 0;
