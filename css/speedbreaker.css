@@ -2488,7 +2488,7 @@ body.sb-page .sb-blade:focus-visible {
 }
 
 .sb-teaser--mw .sb-teaser__art img {
-  object-position: 50% 50%;
+  object-position: 100% 50%;
 }
 
 .sb-teaser__go {
